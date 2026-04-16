@@ -452,12 +452,6 @@ changes:
 
 Добавлено в: v0.1.26
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.4.0, v12.16.0 | Добавлена ​​опция captureRejections. |
-
 Класс `EventEmitter` определяется и экспортируется модулем `node:events`:
 
 === "MJS"
@@ -565,12 +559,6 @@ changes:
 -->
 
 Добавлено в: v0.9.3
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.1.0, v4.7.0 | Для прослушивателей, подключенных с помощью `.once()`, аргумент `listener` теперь возвращает исходную функцию прослушивателя. |
 
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя события
 * `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
@@ -742,12 +730,6 @@ changes:
 
 Добавлено в: v3.2.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.8.0, v18.16.0 | Добавлен аргумент «слушатель». |
-
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
 * `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обработчика события
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -768,12 +750,6 @@ changes:
 -->
 
 Добавлено в: v0.1.26
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v7.0.0 | Для прослушивателей, подключенных с помощью .once(), теперь возвращаются исходные прослушиватели вместо функций-оболочек. |
 
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 * Возвращает: [`<Function[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1208,12 +1184,6 @@ changes:
     description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.4.0, v16.14.0 | Больше не экспериментально. |
-
 * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 * `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -1462,12 +1432,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/34912
     description: The `signal` option is supported now.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Опция `signal` теперь поддерживается. |
 
 * `emitter` [`<EventEmitter>`](events.md#class-eventemitter)
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
@@ -1759,12 +1723,6 @@ changes:
     description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.4.0, v16.14.0 | Больше не экспериментально. |
-
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Меняет значение по умолчанию опции `captureRejections` для всех новых объектов
@@ -1783,12 +1741,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/41267
     description: No longer experimental.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.4.0, v16.14.0 | Больше не экспериментально. |
 
 * Тип: [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) `Symbol.for('nodejs.rejection')`
 
@@ -1815,14 +1767,6 @@ changes:
 -->
 
 Добавлено в: v0.9.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0, v24.14.0 | Теперь принимает аргументы EventTarget. |
-    | v25.4.0, v24.14.0 | Устаревание отменено. |
-    | v3.2.0 | Прекращение поддержки только документации. |
 
 * `emitterOrTarget` [`<EventEmitter>`](events.md#class-eventemitter) | [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
@@ -1892,13 +1836,6 @@ changes:
     description: The `close`, `highWatermark`, and `lowWatermark`
                  options are supported now.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0, v20.13.0 | Поддержка опций highWaterMark и lowWaterMark для обеспечения единообразия. Старые варианты по-прежнему поддерживаются. |
-    | v20.0.0 | Параметры close, highWatermark и lowWatermark теперь поддерживаются. |
 
 * `emitter` [`<EventEmitter>`](events.md#class-eventemitter)
 * `eventName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Имя прослушиваемого события
@@ -2073,12 +2010,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/57765
    description: Change stability index for this feature from Experimental to Stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
 
 * `signal` [`<AbortSignal>`](globals.md#abortsignal)
 * `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
@@ -2258,14 +2189,6 @@ changes:
 
 Добавлено в: v14.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | изменена обработка ошибок EventTarget. |
-    | v15.4.0 | Больше не экспериментально. |
-    | v15.0.0 | Классы EventTarget и Event теперь доступны как глобальные. |
-
 Объекты `EventTarget` и `Event` — реализация в Node.js для
 [`EventTarget` Web API](https://dom.spec.whatwg.org/#eventtarget), используемая частью встроенных API.
 
@@ -2382,12 +2305,6 @@ changes:
 -->
 
 Добавлено в: v14.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Класс Event теперь доступен через глобальный объект. |
 
 Объект `Event` — адаптация [`Event` Web API](https://dom.spec.whatwg.org/#event). Экземпляры создаются внутри Node.js.
 
@@ -2598,12 +2515,6 @@ changes:
 
 Добавлено в: v14.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Класс EventTarget теперь доступен через глобальный объект. |
-
 #### `eventTarget.addEventListener(type, listener[, options])`
 
 <!-- YAML
@@ -2615,12 +2526,6 @@ changes:
 -->
 
 Добавлено в: v14.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.4.0 | добавить поддержку опции «сигнал». |
 
 * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<EventListener>`](https://developer.mozilla.org/docs/Web/API/EventListener)
@@ -2705,14 +2610,6 @@ changes:
     description: No longer behind `--experimental-global-customevent` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.0.0 | Больше не экспериментально. |
-    | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
-    | v19.0.0 | Флаг CLI `--experimental-global-customevent` больше не используется. |
-
 * Наследует: [`<Event>`](globals.md)
 
 Объект `CustomEvent` — адаптация [`CustomEvent` Web API](https://dom.spec.whatwg.org/#customevent). Экземпляры создаются
@@ -2731,12 +2628,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/52618
     description: CustomEvent is now stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
 
 * Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Пользовательские данные, переданные при инициализации.
 

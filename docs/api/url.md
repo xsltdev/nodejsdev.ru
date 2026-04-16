@@ -128,12 +128,6 @@ changes:
     description: Класс теперь доступен в глобальном объекте.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Класс теперь доступен в глобальном объекте. |
-
 Совместимый с браузерами класс `URL`, реализованный по [WHATWG URL Standard][WHATWG URL Standard].
 [Примеры разобранных URL][examples of parsed URLs] приведены в самом стандарте.
 Класс `URL` также доступен в глобальном объекте.
@@ -154,12 +148,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/47339
     description: Требование ICU снято.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0, v18.17.0 | Требование ICU снято. |
 
 * `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный или относительный входной URL для разбора. Если `input`
   относительный, нужен `base`. Если `input` абсолютный, `base` игнорируется. Если `input`
@@ -326,12 +314,6 @@ changes:
                  возвращает `'null'`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Схема «gopher» больше не особая; для неё `url.origin` теперь возвращает `'null'`. |
-
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Возвращает только для чтения сериализацию происхождения (origin) URL.
@@ -399,12 +381,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/33325
     description: Схема «gopher» больше не особая.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Схема «gopher» больше не особая. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -506,12 +482,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/33325
     description: Схема «gopher» больше не особая.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Схема «gopher» больше не особая. |
 
 [WHATWG URL Standard][WHATWG URL Standard] считает ряд схем URL _особенными_ с точки зрения разбора
 и сериализации. Если URL разобран с особой схемой, свойство `url.protocol` можно
@@ -657,12 +627,6 @@ changes:
 
 Добавлено в: v16.7.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | API помечен как стабильный. |
-
 * `blob` [`<Blob>`](https://developer.mozilla.org/en-US/docs/Web/API/Blob)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -703,12 +667,6 @@ changes:
 -->
 
 Добавлено в: v16.7.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | API помечен как стабильный. |
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка URL `'blob:nodedata:...`, возвращённая предыдущим вызовом
   `URL.createObjectURL()`.
@@ -879,12 +837,6 @@ changes:
     description: Класс теперь доступен в глобальном объекте.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Класс теперь доступен в глобальном объекте. |
-
 API `URLSearchParams` даёт доступ на чтение и запись к строке запроса `URL`. Класс
 можно использовать отдельно — ниже четыре варианта конструктора. Класс также
 доступен в глобальном объекте.
@@ -1051,12 +1003,6 @@ changes:
     description: Добавлена поддержка необязательного аргумента `value`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.2.0, v18.18.0 | Добавлена поддержка необязательного аргумента `value`. |
-
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1082,12 +1028,6 @@ changes:
     description: Некорректный callback в `fn` теперь даёт `ERR_INVALID_ARG_TYPE`,
                  а не `ERR_INVALID_CALLBACK`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Некорректный callback в `fn` теперь даёт `ERR_INVALID_ARG_TYPE`, а не `ERR_INVALID_CALLBACK`. |
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается для каждой пары имя–значение
 * `thisArg` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `this` при вызове `fn`
@@ -1128,12 +1068,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/47885
     description: Добавлена поддержка необязательного аргумента `value`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.2.0, v18.18.0 | Добавлена поддержка необязательного аргумента `value`. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1259,12 +1193,6 @@ changes:
     description: Требование ICU снято.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0, v18.17.0 | Требование ICU снято. |
-
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1313,12 +1241,6 @@ changes:
     description: Требование ICU снято.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0, v18.17.0 | Требование ICU снято. |
-
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1365,12 +1287,6 @@ changes:
 -->
 
 Добавлено в: v10.12.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | Аргумент `options` задаёт способ разбора аргумента `path`. |
 
 * `url` [`<URL>`](url.md#the-whatwg-url-api) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка file URL или объект URL для преобразования в путь.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1521,12 +1437,6 @@ changes:
 
 Добавлено в: v10.12.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | Аргумент `options` задаёт способ возврата значения `path`. |
-
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь для преобразования в file URL.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `windows` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined `true` — путь как в Windows, `false` — POSIX,
@@ -1579,12 +1489,6 @@ changes:
     description: Возвращаемый объект также содержит все собственные перечислимые
                  свойства аргумента `url`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.9.0, v18.17.0 | Возвращаемый объект также содержит все собственные перечислимые свойства аргумента `url`. |
 
 * `url` [`<URL>`](url.md#the-whatwg-url-api) Объект [WHATWG URL][WHATWG URL] для преобразования в объект опций.
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект опций
@@ -1658,13 +1562,6 @@ changes:
     description: This API is deprecated.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.13.0, v14.17.0 | Устаревание отменено. Статус изменен на «Наследие». |
-    | v11.0.0 | Этот API устарел. |
-
 !!!warning "Стабильность: 3 - Устаревшее"
 
     Предпочитайте WHATWG URL API.
@@ -1682,13 +1579,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/22715
     description: The Legacy URL API is deprecated. Use the WHATWG URL API.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.13.0, v14.17.0 | Устаревание отменено. Статус изменен на «Наследие». |
-    | v11.0.0 | API устаревших URL-адресов устарел. Используйте URL-API WHATWG. |
 
 Унаследованный `urlObject` (`require('node:url').Url` или
 `import { Url } from 'node:url'`) создаётся и возвращается функцией `url.parse()`.
@@ -1806,15 +1696,6 @@ changes:
 
 Добавлено в: v0.1.25
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.0.0 | Теперь выдает исключение ERR_INVALID_URL, когда преобразование имени хоста Punycode вносит изменения, которые могут привести к другому повторному анализу URL-адреса. |
-    | v15.13.0, v14.17.0 | Устаревание отменено. Статус изменен на «Наследие». |
-    | v11.0.0 | API устаревших URL-адресов устарел. Используйте URL-API WHATWG. |
-    | v7.0.0 | URL-адреса со схемой `file:` теперь всегда будут использовать правильное количество косых черт независимо от параметра `косые черты`. Опция ложной косой черты без протокола теперь также всегда учитывается. |
-
 * `urlObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект URL (как из `url.parse()` или собранный вручную).
 
 Метод `url.format()` возвращает отформатированную строку URL из `urlObject`.
@@ -1888,12 +1769,6 @@ changes:
 -->
 
 Добавлено в: v0.1.25
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0 | Устаревание приложения. |
 
 !!!warning "Стабильность: 0 - Устарело"
 
@@ -1969,18 +1844,6 @@ changes:
 -->
 
 Добавлено в: v0.1.25
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0 | Устаревание приложения. |
-    | v19.9.0, v18.17.0 | Добавлена ​​поддержка `--pending-deprecation`. |
-    | v19.0.0, v18.13.0 | Прекращение поддержки только документации. |
-    | v15.13.0, v14.17.0 | Устаревание отменено. Статус изменен на «Наследие». |
-    | v11.14.0 | Свойство pathname возвращаемого объекта URL теперь имеет значение `/`, если путь отсутствует и используется схема протокола `ws:` или `wss:`. |
-    | v11.0.0 | API устаревших URL-адресов устарел. Используйте URL-API WHATWG. |
-    | v9.0.0 | Свойство search в возвращаемом объекте URL теперь имеет значение null, если строка запроса отсутствует. |
 
 !!!warning "Стабильность: 0 - Устарело"
 
@@ -2060,17 +1923,6 @@ changes:
 -->
 
 Добавлено в: v0.1.25
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0 | Устарело снова через DEP0169. |
-    | v15.13.0, v14.17.0 | Устаревание отменено. Статус изменен на «Наследие». |
-    | v11.0.0 | API устаревших URL-адресов устарел. Используйте URL-API WHATWG. |
-    | v6.6.0 | Поля `auth` теперь сохраняются, когда `from` и `to` относятся к одному и тому же хосту. |
-    | v6.5.0, v4.6.2 | Поле `port` теперь копируется правильно. |
-    | v6.0.0 | Поля `auth` очищаются, теперь параметр `to` содержит имя хоста. |
 
 !!!warning "Стабильность: 0 - Устарело"
 

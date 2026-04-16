@@ -47,12 +47,6 @@ changes:
     description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.4.0 | Больше не экспериментально. |
-
 Вспомогательный класс для сигнализации об отмене в выбранных API на основе `Promise`. API основан на веб-API [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 
 ```js
@@ -82,12 +76,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/40807
     description: Added the new optional reason argument.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
 -   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
 
@@ -128,12 +116,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/40807
     description: Added the new optional reason argument.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.2.0, v16.14.0 | Добавлен новый необязательный аргумент причины. |
 
 -   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
@@ -324,12 +306,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`ByteLengthQueuingStrategy`](webstreams.md#class-bytelengthqueuingstrategy), совместимая с браузером.
 
 ## `clearImmediate(immediateObject)`
@@ -383,13 +359,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0, v22.20.0 | формат теперь принимает значение `brotli`. |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`CompressionStream`](webstreams.md#class-compressionstream), совместимая с браузером.
 
 ## `console`
@@ -416,12 +385,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`CountQueuingStrategy`](webstreams.md#class-countqueuingstrategy), совместимая с браузером.
 
 ## Класс: `Crypto`
@@ -438,13 +401,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/42083
     description: No longer behind `--experimental-global-webcrypto` CLI flag.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.0.0 | Больше не экспериментально. |
-    | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
 
 Реализация [Crypto](crypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
@@ -463,13 +419,6 @@ changes:
     description: No longer behind `--experimental-global-webcrypto` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.0.0 | Больше не экспериментально. |
-    | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
-
 Реализация [Web Crypto API][web crypto api], совместимая с браузером.
 
 ## Класс: `CryptoKey`
@@ -486,13 +435,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/42083
     description: No longer behind `--experimental-global-webcrypto` CLI flag.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.0.0 | Больше не экспериментально. |
-    | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
 
 Реализация [CryptoKey](webcrypto.md#class-cryptokey), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
@@ -516,14 +458,6 @@ changes:
     description: No longer behind `--experimental-global-customevent` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.0.0 | Больше не экспериментально. |
-    | v22.1.0, v20.13.0 | CustomEvent теперь стабилен. |
-    | v19.0.0 | Флаг CLI `--experimental-global-customevent` больше не используется. |
-
 Реализация [CustomEvent](globals.md), совместимая с браузером.
 
 ## Класс: `DecompressionStream`
@@ -544,13 +478,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0, v22.20.0 | формат теперь принимает значение `brotli`. |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`DecompressionStream`](webstreams.md#class-decompressionstream), совместимая с браузером.
 
@@ -582,12 +509,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.4.0 | Больше не экспериментально. |
-
 Реализация класса `Event`, совместимая с браузером. Подробнее — [API `EventTarget` и `Event`](events.md#eventtarget-and-event-api).
 
 ## Класс: `EventSource`
@@ -616,12 +537,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.4.0 | Больше не экспериментально. |
-
 Реализация класса `EventTarget`, совместимая с браузером. Подробнее — [API `EventTarget` и `Event`](events.md#eventtarget-and-event-api).
 
 ## `exports`
@@ -643,13 +558,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/41811
     description: No longer behind `--experimental-fetch` CLI flag.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | Больше не экспериментально. |
-    | v18.0.0 | Больше нет флага CLI `--experimental-fetch`. |
 
 Реализация функции [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch), совместимая с браузером.
 
@@ -715,13 +623,6 @@ changes:
     description: No longer behind `--experimental-fetch` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | Больше не экспериментально. |
-    | v18.0.0 | Больше нет флага CLI `--experimental-fetch`. |
-
 Реализация [FormData](#class-formdata), совместимая с браузером.
 
 ## `global`
@@ -754,13 +655,6 @@ changes:
     description: No longer behind `--experimental-fetch` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | Больше не экспериментально. |
-    | v18.0.0 | Больше нет флага CLI `--experimental-fetch`. |
-
 Реализация [Headers](globals.md#class-headers), совместимая с браузером.
 
 ## `localStorage`
@@ -784,14 +678,6 @@ changes:
 -->
 
 Добавлено в: v22.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Доступ к глобальному объекту localStorage без указания --localstorage-file теперь вызывает исключение DOMException для соответствия спецификации веб-хранилища. |
-    | v25.0.0 | Если веб-хранилище включено и `--localstorage-file` не указан, доступ к глобальному объекту `localStorage` теперь возвращает пустой объект. |
-    | v25.0.0 | Этот API больше не находится за флагом времени выполнения `--experimental-webstorage`. |
 
 !!!warning "Кандидат в релиз"
 
@@ -1097,12 +983,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`ReadableByteStreamController`](webstreams.md#class-readablebytestreamcontroller), совместимая с браузером.
 
 ## Класс: `ReadableStream`
@@ -1118,12 +998,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`ReadableStream`](webstreams.md#class-readablestream), совместимая с браузером.
 
@@ -1141,12 +1015,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`ReadableStreamBYOBReader`](webstreams.md#class-readablestreambyobreader), совместимая с браузером.
 
 ## Класс: `ReadableStreamBYOBRequest`
@@ -1162,12 +1030,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`ReadableStreamBYOBRequest`](webstreams.md#class-readablestreambyobrequest), совместимая с браузером.
 
@@ -1185,12 +1047,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`ReadableStreamDefaultController`](webstreams.md#class-readablestreamdefaultcontroller), совместимая с браузером.
 
 ## Класс: `ReadableStreamDefaultReader`
@@ -1206,12 +1062,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`ReadableStreamDefaultReader`](webstreams.md#class-readablestreamdefaultreader), совместимая с браузером.
 
@@ -1230,13 +1080,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/41811
     description: No longer behind `--experimental-fetch` CLI flag.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | Больше не экспериментально. |
-    | v18.0.0 | Больше нет флага CLI `--experimental-fetch`. |
 
 Реализация [Request](#class-request), совместимая с браузером.
 
@@ -1260,13 +1103,6 @@ changes:
     description: No longer behind `--experimental-fetch` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | Больше не экспериментально. |
-    | v18.0.0 | Больше нет флага CLI `--experimental-fetch`. |
-
 Реализация [Response](#class-response), совместимая с браузером.
 
 ## `sessionStorage`
@@ -1280,12 +1116,6 @@ changes:
 -->
 
 Добавлено в: v22.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.0.0 | Этот API больше не находится за флагом времени выполнения `--experimental-webstorage`. |
 
 !!!warning "Кандидат в релиз"
 
@@ -1349,12 +1179,6 @@ changes:
     description: No longer behind `--experimental-global-webcrypto` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Флаг CLI `--experimental-global-webcrypto` больше не используется. |
-
 Реализация [SubtleCrypto](webcrypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## Класс: `TextDecoder`
@@ -1378,12 +1202,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`TextDecoderStream`](webstreams.md#class-textdecoderstream), совместимая с браузером.
 
@@ -1409,12 +1227,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`TextEncoderStream`](webstreams.md#class-textencoderstream), совместимая с браузером.
 
 ## Класс: `TransformStream`
@@ -1431,12 +1243,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`TransformStream`](webstreams.md#class-transformstream), совместимая с браузером.
 
 ## Класс: `TransformStreamDefaultController`
@@ -1452,12 +1258,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`TransformStreamDefaultController`](webstreams.md#class-transformstreamdefaultcontroller), совместимая с браузером.
 
@@ -1512,13 +1312,6 @@ changes:
     description: No longer behind `--experimental-websocket` CLI flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.4.0 | Больше не экспериментально. |
-    | v22.0.0 | Больше нет флага CLI `--experimental-websocket`. |
-
 Реализация [WebSocket](globals.md), совместимая с браузером. Отключите API флагом [`--no-experimental-websocket`](cli.md#--no-experimental-websocket).
 
 ## Класс: `WritableStream`
@@ -1534,12 +1327,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`WritableStream`](webstreams.md#class-writablestream), совместимая с браузером.
 
@@ -1557,12 +1344,6 @@ changes:
 
 Добавлено в: v18.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Реализация [`WritableStreamDefaultController`](webstreams.md#class-writablestreamdefaultcontroller), совместимая с браузером.
 
 ## Класс: `WritableStreamDefaultWriter`
@@ -1578,12 +1359,6 @@ changes:
 -->
 
 Добавлено в: v18.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [`WritableStreamDefaultWriter`](webstreams.md#class-writablestreamdefaultwriter), совместимая с браузером.
 

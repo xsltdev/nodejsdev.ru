@@ -69,12 +69,6 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Отменяет объект `Immediate`. Аналогично вызову `clearImmediate()`.
 
 ## Класс: `Timeout`
@@ -175,12 +169,6 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Отменяет таймаут.
 
 ## Планирование таймеров
@@ -200,12 +188,6 @@ changes:
 -->
 
 Добавлено в: v0.9.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая в конце текущего витка [цикла событий][Event Loop] Node.js
 * `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательные аргументы для вызова `callback`.
@@ -232,12 +214,6 @@ changes:
 -->
 
 Добавлено в: v0.0.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая при срабатывании таймера.
 * `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед вызовом
@@ -267,12 +243,6 @@ changes:
 -->
 
 Добавлено в: v0.0.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, вызываемая при срабатывании таймера.
 * `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед вызовом
@@ -423,12 +393,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | Окончил экспериментальный. |
 
 API `timers/promises` предоставляет альтернативный набор функций таймеров,
 возвращающих объекты `Promise`. Доступ через

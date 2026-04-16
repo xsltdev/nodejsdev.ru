@@ -570,12 +570,6 @@ changes:
 
 Добавлено в: v0.9.2
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v0.11.12 | Аргумент обратного вызова теперь поддерживается. |
-
 Событие `'newSession'` испускается при создании нового TLS-сеанса; данные можно
 сохранять во внешнем хранилище и передавать в колбэк [`'resumeSession'`](#event-resumesession).
 
@@ -797,13 +791,6 @@ changes:
 
 Добавлено в: v0.11.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.2.0 | Опция `enableTrace` теперь поддерживается. |
-    | v5.0.0 | Опции ALPN теперь поддерживаются. |
-
 * `socket` [`<net.Socket>`](net.md#class-netsocket) | [`<stream.Duplex>`](stream.md#class-streamduplex)
   На сервере — любой `Duplex`. На клиенте — обычно [`net.Socket`](net.md#class-netsocket); для произвольного
   `Duplex` на клиенте используйте [`tls.connect()`](#tlsconnectoptions-callback).
@@ -938,13 +925,6 @@ changes:
 
 Добавлено в: v0.11.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
-    | v18.0.0 | Свойство Family теперь возвращает число вместо строки. |
-
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Возвращает привязанный `address`, имя `family` и `port` нижележащего сокета, как
@@ -1069,13 +1049,6 @@ changes:
 
 Добавлено в: v0.11.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.4.0, v12.16.0 | Верните имя шифра IETF как `standardName`. |
-    | v12.0.0 | Возвращает минимальную версию шифра вместо фиксированной строки (TLSv1/SSLv3). |
-
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя набора шифров в OpenSSL.
   * `standardName` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя набора шифров по IETF.
@@ -1163,14 +1136,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/24358
     description: Support Elliptic Curve public key info.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.1.0, v18.13.0 | Добавьте свойство «ca». |
-    | v17.2.0, v16.14.0 | Добавьте отпечаток пальца 512. |
-    | v11.4.0 | Поддержка информации об открытом ключе эллиптической кривой. |
 
 Свойства объекта соответствуют полям сертификата.
 
@@ -1420,12 +1385,6 @@ changes:
 
 Добавлено в: v0.11.8
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `rejectUnauthorized` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если не `false`, сертификат сервера проверяется
     по списку ЦС. При ошибке — событие `'error'`, `err.code` — код OpenSSL.
@@ -1495,12 +1454,6 @@ changes:
 -->
 
 Добавлено в: v0.8.4
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.3.1, v16.13.2, v14.18.3, v12.22.9 | Поддержка альтернативных имен субъектов uniformResourceIdentifier отключена в ответ на CVE-2021-44531. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста или IP для проверки сертификата.
 * `cert` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Объект сертификата][certificate object] пира.
@@ -1576,22 +1529,6 @@ changes:
 -->
 
 Добавлено в: v0.11.3
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.1.0, v14.18.0 | Добавлена ​​опция onread. |
-    | v14.1.0, v13.14.0 | Опция `highWaterMark` теперь принята. |
-    | v13.6.0, v12.16.0 | Опция `pskCallback` теперь поддерживается. |
-    | v12.9.0 | Поддержите опциюallowHalfOpen. |
-    | v12.4.0 | Опция `подсказки` теперь поддерживается. |
-    | v12.2.0 | Опция `enableTrace` теперь поддерживается. |
-    | v11.8.0, v10.16.0 | Опция `timeout` теперь поддерживается. |
-    | v8.0.0 | Опция `поиск` теперь поддерживается. |
-    | v8.0.0 | Параметр ALPNProtocols теперь может быть TypedArray или DataView. |
-    | v5.3.0, v4.7.0 | Опция `secureContext` теперь поддерживается. |
-    | v5.0.0 | Опции ALPN теперь поддерживаются. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `enableTrace`: см. [`tls.createServer()`](#tlscreateserveroptions-secureconnectionlistener)
@@ -1856,24 +1793,6 @@ changes:
 
 Добавлено в: v0.11.13
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.9.0, v20.18.0 | Добавлена ​​опция `allowPartialTrustChain`. |
-    | v22.4.0, v20.16.0 | Параметры clientCertEngine, PrivateKeyEngine и PrivateKeyIdentifier зависят от поддержки специального механизма в OpenSSL, которая устарела в OpenSSL 3. |
-    | v19.8.0, v18.16.0 | Для опции dhparam теперь можно установить значение auto, чтобы включить DHE с соответствующими общеизвестными параметрами. |
-    | v12.12.0 | Добавлены параметры PrivateKeyIdentifier и PrivateKeyEngine для получения закрытого ключа из механизма OpenSSL. |
-    | v12.11.0 | Добавлена ​​опция sigalgs для переопределения поддерживаемых алгоритмов подписи. |
-    | v12.0.0 | Добавлена ​​поддержка TLSv1.3. |
-    | v11.5.0 | Опция `ca:` теперь поддерживает `BEGIN TRUSTED CERTIFICATE`. |
-    | v11.4.0, v10.16.0 | «minVersion» и «maxVersion» можно использовать для ограничения разрешенных версий протокола TLS. |
-    | v10.0.0 | Для ecdhCurve больше нельзя установить значение false из-за изменений в OpenSSL. |
-    | v9.3.0 | Параметр `options` теперь может включать `clientCertEngine`. |
-    | v9.0.0 | Опция `'ecdhCurve` теперь может содержать несколько имен кривых, разделенных `':'`, или `'auto'`. |
-    | v7.3.0 | Если опция `key` представляет собой массив, отдельные записи больше не нуждаются в свойстве `passphrase`. Записи массива теперь также могут быть просто строками или буферами. |
-    | v5.2.0 | Опция `ca` теперь может представлять собой одну строку, содержащую несколько сертификатов CA. |
-
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `allowPartialTrustChain` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Считать промежуточные (не самоподписанные)
     сертификаты в списке доверенных УЦ доверенными.
@@ -2040,18 +1959,6 @@ changes:
 -->
 
 Добавлено в: v0.3.2
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.4.0, v20.16.0 | Параметр clientCertEngine зависит от поддержки специального механизма в OpenSSL, который устарел в OpenSSL 3. |
-    | v20.4.0, v18.19.0 | Параметр `options` теперь может включать `ALPNCallback`. |
-    | v19.0.0 | Если установлен `ALPNProtocols`, входящие соединения, которые отправляют расширение ALPN без поддерживаемых протоколов, завершаются с фатальным предупреждением `no_application_protocol`. |
-    | v12.3.0 | Параметр options теперь поддерживает параметры net.createServer(). |
-    | v9.3.0 | Параметр `options` теперь может включать `clientCertEngine`. |
-    | v8.0.0 | Параметр ALPNProtocols теперь может быть TypedArray или DataView. |
-    | v5.0.0 | Опции ALPN теперь поддерживаются. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `ALPNProtocols` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Массив строк
@@ -2329,12 +2236,6 @@ changes:
 -->
 
 Добавлено в: v0.11.13
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Значение по умолчанию изменено на «авто». |
 
 Имя кривой по умолчанию для согласования ключей ECDH на TLS-сервере.
 Значение по умолчанию — `'auto'`. Подробнее см. [`tls.createSecureContext()`](#tlscreatesecurecontextoptions).

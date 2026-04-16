@@ -102,12 +102,6 @@ changes:
 
 Добавлено в: v0.5.8
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v0.9.4 | Аргумент `options` поддерживается. |
-
 * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, связанный с TTY.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры, передаваемые родительскому `net.Socket`;
   см. `options` у [конструктора `net.Socket`](net.md#new-netsocketoptions).
@@ -154,12 +148,6 @@ changes:
 
 Добавлено в: v0.7.7
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
-
 * `dir` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
   * `-1`: влево от курсора
   * `1`: вправо от курсора
@@ -181,12 +169,6 @@ changes:
 -->
 
 Добавлено в: v0.7.7
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается по завершении операции.
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `false`, если поток просит вызывающий код дождаться
@@ -214,12 +196,6 @@ changes:
 -->
 
 Добавлено в: v0.7.7
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
 
 * `x` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `y` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -324,12 +300,6 @@ changes:
 -->
 
 Добавлено в: v0.7.7
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.7.0 | Обратный вызов write() и возвращаемое значение потока предоставляются. |
 
 * `dx` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `dy` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)

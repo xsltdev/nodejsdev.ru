@@ -82,28 +82,6 @@ changes:
       из алгоритма `'ECDH'`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.9.0 | Алгоритмы TurboSHAKE и KangarooTwelve теперь поддерживаются. |
-    | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
-    | v24.8.0 | Алгоритмы Argon2 теперь поддерживаются. |
-    | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
-    | v24.7.0 | Алгоритмы ML-KEM теперь поддерживаются. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы SHAKE теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы ML-DSA теперь поддерживаются. |
-    | v23.5.0, v22.13.0, v20.19.3 | Алгоритмы `Ed25519` и `X25519` теперь стабильны. |
-    | v20.0.0, v18.17.0 | Аргументы приводятся и проверяются по WebIDL, как в других реализациях Web Crypto API. |
-    | v19.0.0 | Больше не экспериментально, кроме алгоритмов `Ed25519`, `Ed448`, `X25519` и `X448`. |
-    | v18.4.0, v16.17.0 | Удалён проприетарный формат импорта/экспорта `'node.keyObject'`. |
-    | v18.4.0, v16.17.0 | Удалены проприетарные алгоритмы `'NODE-DSA'`, `'NODE-DH'` и `'NODE-SCRYPT'`. |
-    | v18.4.0, v16.17.0 | Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`. |
-    | v18.4.0, v16.17.0 | Удалены проприетарные алгоритмы `'NODE-ED25519'` и `'NODE-ED448'`. |
-    | v18.4.0, v16.17.0 | Удалены проприетарные кривые `'NODE-X25519'` и `'NODE-X448'` из алгоритма `'ECDH'`. |
-
 <!-- introduced_in=v15.0.0 -->
 
 !!!success "Стабильность: 2 – Стабильная"
@@ -918,13 +896,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
-
 * `algorithm` [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
 * `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
@@ -966,14 +937,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0 | Алгоритмы Argon2 теперь поддерживаются. |
-    | v22.5.0, v20.17.0, v18.20.5 | Параметр length теперь необязателен для `'ECDH'`, `'X25519'` и `'X448'`. |
-    | v18.4.0, v16.17.0 | Добавлены алгоритмы `'X25519'` и `'X448'`. |
 
 <!--lint disable maximum-line-length remark-lint-->
 
@@ -1021,13 +984,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0 | Алгоритмы Argon2 теперь поддерживаются. |
-    | v18.4.0, v16.17.0 | Добавлены алгоритмы `'X25519'` и `'X448'`. |
 
 <!--lint disable maximum-line-length remark-lint-->
 
@@ -1077,14 +1033,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.9.0 | Алгоритмы TurboSHAKE и KangarooTwelve теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы SHAKE теперь поддерживаются. |
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<CShakeParams>`](webcrypto.md) | [`<TurboShakeParams>`](webcrypto.md) | [`<KangarooTwelveParams>`](webcrypto.md)
 * `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
@@ -1172,13 +1120,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
-
 * `algorithm` [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
 * `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
@@ -1226,17 +1167,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы ML-KEM теперь поддерживаются. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
-    | v24.7.0 | Алгоритмы ML-DSA теперь поддерживаются. |
-    | v18.4.0, v16.17.0 | Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`. |
-    | v15.9.0 | Удалён экспорт JWK `'NODE-DSA'`. |
 
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
@@ -1312,15 +1242,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы ML-KEM теперь поддерживаются. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
-    | v24.7.0 | Алгоритмы ML-DSA теперь поддерживаются. |
 
 <!--lint disable maximum-line-length remark-lint-->
 
@@ -1399,18 +1320,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.9.0 | Импорт ключей ML-DSA и ML-KEM в PKCS#8 без seed больше не поддерживается. |
-    | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы ML-KEM теперь поддерживаются. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
-    | v24.7.0 | Алгоритмы ML-DSA теперь поддерживаются. |
-    | v18.4.0, v16.17.0 | Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`. |
-    | v15.9.0 | Удалён импорт JWK `'NODE-DSA'`. |
-
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
 * `keyData` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1486,14 +1395,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы ML-DSA теперь поддерживаются. |
-    | v18.4.0, v16.17.0 | Добавлены алгоритмы `'Ed25519'` и `'Ed448'`. |
-
 <!--lint disable maximum-line-length remark-lint-->
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaPssParams>`](webcrypto.md) | [`<EcdsaParams>`](webcrypto.md) | [`<ContextParams>`](webcrypto.md) | [`<KmacParams>`](webcrypto.md)
@@ -1536,13 +1437,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
 
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
@@ -1625,14 +1519,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0 | Алгоритмы KMAC теперь поддерживаются. |
-    | v24.7.0 | Алгоритмы ML-DSA теперь поддерживаются. |
-    | v18.4.0, v16.17.0 | Добавлены алгоритмы `'Ed25519'` и `'Ed448'`. |
-
 <!--lint disable maximum-line-length remark-lint-->
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaPssParams>`](webcrypto.md) | [`<EcdsaParams>`](webcrypto.md) | [`<ContextParams>`](webcrypto.md) | [`<KmacParams>`](webcrypto.md)
@@ -1676,13 +1562,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритм AES-OCB теперь поддерживается. |
-    | v24.7.0 | Алгоритм ChaCha20-Poly1305 теперь поддерживается. |
 
 <!--lint disable maximum-line-length remark-lint-->
 
@@ -2025,12 +1904,6 @@ changes:
 
 Добавлено в: v24.7.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0 | Поддерживается непустой контекст. |
-
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
 Свойство `context` задаёт необязательные контекстные данные, связываемые с
@@ -2047,12 +1920,6 @@ changes:
 -->
 
 Добавлено в: v24.7.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.9.0 | `cShakeParams.length` переименовано в `cShakeParams.outputLength`. |
 
 #### `cShakeParams.name`
 
@@ -2138,12 +2005,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
@@ -2306,12 +2167,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
-
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
 Если задано как [string](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), значение должно быть одним из:
@@ -2375,12 +2230,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
@@ -2464,12 +2313,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
@@ -2638,12 +2481,6 @@ changes:
 
 Добавлено в: v24.8.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.9.0 | `kmacParams.length` переименовано в `kmacParams.outputLength`. |
-
 #### `kmacParams.algorithm`
 
 <!-- YAML
@@ -2689,12 +2526,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
@@ -2756,12 +2587,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 
@@ -2846,12 +2671,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0 | Алгоритмы SHA-3 теперь поддерживаются. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 

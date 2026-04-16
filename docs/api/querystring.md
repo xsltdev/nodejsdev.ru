@@ -73,14 +73,6 @@ changes:
 
 Добавлено в: v0.1.25
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Несколько пустых записей теперь анализируются правильно (например, `&=&=`). |
-    | v6.0.0 | Возвращенный объект больше не наследуется от Object.prototype. |
-    | v6.0.0, v4.2.4 | Параметр `eq` теперь может иметь длину более `1`. |
-
 * `str` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка запроса URL для разбора
 * `sep` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
 * `eq` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type). Подстрока, используемая для разделения ключей и значений в строке запроса. **По умолчанию:** `'='`.

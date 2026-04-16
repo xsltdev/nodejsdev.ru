@@ -27,13 +27,6 @@ changes:
     description: Added `--report-exclude-network` option for excluding networking operations that can slow down report generation in some cases.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.3.0, v22.13.0 | Добавлен параметр `--report-exclude-env` для исключения переменных окружения из создаваемого отчёта. |
-    | v22.0.0, v20.13.0 | Добавлен параметр `--report-exclude-network` для исключения сетевых операций, которые в некоторых случаях могут замедлить создание отчётов. |
-
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
@@ -565,12 +558,6 @@ changes:
     description: Fix typos in the memory limit units.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.5.0, v22.13.0 | Исправлены опечатки в единицах ограничения памяти. |
-
 Ключи `data_seg_size_kbytes`, `max_memory_size_kbytes` и `virtual_memory_kbytes` в разделе `userLimits` заменены на `data_seg_size_bytes`, `max_memory_size_bytes` и `virtual_memory_bytes` — значения задаются в байтах.
 
 ```json
@@ -605,12 +592,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/55697
     description: Added `--report-exclude-env` option for excluding environment variables from report generation.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.3.0, v22.13.0 | Добавлен параметр `--report-exclude-env` для исключения переменных окружения из создаваемого отчёта. |
 
 В конечные точки дескрипторов `tcp` и `udp` libuv добавлены поля `ipv4` и `ipv6`. Примеры:
 
@@ -676,12 +657,6 @@ changes:
     description: Add more memory info.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.1.0, v18.13.0 | Добавлена дополнительная информация о памяти. |
-
 В раздел `resourceUsage` добавлены следующие поля, связанные с памятью.
 
 ```json
@@ -706,12 +681,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/31386
     description: Workers are now included in the report.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.9.0, v12.16.2 | Потоки Worker теперь включаются в отчёт. |
 
 Добавлена поддержка [`Worker`](worker_threads.md). Подробнее — в разделе «Взаимодействие с worker» ниже на этой странице.
 
@@ -779,12 +748,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/31386
     description: Workers are now included in the report.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.9.0, v12.16.2 | Потоки Worker теперь включаются в отчёт. |
 
 Потоки [`Worker`](worker_threads.md) могут формировать отчёты так же, как основной поток.
 

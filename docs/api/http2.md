@@ -26,14 +26,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.3.0, v14.17.0 | Можно прервать запрос с помощью AbortSignal. |
-    | v15.0.0 | Запросы с заголовком `host` (с `:authority` или без него) теперь можно отправлять/получать. |
-    | v10.10.0 | HTTP/2 теперь стабильный. Раньше это был экспериментальный вариант. |
-
 <!--introduced_in=v8.4.0-->
 
 !!!success "Стабильность: 2 – Стабильная"
@@ -597,12 +589,6 @@ changes:
 
 Добавлено в: v8.9.3
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `payload` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Необязательная полезная нагрузка пинга.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -703,12 +689,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -767,12 +747,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `settings` [`<HTTP/2 Settings Object>`](#settings-object)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после подключения сессии или сразу, если уже подключена.
@@ -1084,14 +1058,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Опция «вес» теперь игнорируется, ее установка вызовет предупреждение во время выполнения. |
-    | v24.2.0, v22.17.0, v20.19.6 | После прекращения поддержки сигнализации приоритета в RFC 9113 опция «вес» устарела. |
-    | v24.0.0, v22.17.0 | Разрешить передачу заголовков в формате необработанного массива. |
-
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object) | [`<HTTP/2 Raw Headers>`](#raw-headers)
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1376,12 +1342,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Беззнаковое 32-битное целое — код ошибки.
   **По умолчанию:** `http2.constants.NGHTTP2_NO_ERROR` (`0x00`).
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция — слушатель события
@@ -1458,12 +1418,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Этот метод больше не устанавливает приоритет потока. Его использование теперь вызывает предупреждение во время выполнения. |
-
 !!!warning "Стабильность: 0 - Устарело"
 
     Поддержка сигнализации приоритета объявлена устаревшей в [RFC 9113][RFC 9113]
@@ -1539,12 +1493,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -1591,13 +1539,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Свойствуstate.weight теперь всегда присвоено значение 16, а для свойства sumDependencyWeight всегда установлено значение 0. |
-    | v24.2.0, v22.17.0, v20.19.6 | После прекращения поддержки сигнализации приоритета в RFC 9113 параметры Weight и sumDependencyWeight устарели. |
 
 Разная информация о текущем состоянии `Http2Stream`.
 
@@ -1811,12 +1752,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `exclusive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true` и `parent` указывает на родительский поток,
@@ -1888,13 +1823,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0, v22.20.0 | Разрешить передачу заголовков в формате необработанного массива. |
-    | v14.5.0, v12.19.0 | Разрешить явно устанавливать заголовки дат. |
 
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object) | [`<HTTP/2 Raw Headers>`](#raw-headers)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1980,14 +1908,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.5.0, v12.19.0 | Разрешить явно устанавливать заголовки дат. |
-    | v12.12.0 | Опция `fd` теперь может быть FileHandle`. |
-    | v10.0.0 | Теперь поддерживается любой читаемый файловый дескриптор, не обязательно обычный файл. |
 
 * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<FileHandle>`](#filehandle) Дескриптор файла для чтения.
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
@@ -2132,13 +2052,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.5.0, v12.19.0 | Разрешить явно устанавливать заголовки дат. |
-    | v10.0.0 | Теперь поддерживается любой читаемый файл, не обязательно обычный. |
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api)
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
@@ -2461,12 +2374,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
-
 Событие `'timeout'` генерируется при отсутствии активности на сервере в течение числа
 миллисекунд, заданного `http2server.setTimeout()`.
 **По умолчанию:** 0 (таймаут отключён)
@@ -2498,12 +2405,6 @@ changes:
 
 Добавлено в: v20.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Вызывает [`server.close()`](#serverclosecallback) и возвращает промис, который выполняется после закрытия сервера.
 
 #### `server.setTimeout([msecs][, callback])`
@@ -2522,13 +2423,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-    | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -2552,12 +2446,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут в миллисекундах. **По умолчанию:** 0 (без таймаута)
 
@@ -2749,12 +2637,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Это событие будет генерироваться только в том случае, если клиент не передал расширение ALPN во время подтверждения TLS. |
-
 * `socket` [`<stream.Duplex>`](stream.md#class-streamduplex)
 
 Событие `'unknownProtocol'` генерируется, если подключающийся клиент не согласовал
@@ -2797,12 +2679,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `120000` (2 minutes)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<Http2SecureServer>`](http2.md)
@@ -2825,12 +2701,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут в миллисекундах. **По умолчанию:** 0 (без таймаута)
 
@@ -2921,23 +2791,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.7.0 | Добавлен параметр «strictSingleValueFields». |
-    | v25.7.0 | Добавлена ​​опция http1Options. Параметры Http1IncomingMessage и Http1ServerResponse теперь устарели. |
-    | v23.0.0, v22.10.0 | Добавлены `streamResetBurst` и `streamResetRate`. |
-    | v15.10.0, v14.16.0, v12.21.0, v10.24.0 | Добавлен параметр unknownProtocolTimeout со значением по умолчанию 10000. |
-    | v14.4.0, v12.18.0, v10.21.0 | Добавлен параметр maxSettings со значением по умолчанию 32. |
-    | v13.3.0, v12.16.0 | Добавлен параметр maxSessionRejectedStreams со значением по умолчанию 100. |
-    | v13.3.0, v12.16.0 | Добавлен параметр maxSessionInvalidFrames со значением по умолчанию 1000. |
-    | v13.0.0 | PADDING_STRATEGY_CALLBACK стал эквивалентом PADDING_STRATEGY_ALIGNED, а selectPadding был удален. |
-    | v12.4.0 | Параметр options теперь поддерживает параметры net.createServer(). |
-    | v9.6.0 | Добавлены опции Http1IncomingMessage и Http1ServerResponse. |
-    | v8.9.3 | Добавлен параметр maxOutstandingPings с ограничением по умолчанию 10. |
-    | v8.9.3 | Добавлен параметр maxHeaderListPairs с ограничением по умолчанию в 128 пар заголовков. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `maxDeflateDynamicTableSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер динамической таблицы для
@@ -3110,21 +2963,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.7.0 | Добавлен параметр «strictSingleValueFields». |
-    | v25.7.0 | Добавлена ​​опция http1Options. |
-    | v15.10.0, v14.16.0, v12.21.0, v10.24.0 | Добавлен параметр unknownProtocolTimeout со значением по умолчанию 10000. |
-    | v14.4.0, v12.18.0, v10.21.0 | Добавлен параметр maxSettings со значением по умолчанию 32. |
-    | v13.3.0, v12.16.0 | Добавлен параметр maxSessionRejectedStreams со значением по умолчанию 100. |
-    | v13.3.0, v12.16.0 | Добавлен параметр maxSessionInvalidFrames со значением по умолчанию 1000. |
-    | v13.0.0 | PADDING_STRATEGY_CALLBACK стал эквивалентом PADDING_STRATEGY_ALIGNED, а selectPadding был удален. |
-    | v10.12.0 | Добавлена ​​опция origins для автоматической отправки кадра ORIGIN при запуске Http2Session. |
-    | v8.9.3 | Добавлен параметр maxOutstandingPings с ограничением по умолчанию 10. |
-    | v8.9.3 | Добавлен параметр maxHeaderListPairs с ограничением по умолчанию в 128 пар заголовков. |
-
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `allowHTTP1` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Входящие клиенты без HTTP/2 переводятся на HTTP/1.x при `true`.
     См. [`'unknownProtocol'`](#event-unknownprotocol) и [согласование ALPN][ALPN negotiation].
@@ -3253,16 +3091,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.10.0, v14.16.0, v12.21.0, v10.24.0 | Добавлен параметр unknownProtocolTimeout со значением по умолчанию 10000. |
-    | v14.4.0, v12.18.0, v10.21.0 | Добавлен параметр maxSettings со значением по умолчанию 32. |
-    | v13.0.0 | PADDING_STRATEGY_CALLBACK стал эквивалентом PADDING_STRATEGY_ALIGNED, а selectPadding был удален. |
-    | v8.9.3 | Добавлен параметр maxOutstandingPings с ограничением по умолчанию 10. |
-    | v8.9.3 | Добавлен параметр maxHeaderListPairs с ограничением по умолчанию в 128 пар заголовков. |
 
 * `authority` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Удалённый HTTP/2-сервер: минимальный корректный URL с префиксом
   `http://` или `https://`, хостом и портом (если не стандартный). Части userinfo, path, query и fragment
@@ -3552,13 +3380,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.12.0 | Параметр maxConcurrentStreams более строгий. |
-    | v8.9.3 | Параметр maxHeaderListSize теперь строго соблюдается. |
 
 API `http2.getDefaultSettings()`, `http2.getPackedSettings()`,
 `http2.createServer()`, `http2.createSecureServer()`,
@@ -4370,12 +4191,6 @@ changes:
 
 Добавлено в: v8.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object) Объект заголовков
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается после завершения `http2stream.pushStream()`,
   при ошибке или отклонении создания push `Http2Stream`, либо если `Http2ServerRequest`
@@ -4398,12 +4213,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Этот метод теперь возвращает ссылку на ServerResponse. |
 
 * `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -4778,12 +4587,6 @@ changes:
 -->
 
 Добавлено в: v8.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.10.0, v10.17.0 | Верните `this` из `writeHead()`, чтобы разрешить цепочку с `end()`. |
 
 * `statusCode` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `statusMessage` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)

@@ -77,12 +77,6 @@ changes:
       The `CommonEnvironmentSetup` and `SpinEventLoop` utilities were added.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Добавлены утилиты CommonEnvironmentSetup и SpinEventLoop. |
-
 В Node.js есть понятие «экземпляр Node.js», обычно обозначаемый как `node::Environment`. С каждым `node::Environment` связано:
 
 * ровно один `v8::Isolate` (один экземпляр JS-движка);

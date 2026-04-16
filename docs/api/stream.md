@@ -85,12 +85,6 @@ changes:
 
 Добавлено в: v15.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0, v17.2.0, v16.14.0 | Добавлена опция `end`, которой можно задать значение `false`, чтобы предотвратить автоматическое закрытие потока назначения при завершении источника. |
-
 * `streams` [`<Stream[]>`](stream.md#stream) | [`<Iterable[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<AsyncIterable[]>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Function[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * `source` [`<Stream>`](stream.md#stream) | [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) | [`<AsyncIterable>`](https://tc39.github.io/ecma262/#sec-asynciterable-interface)
@@ -293,13 +287,6 @@ changes:
 -->
 
 Добавлено в: v15.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.5.0, v18.14.0 | Добавлена поддержка `ReadableStream` и `WritableStream`. |
-    | v19.1.0, v18.13.0 | Добавлена опция `cleanup`. |
 
 * `stream` [`<Stream>`](stream.md#stream) | [`<ReadableStream>`](webstreams.md#readablestream) | [`<WritableStream>`](webstreams.md#class-writablestream) Поток для чтения и/или записи
   или веб-поток.
@@ -542,12 +529,6 @@ changes:
 
 Добавлено в: v0.9.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Добавлена опция `emitClose`, чтобы указать, будет ли вызываться `close` при уничтожении. |
-
 Событие `'close'` испускается, когда закрыты поток и его базовые ресурсы (например
 дескриптор файла). Оно означает, что больше не будет событий и дальнейших вычислений.
 
@@ -700,12 +681,6 @@ changes:
 
 Добавлено в: v8.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.0.0 | Работайте без операции над потоком, который уже уничтожен. |
-
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) необязательно — ошибка для события `'error'`
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
@@ -814,16 +789,6 @@ changes:
 
 Добавлено в: v0.9.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0, v20.13.0 | Аргументом chunk теперь может быть экземпляр TypedArray или DataView. |
-    | v15.0.0 | Обратный вызов вызывается перед завершением или в случае ошибки. |
-    | v14.0.0 | Обратный вызов вызывается, если выдается сообщение «finish» или «error». |
-    | v10.0.0 | Этот метод теперь возвращает ссылку на `writable`. |
-    | v8.0.0 | Аргумент `chunk` теперь может быть экземпляром `Uint8Array`. |
-
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | any необязательные данные для записи. Вне
   объектного режима `chunk` должен быть [строкой](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), [Buffer](buffer.md#buffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) или [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView).
   В объектном режиме — любое значение JavaScript, кроме `null`.
@@ -856,12 +821,6 @@ changes:
 -->
 
 Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.1.0 | Этот метод теперь возвращает ссылку на `writable`. |
 
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) новая кодировка по умолчанию
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
@@ -927,12 +886,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/57513
    description: Marking the API stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1036,12 +989,6 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Вызывает [`writable.destroy()`](#writabledestroyerror) с `AbortError` и возвращает
 промис, который выполняется после завершения потока.
 
@@ -1065,14 +1012,6 @@ changes:
 -->
 
 Добавлено в: v0.9.4
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0, v20.13.0 | Аргументом chunk теперь может быть экземпляр TypedArray или DataView. |
-    | v8.0.0 | Аргумент `chunk` теперь может быть экземпляром `Uint8Array`. |
-    | v6.0.0 | Передача `null` в качестве параметра `chunk` теперь всегда будет считаться недействительной, даже в объектном режиме. |
 
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | любые данные для записи. Вне объектного режима —
   [строка](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), [Buffer](buffer.md#buffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) или [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView); в объектном режиме — любое значение, кроме `null`.
@@ -1232,12 +1171,6 @@ changes:
 
 Добавлено в: v0.9.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Добавлена опция `emitClose`, чтобы указать, будет ли вызываться `close` при уничтожении. |
-
 Событие `'close'` генерируется, когда поток и любой из его базовых ресурсов (например,
 дескриптор файла) закрыты. Оно означает, что дальнейших событий не будет и вычислений не продолжится.
 
@@ -1328,13 +1261,6 @@ changes:
 
 Добавлено в: v0.9.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | `'readable'` всегда генерируется в следующем такте после вызова `'.push()`. |
-    | v10.0.0 | Использование `'readable'` требует вызова `.read()`. |
-
 Событие `'readable'` генерируется, когда в потоке есть данные для чтения до порога
 `highWaterMark` (`state.highWaterMark`): в буфере появилась новая порция. При наличии данных
 в буфере можно вызывать [`stream.read()`](#readablereadsize). Также `'readable'` может прийти
@@ -1406,12 +1332,6 @@ changes:
 -->
 
 Добавлено в: v8.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.0.0 | Работайте без операции над потоком, который уже уничтожен. |
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ошибка, передаваемая в событии `'error'`
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
@@ -1640,12 +1560,6 @@ changes:
 
 Добавлено в: v16.8.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
-
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Возвращает, был ли поток уничтожен или завершён с ошибкой до `'end'`.
@@ -1663,12 +1577,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/57513
    description: Marking the API stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1757,12 +1665,6 @@ changes:
 -->
 
 Добавлено в: v0.9.4
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Функция `resume()` не имеет эффекта, если ведётся прослушивание события `'readable'`. |
 
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
@@ -1854,13 +1756,6 @@ changes:
 -->
 
 Добавлено в: v0.9.11
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0, v20.13.0 | Аргументом chunk теперь может быть экземпляр TypedArray или DataView. |
-    | v8.0.0 | Аргумент `chunk` теперь может быть экземпляром `Uint8Array`. |
 
 * `chunk` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | any Фрагмент, помещаемый во внутреннюю очередь чтения.
   Вне объектного режима — [строка](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), [Buffer](buffer.md#buffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) или `null`.
@@ -1957,12 +1852,6 @@ changes:
 
 Добавлено в: v10.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.14.0 | Поддержка Symbol.asyncIterator больше не является экспериментальной. |
-
 * Возвращает: [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface) для полного потребления потока.
 
 ```js
@@ -2055,12 +1944,6 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Вызывает [`readable.destroy()`](#readabledestroyerror) с `AbortError` и возвращает
 промис, который выполняется, когда поток завершён.
 
@@ -2077,12 +1960,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/57513
    description: Marking the API stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 * `stream` [`<Writable>`](stream.md#class-streamwritable) | [`<Duplex>`](stream.md#class-streamduplex) | [`<WritableStream>`](webstreams.md#class-writablestream) | [`<TransformStream>`](webstreams.md#class-transformstream) | [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -2131,12 +2008,6 @@ changes:
 -->
 
 Добавлено в: v16.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `destroyOnReturn` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) при значении `false` вызов `return` у
@@ -2197,12 +2068,6 @@ changes:
     description: added `highWaterMark` in options.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.7.0, v18.19.0 | В настройки добавлен `highWaterMark`. |
-
 > Стабильность: 1 – Экспериментальная
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | [`<AsyncFunction>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/async_function) функция, применяемая к каждому фрагменту
@@ -2258,12 +2123,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/49249
     description: added `highWaterMark` in options.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.7.0, v18.19.0 | В настройки добавлен `highWaterMark`. |
 
 > Стабильность: 1 – Экспериментальная
 
@@ -2744,12 +2603,6 @@ changes:
 
 Добавлено в: v0.9.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.8.0 | Экземпляры `Duplex` теперь возвращают `true` при проверке на экземпляр потока `Writable`. |
-
 <!--type=class-->
 
 Потоки `Duplex` реализуют и [`Readable`](#class-streamreadable), и [`Writable`](#class-streamwritable).
@@ -2801,12 +2654,6 @@ changes:
 -->
 
 Добавлено в: v8.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.0.0 | Работайте без операции над потоком, который уже уничтожен. |
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
@@ -2873,16 +2720,6 @@ changes:
 -->
 
 Добавлено в: v10.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.5.0 | Добавлена поддержка `ReadableStream` и `WritableStream`. |
-    | v15.11.0 | Добавлена ​​опция «сигнал». |
-    | v14.0.0 | `finished(stream, cb)` будет ждать события `'close'` перед вызовом обратного вызова. Реализация пытается обнаружить устаревшие потоки и применять это поведение только к потокам, которые, как ожидается, будут испускать событие `'close'`. |
-    | v14.0.0 | Испускание `'close'` до `'end'` в потоке `Readable` вызовет ошибку `ERR_STREAM_PREMATURE_CLOSE`. |
-    | v14.0.0 | Обратный вызов будет вызван для потоков, которые уже завершились до вызова `finished(stream, cb)`. |
 
 * `stream` [`<Stream>`](stream.md#stream) | [`<ReadableStream>`](webstreams.md#readablestream) | [`<WritableStream>`](webstreams.md#class-writablestream) поток чтения и/или записи
   или веб-поток.
@@ -2967,15 +2804,6 @@ changes:
 -->
 
 Добавлено в: v10.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.7.0, v18.16.0 | Добавлена ​​поддержка веб-потоков. |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент `callback` теперь выдаётся `ERR_INVALID_ARG_TYPE` вместо `ERR_INVALID_CALLBACK`. |
-    | v14.0.0 | `pipeline(..., cb)` будет ждать события `close` перед вызовом обратного вызова. Реализация пытается обнаружить устаревшие потоки и применять это поведение только к потокам, которые, как ожидается, будут испускать событие `close`. |
-    | v13.10.0 | Добавлена поддержка асинхронных генераторов. |
 
 * `streams` {Stream\[]|Iterable\[]|AsyncIterable\[]|Function\[]|
   ReadableStream\[]|WritableStream\[]|TransformStream\[]}
@@ -3070,13 +2898,6 @@ changes:
 -->
 
 Добавлено в: v16.9.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.1.0, v20.10.0 | Добавлена ​​поддержка класса потока. |
-    | v19.8.0, v18.16.0 | Добавлена ​​поддержка веб-потоков. |
 
 > Стабильность: 1 – `stream.compose` экспериментальный.
 
@@ -3176,12 +2997,6 @@ changes:
     description: Marking the API stable.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
-
 * `stream` [`<Readable>`](stream.md#readable-streams) | [`<Writable>`](stream.md#class-streamwritable) | [`<Duplex>`](stream.md#class-streamduplex) | [`<WritableStream>`](webstreams.md#class-writablestream) | [`<ReadableStream>`](webstreams.md#readablestream)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -3200,12 +3015,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/57513
     description: Marking the API stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 * `stream` [`<Readable>`](stream.md#readable-streams) | [`<Duplex>`](stream.md#class-streamduplex) | [`<ReadableStream>`](webstreams.md#readablestream)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | null — `null` только если `stream` не является допустимым `Readable`, `Duplex` или `ReadableStream`.
@@ -3279,12 +3088,6 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
-
 * `readableStream` [`<ReadableStream>`](webstreams.md#readablestream)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -3306,12 +3109,6 @@ changes:
 -->
 
 Добавлено в: v16.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 * `stream` [`<stream.Readable>`](stream.md#streamreadable) | [`<ReadableStream>`](webstreams.md#readablestream)
 * Возвращает: `boolean`
@@ -3341,14 +3138,6 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0, v24.14.0 | Добавлена опция `type`, чтобы можно было указать значение `bytes`. |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
-    | v18.7.0 | В `Readable` включены параметры стратегии. |
-
 * `streamReadable` [`<stream.Readable>`](stream.md#streamreadable)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `strategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3377,12 +3166,6 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
-
 * `writableStream` [`<WritableStream>`](webstreams.md#class-writablestream)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `decodeStrings` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -3405,12 +3188,6 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
-
 * `streamWritable` [`<stream.Writable>`](stream.md#streamwritable)
 * Возвращает: [`<WritableStream>`](webstreams.md#class-writablestream)
 
@@ -3428,12 +3205,6 @@ changes:
 -->
 
 Добавлено в: v16.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.5.0, v18.17.0 | Аргумент `src` теперь может быть `ReadableStream` или `WritableStream`. |
 
 * `src` {Stream|Blob|ArrayBuffer|string|Iterable|AsyncIterable|
   AsyncGeneratorFunction|AsyncFunction|Promise|Object|
@@ -3478,12 +3249,6 @@ changes:
 -->
 
 Добавлено в: v17.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
 
 * `pair` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `readable` [`<ReadableStream>`](webstreams.md#readablestream)
@@ -3585,14 +3350,6 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.7.0 | Добавлен параметр readableType для указания типа ReadableStream. Опция «тип» устарела. |
-    | v25.4.0, v24.14.0 | Добавлен параметр type для указания типа ReadableStream. |
-    | v24.0.0, v22.17.0 | Маркировка стабильного API. |
-
 * `streamDuplex` [`<stream.Duplex>`](stream.md#class-streamduplex)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `readableType` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) тип половины `ReadableStream` в создаваемой паре
@@ -3665,12 +3422,6 @@ changes:
 -->
 
 Добавлено в: v15.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.7.0, v18.16.0 | Добавлена поддержка `ReadableStream` и `WritableStream`. |
 
 * `signal` [`<AbortSignal>`](globals.md#abortsignal) сигнал возможной отмены
 * `stream` [`<Stream>`](stream.md#stream) | [`<ReadableStream>`](webstreams.md#readablestream) | [`<WritableStream>`](webstreams.md#class-writablestream) поток, к которому
@@ -3880,16 +3631,6 @@ changes:
                  destroy.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0 | поднять по умолчанию highWaterMark. |
-    | v15.5.0 | поддержка передачи AbortSignal. |
-    | v14.0.0 | Измените параметр autoDestroy по умолчанию на true. |
-    | v11.2.0, v10.16.0 | Добавлена опция `autoDestroy` для автоматического уничтожения потока, когда он испускает событие `finish` или ошибку. |
-    | v10.0.0 | Добавлена опция `emitClose`, чтобы указать, будет ли вызываться `close` при уничтожении. |
-
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) уровень буфера, при котором
     [`stream.write()`](#writablewritechunk-encoding-callback) начинает возвращать `false`. **По умолчанию:**
@@ -4043,12 +3784,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/29639
     description: _write() is optional when providing _writev().
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.11.0 | _write() не является обязательным при использовании _writev(). |
 
 * `chunk` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | any `Buffer` для записи, полученный из строки, переданной в
   [`stream.write()`](#writablewritechunk-encoding-callback). Если у потока `decodeStrings` равен `false` или включён объектный режим,
@@ -4235,15 +3970,6 @@ changes:
                  stream when it emits `'end'` or errors.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0 | поднять по умолчанию highWaterMark. |
-    | v15.5.0 | поддержка передачи AbortSignal. |
-    | v14.0.0 | Измените параметр autoDestroy по умолчанию на true. |
-    | v11.2.0, v10.16.0 | Добавлена опция `autoDestroy` для автоматического уничтожения потока, когда он испускает событие `end` или ошибку. |
-
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимум [байт в буфере][hwm-gotcha] до приостановки
     чтения из нижележащего ресурса.
@@ -4426,13 +4152,6 @@ changes:
     description: The `chunk` argument can now be a `Uint8Array` instance.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.0.0, v20.13.0 | Аргументом chunk теперь может быть экземпляр TypedArray или DataView. |
-    | v8.0.0 | Аргумент `chunk` теперь может быть экземпляром `Uint8Array`. |
-
 * `chunk` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | any фрагмент для помещения
   в очередь чтения. Вне объектного режима — [строка](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type), [Buffer](buffer.md#buffer), [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) или [DataView](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView). В объектном режиме —
   любое значение JavaScript.
@@ -4553,12 +4272,6 @@ changes:
     description: The `readableHighWaterMark` and `writableHighWaterMark` options
                  are supported now.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.4.0 | Параметры `readableHighWaterMark` и `writableHighWaterMark` теперь поддерживаются. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) передаётся в конструкторы `Writable` и `Readable`.
   Дополнительные поля:

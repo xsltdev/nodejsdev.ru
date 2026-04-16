@@ -125,12 +125,6 @@ changes:
 
 Добавлено в: v0.1.99
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Каждый недопустимый символ теперь заменяется одним символом замены вместо одного для каждого отдельного байта. |
-
 * `buffer` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Байты для декодирования.
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 

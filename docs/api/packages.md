@@ -48,18 +48,6 @@ changes:
       `"type"` field.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.13.0, v12.20.0 | Добавьте поддержку шаблонов экспорта. |
-    | v14.6.0, v12.19.0 | Добавьте поле «импорт» пакета. |
-    | v13.7.0, v12.17.0 | Снимите флажок условного экспорта. |
-    | v13.7.0, v12.16.0 | Удалите опцию `--experimental-conditional-exports`. В версии 12.16.0 условный экспорт по-прежнему отстает от `--experimental-modules`. |
-    | v13.6.0, v12.16.0 | Снимите флажок со ссылки на пакет, используя его имя. |
-    | v12.7.0 | Представьте поле «exports» «package.json» как более мощную альтернативу классическому полю «main». |
-    | v12.0.0 | Добавьте поддержку модулей ES, используя расширение файла `.js` через поле `"type"` package.json`. |
-
 ## Введение
 
 Пакет — это дерево каталогов, описанное файлом `package.json`. Пакет включает каталог с этим `package.json` и все подкаталоги до следующего каталога с другим `package.json` или до каталога с именем `node_modules`.
@@ -105,12 +93,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/53619
     description: Syntax detection is enabled by default.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.7.0, v20.19.0 | Обнаружение синтаксиса включено по умолчанию. |
 
 > Стабильность: 1.2 — кандидат на выпуск
 
@@ -425,12 +407,6 @@ changes:
     description: Allow subpath imports that start with `#/`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0, v24.14.0 | Разрешить импорт подпутей, начинающихся с `#/`. |
-
 Помимо поля [`"exports"`](#exports) в пакете есть поле `"imports"` — для приватных сопоставлений, которые действуют только для спецификаторов импорта изнутри самого пакета.
 
 Записи в поле `"imports"` всегда должны начинаться с `#`, чтобы их можно было отличить от спецификаторов внешних пакетов.
@@ -476,13 +452,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/39635
     description: Support pattern trailers.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.10.0, v14.19.0 | Поддержка трейлеров шаблонов в поле «Импорт». |
-    | v16.9.0, v14.19.0 | Поддержка шаблонов прицепов. |
 
 Для пакетов с небольшим числом экспортов или импортов рекомендуется явно перечислять каждый подпуть в `exports`. Если же подпутей очень много, это может раздувать `package.json` и усложнять сопровождение.
 
@@ -552,12 +521,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/31001
     description: Unflag conditional exports.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.7.0, v12.16.0 | Снимите флажок условного экспорта. |
 
 Условные экспорты позволяют сопоставлять разные пути в зависимости от условий. Они поддерживаются и для импорта CommonJS, и для ES-модулей.
 
@@ -694,12 +657,6 @@ changes:
     description: Unflag self-referencing a package using its name.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.6.0, v12.16.0 | Снимите флажок со ссылки на пакет, используя его имя. |
-
 Внутри пакета значения из поля `package.json` [`"exports"`](#exports) можно запрашивать по имени пакета. Например, пусть `package.json` такой:
 
 ```json
@@ -799,12 +756,6 @@ changes:
     description: Remove the `--experimental-resolve-self` option.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.6.0, v12.16.0 | Удалите опцию `--experimental-resolve-self`. |
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ```json
@@ -857,12 +808,6 @@ changes:
 -->
 
 Добавлено в: v12.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.2.0, v12.17.0 | Снимите флаг `--experimental-modules`. |
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -928,16 +873,6 @@ changes:
 -->
 
 Добавлено в: v12.7.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.13.0, v12.20.0 | Добавьте поддержку шаблонов экспорта. |
-    | v13.7.0, v12.17.0 | Снимите флажок условного экспорта. |
-    | v13.7.0, v12.16.0 | Реализуйте логический условный порядок экспорта. |
-    | v13.7.0, v12.16.0 | Удалите опцию `--experimental-conditional-exports`. В версии 12.16.0 условный экспорт по-прежнему отстает от `--experimental-modules`. |
-    | v13.2.0, v12.16.0 | Реализуйте условный экспорт. |
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 

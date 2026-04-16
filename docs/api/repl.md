@@ -190,12 +190,6 @@ changes:
                  repl is used as standalone program.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.3.0 | Событие `'uncaughtException'` теперь инициируется, если repl используется как отдельная программа. |
-
 REPL использует модуль [`domain`](domain.md), чтобы перехватывать все необработанные исключения сессии.
 
 Такое использование [`domain`](domain.md) в REPL даёт такие эффекты:
@@ -226,12 +220,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/18919
     description: Added `_error` support.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.8.0 | Добавлена ​​поддержка `_error`. |
 
 По умолчанию оценщик присваивает результат последнего вычисленного выражения
 специальной переменной `_`.
@@ -670,12 +658,6 @@ changes:
 
 Добавлено в: v11.10.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Обновлён параметр `historyConfig`: теперь он принимает объект со свойствами `filePath`, `size`, `removeHistoryDuplicates` и `onHistoryFileLoaded`. |
-
 * `historyConfig` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к файлу истории.
   Если строка — это путь к файлу.
   Если объект, возможны свойства:
@@ -761,19 +743,6 @@ changes:
 -->
 
 Добавлено в: v0.1.91
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.9.0 | Добавлен параметр handleError. |
-    | v24.1.0 | Добавлена ​​возможность добавлять/редактировать/удалять мультилинии при добавлении многострочной команды. |
-    | v24.0.0 | Многострочный индикатор теперь имеет вид «\|». вместо "...". Добавлена ​​поддержка многострочной истории. Теперь можно «исправить» многострочные команды с синтаксическими ошибками, посетив историю и отредактировав команду. При посещении многострочной истории из старой версии узла многострочная структура не сохраняется. |
-    | v13.4.0, v12.17.0 | Опция «Предварительный просмотр» теперь доступна. |
-    | v12.0.0 | Опция `terminal` теперь во всех случаях соответствует описанию по умолчанию, а `useColors` проверяет `hasColors()`, если он доступен. |
-    | v10.0.0 | `REPL_MAGIC_MODE` `replMode` был удален. |
-    | v6.3.0 | Опция `breakEvalOnSigint` теперь поддерживается. |
-    | v5.8.0 | Параметр `options` теперь является необязательным. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
   * `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Приглашение ввода. **По умолчанию:** `'> '`

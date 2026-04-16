@@ -26,13 +26,6 @@ changes:
 
 Добавлено в: v22.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.7.0 | SQLite теперь является кандидатом на выпуск. |
-    | v23.4.0, v22.13.0 | SQLite больше не отстает от `--experimental-sqlite`, но все еще является экспериментальным. |
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     `1.2` — кандидат в релиз. Ожидается, что возможность почти готова стать стабильной. Дополнительные ломающие изменения не предполагаются, но всё ещё возможны в ответ на отзывы пользователей или развитие базовой спецификации.
@@ -150,13 +143,6 @@ changes:
 
 Добавлено в: v22.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.16.0 | Добавлена опция `timeout`. |
-    | v23.10.0, v22.15.0 | Аргумент path теперь поддерживает объекты Buffer и URL. |
-
 Этот класс представляет одно [соединение][connection] с базой SQLite. Все API
 этого класса выполняются синхронно.
 
@@ -183,14 +169,6 @@ changes:
 -->
 
 Добавлено в: v22.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.14.0 | Режим `defensive` включён по умолчанию. |
-    | v25.1.0, v24.12.0 | Добавлена опция `defensive`. |
-    | v24.4.0, v22.18.0 | Добавлены новые параметры базы данных SQLite. |
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) Путь к базе. База SQLite может храниться
   в файле или полностью [в памяти][in memory]. Для файловой базы
@@ -927,12 +905,6 @@ changes:
    description: No longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Закрывает соединение с базой. Если оно уже закрыто, вызов ничего не делает.
 
 ## Класс: `Session`
@@ -1013,12 +985,6 @@ changes:
 
 Добавлено в: v22.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
-
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
 * `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
@@ -1088,12 +1054,6 @@ changes:
 
 Добавлено в: v22.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
-
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
 * `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
@@ -1119,12 +1079,6 @@ changes:
     description: Add support for `DataView` and typed array objects for `anonymousParameters`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
-
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
 * `...anonymousParameters` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<bigint>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) Ноль или
@@ -1148,12 +1102,6 @@ changes:
 -->
 
 Добавлено в: v22.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.7.0, v22.14.0 | Добавлена поддержка `DataView` и объектов типизированных массивов для `anonymousParameters`. |
 
 * `namedParameters` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный объект привязки именованных параметров.
   Ключи задают соответствие имён.
@@ -1332,12 +1280,6 @@ changes:
 
 Добавлено в: v24.9.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.5.0, v24.13.1 | Из метода изменился геттер. |
-
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Только для чтения: число подготовленных выражений в кэше.
@@ -1381,12 +1323,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/56991
     description: The `path` argument now supports Buffer and URL objects.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.10.0 | Аргумент path теперь поддерживает объекты Buffer и URL. |
 
 * `sourceDb` [`<DatabaseSync>`](sqlite.md) База для резервного копирования. Должна быть открыта.
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<URL>`](url.md#the-whatwg-url-api) Путь к создаваемой копии. Если файл уже есть,

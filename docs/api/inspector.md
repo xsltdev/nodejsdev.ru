@@ -316,12 +316,6 @@ changes:
 
 Добавлено в: v8.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `method` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -407,12 +401,6 @@ changes:
 
 Добавлено в: v9.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.10.0 | API представлен в рабочих потоках. |
-
 Пытается закрыть все оставшиеся соединения, блокируя цикл событий до полного закрытия. После закрытия всех соединений деактивирует инспектор.
 
 ### `inspector.console`
@@ -433,12 +421,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/48765
     description: inspector.open() now returns a `Disposable` object.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.6.0 | инспектор.open() теперь возвращает объект «Одноразовый». |
 
 * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
 * `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.

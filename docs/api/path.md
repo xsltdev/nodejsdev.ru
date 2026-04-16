@@ -87,12 +87,6 @@ changes:
 
 Добавлено в: v0.1.25
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
-
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `suffix` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательный суффикс, который нужно убрать
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -166,12 +160,6 @@ changes:
 
 Добавлено в: v0.1.16
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
-
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -196,12 +184,6 @@ changes:
 -->
 
 Добавлено в: v0.1.25
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.0.0 | Передача не-строки в качестве аргумента `path` теперь будет выдавать ошибку. |
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -242,12 +224,6 @@ changes:
 -->
 
 Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Точка будет добавлена, если она не указана в `ext`. |
 
 * `pathObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любой объект JavaScript со свойствами:
   * `dir` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -325,12 +301,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/59572
     description: Marking the API stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0, v22.20.0 | Маркировка стабильного API. |
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь для сопоставления с шаблоном.
 * `pattern` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Glob-шаблон.
@@ -524,12 +494,6 @@ changes:
 
 Добавлено в: v0.11.15
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.3.0 | Представлен как `require('path/posix')`. |
-
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `path.posix` даёт доступ к реализациям методов `path` в стиле POSIX.
@@ -548,12 +512,6 @@ changes:
 -->
 
 Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.8.0 | В Windows ведущие косые черты UNC-путей теперь включаются в возвращаемое значение. |
 
 * `from` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `to` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -670,12 +628,6 @@ changes:
 -->
 
 Добавлено в: v0.11.15
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.3.0 | Представлено как `require('path/win32')`. |
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 

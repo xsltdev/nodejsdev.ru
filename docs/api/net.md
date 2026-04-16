@@ -43,12 +43,6 @@ changes:
                  We can bind '\0' for Node.js `< v20.4.0`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.8.0 | Поддержка привязки к абстрактному пути сокета домена Unix, например `\0abstract`. Мы можем связать '\0' для Node.js `< v20.4.0`. |
-
 Модуль `node:net` поддерживает IPC через именованные каналы в Windows и Unix domain sockets
 в остальных ОС.
 
@@ -397,13 +391,6 @@ changes:
 
 Добавлено в: v0.1.90
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
-    | v18.0.0 | Свойство Family теперь возвращает число вместо строки. |
-
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
 Возвращает привязанный `address`, имя `family` и `port` сервера, как сообщает ОС,
@@ -455,12 +442,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/58467
    description: No longer experimental.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
 
 Вызывает [`server.close()`](#serverclosecallback) и возвращает промис, который выполняется после
 закрытия сервера.
@@ -560,14 +541,6 @@ changes:
 -->
 
 Добавлено в: v0.11.14
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.1.0, v22.12.0 | Поддерживается опция `reusePort`. |
-    | v15.6.0 | Добавлена ​​поддержка AbortSignal. |
-    | v11.4.0 | Поддерживается опция `ipv6Only`. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Обязателен. Поддерживаемые свойства:
   * `backlog` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Общий параметр функций [`server.listen()`](#serverlisten).
@@ -687,12 +660,6 @@ changes:
 
 Добавлено в: v0.2.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | Установка для maxConnections значения «0» отключает все входящие соединения. Раньше его трактовали как «Бесконечность». |
-
 * Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Когда число соединений достигает порога `server.maxConnections`:
@@ -775,14 +742,6 @@ changes:
 -->
 
 Добавлено в: v0.3.4
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.6.0 | Добавлена ​​опция typeOfService. |
-    | v15.14.0 | Добавлена ​​поддержка AbortSignal. |
-    | v12.10.0 | Добавлена ​​опция onread. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Доступные опции:
   * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, сокет автоматически завершит запись,
@@ -949,12 +908,6 @@ changes:
 
 Добавлено в: v0.11.3
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v5.10.0 | Параметр `host` теперь поддерживается. |
-
 Генерируется после разрешения имени хоста, до подключения.
 Не применяется к Unix-сокетам.
 
@@ -998,13 +951,6 @@ changes:
 -->
 
 Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.4.0 | Свойство Family теперь возвращает строку вместо числа. |
-    | v18.0.0 | Свойство Family теперь возвращает число вместо строки. |
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1135,17 +1081,6 @@ changes:
 -->
 
 Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0, v18.18.0 | Значение по умолчанию для параметра autoSelectFamily теперь равно true. Флаг CLI `--enable-network-family-autoselection` был переименован в `--network-family-autoselection`. Старое имя теперь является псевдонимом, но оно не рекомендуется. |
-    | v19.4.0 | Значение по умолчанию для параметра autoSelectFamily можно изменить во время выполнения с помощью setDefaultAutoSelectFamily или с помощью параметра командной строки --enable-network-family-autoselection. |
-    | v19.3.0, v18.13.0 | Добавлена ​​опция autoSelectFamily. |
-    | v17.7.0, v16.15.0 | Параметры noDelay, KeepAlive и KeepAliveInitialDelay теперь поддерживаются. |
-    | v6.0.0 | Опция «подсказки» теперь во всех случаях по умолчанию равна «0». Раньше, при отсутствии опции «family», по умолчанию использовалось значение «dns.ADDRCONFIG \| dns.V4MAPPED`. |
-    | v5.11.0 | Опция `подсказки` теперь поддерживается. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр методов [`socket.connect()`](#socketconnect):
@@ -1430,12 +1365,6 @@ changes:
 
 Добавлено в: v0.1.92
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Были добавлены новые значения по умолчанию для параметров сокетов TCP_KEEPCNT и TCP_KEEPINTVL. |
-
 * `enable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`
 * `initialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
 * Возвращает: [`<net.Socket>`](net.md#class-netsocket) Тот же экземпляр сокета.
@@ -1487,12 +1416,6 @@ changes:
 -->
 
 Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1863,13 +1786,6 @@ changes:
 -->
 
 Добавлено в: v0.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.1.0, v18.17.0 | Опция highWaterMark теперь поддерживается. |
-    | v17.7.0, v16.15.0 | Параметры noDelay, KeepAlive и KeepAliveInitialDelay теперь поддерживаются. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `allowHalfOpen` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `false`, сокет автоматически завершит запись,

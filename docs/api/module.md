@@ -32,12 +32,6 @@ changes:
     description: The list now also contains prefix-only modules.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.5.0 | Список теперь также содержит модули только с префиксами. |
-
 * Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Список имён всех модулей, предоставляемых Node.js. Можно использовать, чтобы проверить,
@@ -216,14 +210,6 @@ changes:
     description: Add support for WHATWG URL instances.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Прекращение поддержки во время выполнения (DEP0205). |
-    | v23.6.1, v22.13.1, v20.18.2 | Для использования этой функции с включенной моделью разрешений требуется передать --allow-worker. |
-    | v20.8.0, v18.19.0 | Добавьте поддержку экземпляров URL-адресов WHATWG. |
-
 > Стабильность: 0 — устарело: используйте [`module.registerHooks()`](#moduleregisterhooksoptions).
 
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Модуль с хуками настройки; обычно та же строка, что для
@@ -256,12 +242,6 @@ changes:
     description: Synchronous and in-thread hooks are now release candidate.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0, v24.13.1 | Синхронные и внутрипоточные перехватчики теперь являются кандидатами на выпуск. |
-
 > Стабильность: 1.2 — кандидат в релиз
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -286,12 +266,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/61803
     description: Removed `transform` and `sourceMap` options.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Удалены опции «transform» и «sourceMap». |
 
 > Стабильность: 1.2 — кандидат в релиз
 
@@ -404,12 +378,6 @@ changes:
 
 Добавлено в: v22.1.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.8.0 | добавьте начальные API-интерфейсы JavaScript для доступа во время выполнения. |
-
 Кэш компиляции модулей включается через [`module.enableCompileCache()`](#moduleenablecompilecacheoptions) или
 переменную окружения [`NODE_COMPILE_CACHE=dir`](cli.md#node_compile_cachedir). После включения при компиляции
 CommonJS, ECMAScript- или TypeScript-модулей используется дисковый [кэш кода V8][V8 code cache]
@@ -476,12 +444,6 @@ changes:
 
 Добавлено в: v22.8.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0 | Эта функция больше не является экспериментальной. |
-
 Следующие константы возвращаются в поле `status` объекта из [`module.enableCompileCache()`](#moduleenablecompilecacheoptions)
 и отражают результат попытки включить [кэш компиляции модулей][module compile cache].
 
@@ -513,14 +475,6 @@ changes:
 -->
 
 Добавлено в: v22.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0 | Эта функция больше не является экспериментальной. |
-    | v25.0.0, v24.12.0 | Добавьте опцию «portable», чтобы включить переносимый кеш компиляции. |
-    | v25.0.0, v24.12.0 | Переименуйте невыпущенную опцию «path» в «directory», чтобы обеспечить согласованность. |
 
 * `options` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно. Если передана строка, она считается значением `options.directory`.
   * `directory` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. Каталог для хранения кэша компиляции. Если не указан,
@@ -568,12 +522,6 @@ changes:
     description: This feature is no longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0 | Эта функция больше не является экспериментальной. |
-
 Сбрасывает накопленный к [кэшу компиляции модулей][module compile cache] в текущем экземпляре Node.js
 соответствующий уже загруженным модулям. Возврат происходит после завершения всех операций
 записи на диск, независимо от успеха. При ошибках сбой не сигнализируется: промахи кэша
@@ -590,12 +538,6 @@ changes:
 -->
 
 Добавлено в: v22.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0 | Эта функция больше не является экспериментальной. |
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined Путь к каталогу [кэша компиляции модулей][module compile cache], если он включён,
   иначе `undefined`.
@@ -635,16 +577,6 @@ changes:
 
 Добавлено в: v8.8.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0, v24.13.1 | Синхронные и внутрипоточные перехватчики теперь являются кандидатами на выпуск. |
-    | v23.5.0, v22.15.0 | Добавьте поддержку синхронных и внутрипоточных перехватчиков. |
-    | v20.6.0, v18.19.0 | Добавлен хук `initialize` для замены `globalPreload`. |
-    | v18.6.0, v16.17.0 | Добавьте поддержку цепочки загрузчиков. |
-    | v16.12.0 | Удалены `getFormat`, `getSource`, `transformSource` и `globalPreload`; добавлен хук `load` и `getGlobalPreload`. |
-
 <!-- type=misc -->
 
 Сейчас Node.js поддерживает два вида хуков настройки модулей:
@@ -655,7 +587,7 @@ changes:
    экспортирующего асинхронные функции-хуки. Они выполняются в отдельном потоке загрузчика.
 
 Асинхронные хуки добавляют накладные расходы на обмен между потоками и связаны с
-[рядом ограничений][caveats of asynchronous customization hooks], в частности при настройке модулей CommonJS в графе.
+[рядом ограничений](#caveats-of-asynchronous-customization-hooks), в частности при настройке модулей CommonJS в графе.
 В большинстве случаев проще использовать синхронные хуки через `module.registerHooks()`.
 
 ### Синхронные хуки настройки {: #synchronous-customization-hooks}
@@ -909,12 +841,6 @@ changes:
     description: Add support for synchronous and in-thread hooks.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.5.0, v22.15.0 | Добавьте поддержку синхронных и внутрипоточных перехватчиков. |
-
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `conditions` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`
@@ -990,12 +916,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/55698
     description: Add support for synchronous and in-thread version.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.5.0, v22.15.0 | Добавьте поддержку синхронной и внутрипоточной версии. |
 
 * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL, возвращённый цепочкой `resolve`
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1295,14 +1215,6 @@ changes:
 
 Добавлено в: v8.8.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.6.0, v18.19.0 | Добавлен хук `initialize` для замены `globalPreload`. |
-    | v18.6.0, v16.17.0 | Добавьте поддержку цепочки загрузчиков. |
-    | v16.12.0 | Удалены `getFormat`, `getSource`, `transformSource` и `globalPreload`; добавлен хук `load` и `getGlobalPreload`. |
-
 Метод [`register`](#moduleregisterspecifier-parenturl-options) регистрирует модуль, экспортирующий набор хуков. Это функции, которые Node.js вызывает для настройки
 разрешения и загрузки модулей. Имена и сигнатуры должны совпадать с ожидаемыми, экспорт — именованный.
 
@@ -1432,14 +1344,6 @@ changes:
     description: Add support for import assertions.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0, v20.10.0, v18.19.0 | Свойство context.importAssertions заменяется на context.importAttributes. Использование старого имени по-прежнему поддерживается и приведет к появлению экспериментального предупреждения. |
-    | v18.6.0, v16.17.0 | Добавьте поддержку цепочек разрешений. Каждый хук должен либо вызвать nextResolve(), либо включить в свой возврат свойство shortCircuit, для которого установлено значение true. |
-    | v17.1.0, v16.14.0 | Добавьте поддержку утверждений импорта. |
-
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `conditions` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Условия экспорта соответствующего `package.json`
@@ -1515,14 +1419,6 @@ changes:
       call `nextLoad()` or include a `shortCircuit` property set to `true` in
       its return.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.6.0 | Добавьте поддержку исходного кода в формате commonjs-typescript и module-typescript. |
-    | v20.6.0 | Добавьте поддержку исходного кода в формате commonjs. |
-    | v18.6.0, v16.17.0 | Добавьте поддержку цепочки хуков load. Каждый хук должен либо вызвать nextLoad(), либо включить в свой возврат свойство shortCircuit, для которого установлено значение true. |
 
 * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL, возвращённый цепочкой `resolve`
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1950,12 +1846,6 @@ changes:
     description: Add support for `lineLengths`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.5.0 | Добавьте поддержку `lineLengths`. |
-
 * `payload` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * `lineLengths` [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2054,7 +1944,6 @@ added:
 [asynchronous `load` hook]: #asynchronous-loadurl-context-nextload
 [asynchronous `resolve` hook]: #asynchronous-resolvespecifier-context-nextresolve
 [asynchronous hook functions]: #asynchronous-hooks-accepted-by-moduleregister
-[caveats of asynchronous customization hooks]: #caveats-of-asynchronous-customization-hooks
 [deregistration of synchronous customization hooks]: #deregistration-of-synchronous-customization-hooks
 [hooks]: #customization-hooks
 [load hook]: #synchronous-loadurl-context-nextload

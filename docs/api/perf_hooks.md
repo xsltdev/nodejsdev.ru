@@ -86,12 +86,6 @@ changes:
 
 Добавлено в: v8.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
-
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если `name` не указано, удаляет все объекты `PerformanceMark` из временной шкалы
@@ -111,12 +105,6 @@ changes:
 
 Добавлено в: v16.7.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
-
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Если `name` не указано, удаляет все объекты `PerformanceMeasure` из временной шкалы
@@ -134,12 +122,6 @@ changes:
     description: This method must be called with the `performance` object as
                  the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -159,12 +141,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/60370
     description: Added `perf_hooks.eventLoopUtilization` alias.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.2.0, v24.12.0 | Добавлен псевдоним perf_hooks.eventLoopUtilization. |
 
 * `utilization1` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Результат предыдущего вызова
   `eventLoopUtilization()`.
@@ -192,12 +168,6 @@ changes:
 
 Добавлено в: v16.7.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
-
 * Возвращает: [`<PerformanceEntry[]>`](perf_hooks.md#class-performanceentry)
 
 Возвращает список объектов `PerformanceEntry` в хронологическом порядке
@@ -217,12 +187,6 @@ changes:
 -->
 
 Добавлено в: v16.7.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -244,12 +208,6 @@ changes:
 -->
 
 Добавлено в: v16.7.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
 * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<PerformanceEntry[]>`](perf_hooks.md#class-performanceentry)
@@ -273,13 +231,6 @@ changes:
 -->
 
 Добавлено в: v8.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. Аргумент имени больше не является необязательным. |
-    | v16.0.0 | Обновлено для соответствия спецификации User Timing Level 3. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -310,12 +261,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/51589
     description: Added bodyInfo, responseStatus, and deliveryType arguments.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.2.0 | Добавлены аргументы bodyInfo, responseStatus и DeliveryType. |
 
 * `timingInfo` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Fetch Timing Info][Fetch Timing Info]
 * `requestedUrl` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL ресурса
@@ -358,14 +303,6 @@ changes:
 -->
 
 Добавлено в: v8.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
-    | v16.0.0 | Обновлено для соответствия спецификации User Timing Level 3. |
-    | v13.13.0, v12.16.3 | Сделайте параметры startMark и endMark необязательными. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `startMarkOrOptions` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательно.
@@ -421,12 +358,6 @@ changes:
 
 Добавлено в: v8.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
-
 * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает текущую метку времени в миллисекундах с высоким разрешением; 0
@@ -444,12 +375,6 @@ changes:
 -->
 
 Добавлено в: v18.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
 Задаёт размер глобального буфера записей ресурсов (число объектов записей
 типа `"resource"`).
@@ -488,14 +413,6 @@ changes:
 
 Добавлено в: v8.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.2.0, v24.12.0 | Добавлен псевдоним perf_hooks.timerify. |
-    | v16.0.0 | Добавлена ​​опция гистограммы. |
-    | v16.0.0 | Повторно реализован для использования чистого JavaScript и возможности синхронизировать асинхронные функции. |
-
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `histogram` [`<RecordableHistogram>`](perf_hooks.md) Гистограмма, созданная через
@@ -517,12 +434,6 @@ changes:
 -->
 
 Добавлено в: v16.1.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод должен вызываться с объектом Performance в качестве получателя. |
 
 Объект — JSON-представление `performance`. По смыслу похож на
 [`window.performance.toJSON`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/toJSON) в браузерах.
@@ -560,12 +471,6 @@ changes:
 
 Добавлено в: v8.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Общее число миллисекунд для этой записи. Для не всех типов записей значение
@@ -583,12 +488,6 @@ changes:
 -->
 
 Добавлено в: v8.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -618,12 +517,6 @@ changes:
 
 Добавлено в: v8.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
-
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя записи производительности.
@@ -640,12 +533,6 @@ changes:
 -->
 
 Добавлено в: v8.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceEntry в качестве получателя. |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -676,12 +563,6 @@ changes:
 -->
 
 Добавлено в: v16.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceMark в качестве получателя. |
 
 * Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -714,12 +595,6 @@ changes:
 
 Добавлено в: v16.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceMeasure в качестве получателя. |
-
 * Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительные сведения, заданные при создании через `Performance.measure()`.
@@ -751,12 +626,6 @@ changes:
 
 Добавлено в: v16.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceNodeEntry в качестве получателя. |
-
 * Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Дополнительные сведения, зависящие от `entryType`.
@@ -773,12 +642,6 @@ changes:
     description: Runtime deprecated. Now moved to the detail property
                  when entryType is 'gc'.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство `detail`, если тип записи равен «gc». |
 
 > Стабильность: 0 — устарело: вместо этого используйте `performanceNodeEntry.detail`.
 
@@ -808,12 +671,6 @@ changes:
 -->
 
 Добавлено в: v8.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | Время выполнения устарело. Теперь перемещено в свойство `detail`, если тип записи равен «gc». |
 
 > Стабильность: 0 — устарело: вместо этого используйте `performanceNodeEntry.detail`.
 
@@ -1065,12 +922,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метка времени в миллисекундах с высоким разрешением — момент непосредственно перед
@@ -1089,12 +940,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метка времени в миллисекундах с высоким разрешением — начало выборки, инициировавшей редирект.
@@ -1111,12 +956,6 @@ changes:
     description: This property getter must be called with the
                  `PerformanceResourceTiming` object as the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1135,12 +974,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метка времени в миллисекундах с высоким разрешением — непосредственно перед началом выборки ресурса в Node.js.
@@ -1157,12 +990,6 @@ changes:
     description: This property getter must be called with the
                  `PerformanceResourceTiming` object as the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1181,12 +1008,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метка времени в миллисекундах с высоким разрешением — сразу после завершения DNS-поиска для ресурса.
@@ -1203,12 +1024,6 @@ changes:
     description: This property getter must be called with the
                  `PerformanceResourceTiming` object as the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1227,12 +1042,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метка времени в миллисекундах с высоким разрешением — сразу после установления соединения с сервером для получения ресурса.
@@ -1249,12 +1058,6 @@ changes:
     description: This property getter must be called with the
                  `PerformanceResourceTiming` object as the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1273,12 +1076,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Метка времени в миллисекундах с высоким разрешением — непосредственно перед получением первого байта ответа от сервера.
@@ -1295,12 +1092,6 @@ changes:
     description: This property getter must be called with the
                  `PerformanceResourceTiming` object as the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1319,12 +1110,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число — размер (в октетах) полученного ресурса: поля заголовка ответа плюс тело полезной нагрузки.
@@ -1341,12 +1126,6 @@ changes:
     description: This property getter must be called with the
                  `PerformanceResourceTiming` object as the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1365,12 +1144,6 @@ changes:
                  `PerformanceResourceTiming` object as the receiver.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод получения свойства должен вызываться с объектом PerformanceResourceTiming в качестве получателя. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Число — размер (в октетах) тела сообщения, полученного при выборке (HTTP или кэш), после снятия кодирований содержимого.
@@ -1387,12 +1160,6 @@ changes:
     description: This method must be called with the
                  `PerformanceResourceTiming` object as the receiver.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Этот метод необходимо вызывать с объектом PerformanceResourceTiming в качестве получателя. |
 
 Возвращает объект — JSON-представление `PerformanceResourceTiming`.
 
@@ -1425,12 +1192,6 @@ changes:
 -->
 
 Добавлено в: v8.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `list` [`<PerformanceObserverEntryList>`](perf_hooks.md#class-performanceobserverentrylist)
@@ -1503,13 +1264,6 @@ changes:
 -->
 
 Добавлено в: v8.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.7.0 | Обновлено для соответствия уровню 2 временной шкалы производительности. Опция буферизации была добавлена ​​обратно. |
-    | v16.0.0 | Обновлено для соответствия уровню пользовательского времени 3. Опция буферизации удалена. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Один тип [PerformanceEntry](perf_hooks.md#class-performanceentry). Не указывайте, если уже задан `entryTypes`.

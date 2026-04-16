@@ -136,13 +136,6 @@ changes:
 
 Добавлено в: v0.1.99
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.4.0 | Свойство `family` теперь возвращает строку вместо числа. |
-    | v18.0.0 | Свойство `family` теперь возвращает число вместо строки. |
-
 Событие `'message'` испускается, когда на сокете доступна новая датаграмма.
 Обработчику передаются два аргумента: `msg` и `rinfo`.
 
@@ -260,12 +253,6 @@ changes:
 -->
 
 Добавлено в: v0.1.99
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v0.9.1 | Метод был изменен на модель асинхронного выполнения. Устаревший код необходимо будет изменить, чтобы передать функцию обратного вызова в вызов метода. |
 
 * `port` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -408,12 +395,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/58467
    description: No longer experimental.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
 
 Вызывает [`socket.close()`](#socketclosecallback) и возвращает промис, который выполняется после
 закрытия сокета.
@@ -581,18 +562,6 @@ changes:
 -->
 
 Добавлено в: v0.1.99
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.0.0 | Параметр `address` теперь принимает только `string`, `null` или `undefined`. |
-    | v14.5.0, v12.19.0 | Параметром msg теперь может быть любой TypedArray или DataView. |
-    | v12.0.0 | Добавлена ​​поддержка отправки данных по подключенным сокетам. |
-    | v8.0.0 | Параметр `msg` теперь может быть `Uint8Array`. |
-    | v8.0.0 | Параметр `address` теперь всегда необязателен. |
-    | v6.0.0 | В случае успеха обратный вызов теперь будет вызываться с аргументом error, равным null, а не 0. |
-    | v5.7.0 | Параметр `msg` теперь может быть массивом. Кроме того, параметры offset и length теперь являются необязательными. |
 
 * `msg` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Отправляемое сообщение.
 * `offset` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Смещение в буфере, с которого начинается сообщение.
@@ -941,16 +910,6 @@ changes:
 -->
 
 Добавлено в: v0.11.13
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.1.0, v22.12.0 | Поддерживается опция `reusePort`. |
-    | v15.8.0 | Добавлена ​​поддержка AbortSignal. |
-    | v11.4.0 | Поддерживается опция `ipv6Only`. |
-    | v8.7.0 | Параметры RecvBufferSize и sendBufferSize теперь поддерживаются. |
-    | v8.6.0 | Поддерживается опция поиска. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Доступные опции:
   * `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Семейство сокета: `'udp4'` или `'udp6'`.

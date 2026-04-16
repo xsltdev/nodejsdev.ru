@@ -129,12 +129,6 @@ changes:
     description: Больше не экспериментально.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.5.0, v16.15.0 | Больше не экспериментально. |
-
 * `key` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение JavaScript, пригодное в качестве
   ключа [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -653,12 +647,6 @@ changes:
 
 Добавлено в: v12.3.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.12.0 | аргумент port может ссылаться и на `BroadcastChannel`. |
-
 * `port` [`<MessagePort>`](worker_threads.md#class-messageport) | [`<BroadcastChannel>`](worker_threads.md)
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | undefined
@@ -766,12 +754,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/41272
     description: Больше не экспериментально.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.5.0, v16.15.0 | Больше не экспериментально. |
 
 * `key` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Произвольное клонируемое значение JavaScript, пригодное в качестве
   ключа [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
@@ -1016,12 +998,6 @@ changes:
 
 Добавлено в: v15.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Больше не экспериментально. |
-
 Экземпляры `BroadcastChannel` обеспечивают асинхронную связь «один ко многим»
 со всеми `BroadcastChannel` с тем же именем канала.
 
@@ -1191,12 +1167,6 @@ changes:
 
 Добавлено в: v10.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.7.0 | класс теперь наследует `EventTarget`, а не `EventEmitter`. |
-
 * Наследует: [`<EventTarget>`](https://dom.spec.whatwg.org/#interface-eventtarget)
 
 Класс `worker.MessagePort` — один конец асинхронного
@@ -1329,18 +1299,6 @@ changes:
 -->
 
 Добавлено в: v10.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | ошибка, если в списке передачи есть непередаваемый объект. |
-    | v15.14.0, v14.18.0 | В список клонируемых типов добавлен `BlockList`. |
-    | v15.9.0, v14.18.0 | В список клонируемых типов добавлены типы `Histogram`. |
-    | v15.6.0 | В список клонируемых типов добавлен X509Certificate. |
-    | v15.0.0 | В список клонируемых типов добавлен «CryptoKey». |
-    | v14.5.0, v12.19.0 | В список клонируемых типов добавлен KeyObject. |
-    | v14.5.0, v12.19.0 | В список передаваемых типов добавлен FileHandle. |
 
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1569,12 +1527,6 @@ changes:
    description: API помечен стабильным.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | API помечен стабильным. |
-
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если истина, `MessagePort` удерживает цикл событий Node.js активным.
@@ -1767,19 +1719,6 @@ changes:
 
 Добавлено в: v10.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.8.0, v18.16.0 | Добавлена поддержка опции `name` для отладки (имя в заголовке worker). |
-    | v14.9.0 | Параметр filename может быть объектом URL WHATWG, использующим протокол data:. |
-    | v14.9.0 | По умолчанию для параметра trackUnmanagedFds установлено значение true. |
-    | v14.6.0, v12.19.0 | Была введена опция trackUnmanagedFds. |
-    | v13.13.0, v12.17.0 | Была введена опция «transferList». |
-    | v13.12.0, v12.17.0 | Параметр filename может быть объектом URL WHATWG, использующим протокол file:. |
-    | v13.4.0, v12.16.0 | Была введена опция `argv`. |
-    | v13.2.0, v12.16.0 | Была введена опция `resourceLimits`. |
-
 * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Путь к основному скрипту или модулю Worker. Должен быть либо абсолютным путём, либо относительным (относительно текущего рабочего каталога) с префиксом `./` или `../`, либо объектом WHATWG `URL` с протоколом `file:` или `data:`.
   При использовании [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data) данные интерпретируются по MIME-типу с помощью [загрузчика модулей ECMAScript][ECMAScript module loader].
   Если `options.eval` равен `true`, это строка с кодом JavaScript, а не путь.
@@ -1895,12 +1834,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/44989
     description: Support options to configure the heap snapshot.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.1.0 | Поддержка параметров настройки снимка кучи. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `exposeInternals` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, в снимок кучи включаются внутренности движка.
@@ -2253,12 +2186,6 @@ changes:
 -->
 
 Добавлено в: v10.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.5.0 | Эта функция теперь возвращает обещание. Передача обратного вызова устарела и была бесполезна до этой версии, поскольку Worker фактически завершался синхронно. Завершение теперь является полностью асинхронной операцией. |
 
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 

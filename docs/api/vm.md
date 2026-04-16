@@ -113,15 +113,6 @@ changes:
 
 Добавлено в: v0.3.1
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
-    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
-    | v10.6.0 | `produceCachedData` устарел в пользу `script.createCachedData()`. |
-    | v5.7.0 | Опции `cachedData` и `produceCachedData` теперь поддерживаются. |
-
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
   * `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя файла в трассировках стека, создаваемых этим сценарием. **По умолчанию:** `'evalmachine.<anonymous>'`.
@@ -208,12 +199,6 @@ changes:
 -->
 
 Добавлено в: v0.3.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
 * `contextifiedObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Контекстированный][contextified] объект, возвращённый
   методом `vm.createContext()`.
@@ -302,15 +287,6 @@ changes:
 -->
 
 Добавлено в: v0.3.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.8.0, v20.18.0 | Аргумент `contextObject` теперь может быть `vm.constants.DONT_CONTEXTIFY`. |
-    | v14.6.0 | Поддерживается опция `microtaskMode`. |
-    | v10.0.0 | Поддерживается опция `contextCodeGeneration`. |
-    | v6.3.0 | Поддерживается опция `breakOnSigint`. |
 
 * `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
   Либо [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify), либо объект, который будет [контекстифицирован][contextified].
@@ -413,12 +389,6 @@ changes:
 -->
 
 Добавлено в: v0.3.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `displayErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при [`Error`](errors.md#class-error) при компиляции `code`
@@ -791,12 +761,6 @@ changes:
                  former name is still provided for backward compatibility.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.1.0, v20.10.0, v18.19.0 | Опция «extra.assert» переименована в «extra.attributes». Прежнее имя по-прежнему предоставляется для обратной совместимости. |
-
 * `linker` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Спецификатор запрошенного модуля:
     ```mjs
@@ -914,12 +878,6 @@ changes:
     description: Added support for import attributes to the
                  `importModuleDynamically` parameter.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
 
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) код модуля JavaScript для разбора
 * `options`
@@ -1057,12 +1015,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/20300
     description: This is deprecated in favour of `sourceTextModule.moduleRequests`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.4.0, v22.20.0 | Это устарело в пользу `sourceTextModule.moduleRequests`. |
 
 !!!warning "Стабильность: 0 - Устарело"
 
@@ -1333,12 +1285,6 @@ changes:
                  calling this method.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0, v22.21.0 | Больше не нужно вызывать SyntheticModule.link() перед вызовом этого метода. |
-
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя устанавливаемого экспорта.
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение для экспорта.
 
@@ -1427,17 +1373,6 @@ changes:
 -->
 
 Добавлено в: v10.10.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
-    | v19.6.0, v18.15.0 | Возвращаемое значение теперь включает в себя `cachedDataRejected` с той же семантикой, что и версия `vm.Script`, если была передана опция `cachedData`. |
-    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
-    | v15.9.0 | Снова добавлена ​​опция importModuleDynamically. |
-    | v14.3.0 | Удаление importModuleDynamically из-за проблем совместимости. |
-    | v14.1.0, v13.14.0 | Опция importModuleDynamically теперь поддерживается. |
 
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тело компилируемой функции.
 * `params` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив строк — имён всех параметров
@@ -1530,17 +1465,6 @@ changes:
 -->
 
 Добавлено в: v0.3.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.8.0, v20.18.0 | Аргумент contextObject теперь принимает vm.constants.DONT_CONTEXTIFY. |
-    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
-    | v21.2.0, v20.11.0 | Опция importModuleDynamically теперь поддерживается. |
-    | v14.6.0 | Опция microtaskMode теперь поддерживается. |
-    | v10.0.0 | Первый аргумент больше не может быть функцией. |
-    | v10.0.0 | Опция `codeGeneration` теперь поддерживается. |
 
 * `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
   Либо [`vm.constants.DONT_CONTEXTIFY`](#vmconstantsdont_contextify), либо объект, который будет [контекстифицирован][contextified].
@@ -1761,14 +1685,6 @@ changes:
 
 Добавлено в: v0.3.1
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
-    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
-    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
-
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код JavaScript для компиляции и выполнения.
 * `contextifiedObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [Контекстифицированный][contextified] объект, который будет
     использоваться как `global` при компиляции и выполнении `code`.
@@ -1870,17 +1786,6 @@ changes:
 -->
 
 Добавлено в: v0.3.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.8.0, v20.18.0 | Аргумент contextObject теперь принимает vm.constants.DONT_CONTEXTIFY. |
-    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
-    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
-    | v14.6.0 | Опция microtaskMode теперь поддерживается. |
-    | v10.0.0 | Опция contextCodeGeneration теперь поддерживается. |
-    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код JavaScript для компиляции и выполнения.
 * `contextObject` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<vm.constants.DONT_CONTEXTIFY>`](#vmconstantsdont_contextify) | undefined
@@ -2014,14 +1919,6 @@ changes:
 -->
 
 Добавлено в: v0.3.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.7.0, v20.12.0 | Добавлена ​​поддержка vm.constants.USE_MAIN_CONTEXT_DEFAULT_LOADER. |
-    | v17.0.0, v16.12.0 | Добавлена ​​поддержка атрибутов импорта в параметр importModuleDynamically. |
-    | v6.3.0 | Опция `breakOnSigint` теперь поддерживается. |
 
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код JavaScript для компиляции и выполнения.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)

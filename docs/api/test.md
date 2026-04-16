@@ -19,12 +19,6 @@ changes:
     description: Тестовый раннер теперь стабилен.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Тестовый запуск теперь стабилен. |
-
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
@@ -1244,12 +1238,6 @@ changes:
 
 Добавлено в: v22.3.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.4.0 | Тестирование моментальных снимков больше не является экспериментальным. |
-
 Тесты-снимки сериализуют произвольные значения в строки и сравнивают их с эталоном.
 Эталонные значения называются снимками и хранятся в файле снимков; раннер им управляет,
 но формат остаётся читаемым для отладки. Файлы снимков обычно коммитят вместе с тестами.
@@ -1308,13 +1296,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/47238
     description: Репортёры экспортируются из `node:test/reporters`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.0.0 | Средство создания отчетов по умолчанию для стандартного вывода без TTY изменено с `tap` на `spec`, что соответствует стандартному выводу TTY. |
-    | v19.9.0, v18.17.0 | Репортеры теперь доступны по адресу `node:test/reporters`. |
 
 В модуле `node:test` можно передать флаги [`--test-reporter`](cli.md#--test-reporter), чтобы
 раннер использовал нужный репортёр.
@@ -1611,19 +1592,6 @@ changes:
     description: Добавлена опция testNamePatterns.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.6.0, v24.14.0 | Добавьте опцию env. |
-    | v24.7.0 | Добавлен параметр rerunFailuresFilePath. |
-    | v23.0.0 | Добавлена ​​опция `cwd`. |
-    | v23.0.0, v22.10.0 | Добавлены варианты покрытия. |
-    | v22.8.0 | Добавлена ​​опция «изоляция». |
-    | v22.6.0 | Добавлена ​​опция `globPatterns`. |
-    | v22.0.0, v20.14.0 | Добавлена ​​опция ForceExit. |
-    | v20.1.0, v18.17.0 | Добавьте параметр testNamePatterns. |
-
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры конфигурации запуска тестов. Поддерживаются следующие
   свойства:
   * `concurrency` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если указано число,
@@ -1838,14 +1806,6 @@ changes:
     description: Добавлена опция `timeout`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.2.0, v18.17.0 | Добавлены сокращения «skip», «todo» и «only». |
-    | v18.8.0, v16.18.0 | Добавьте опцию «сигнал». |
-    | v18.7.0, v16.17.0 | Добавьте опцию «тайм-аут». |
-
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя теста, отображаемое в отчёте.
   **По умолчанию:** свойство `name` у `fn` или `'<anonymous>'`, если у `fn`
   нет имени.
@@ -1967,12 +1927,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/46889
     description: Вызов `it()` теперь эквивалентен вызову `test()`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.8.0, v18.16.0 | Вызов `it()` теперь эквивалентен вызову `test()`. |
 
 Псевдоним [`test()`](#testname-options-fn).
 
@@ -2550,12 +2504,6 @@ changes:
     description: Поддержка JSON-модулей.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.17.0 | Поддержка модулей JSON. |
-
 > Стабильность: 1.0 — ранняя разработка
 
 * `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Идентификатор подменяемого модуля.
@@ -2708,12 +2656,6 @@ changes:
     description: MockTimers теперь стабильны.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.1.0 | Мок-таймеры теперь стабильны. |
-
 Подмена таймеров — распространённый приём тестирования: имитировать и управлять
 `setInterval` и `setTimeout` без реального ожидания.
 
@@ -2735,12 +2677,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/48638
     description: Параметры обновлены до объекта опций с доступными API и начальной эпохой по умолчанию.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.2.0, v20.11.0 | Обновлены параметры, теперь они представляют собой объект опции с доступными API и начальной эпохой по умолчанию. |
 
 Включает подмену указанных таймеров.
 
@@ -3362,12 +3298,6 @@ changes:
     description: В событиях test:pass и test:fail добавлен тип, когда тест — набор.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0, v19.9.0, v18.17.0 | добавлен тип событий test:pass и test:fail, когда тест представляет собой набор. |
-
 * Наследует [`<Readable>`](stream.md#readable-streams)
 
 Успешный вызов [`run()`](#runoptions) возвращает новый [TestsStream](test.md)
@@ -3705,12 +3635,6 @@ changes:
     description: В TestContext добавлена функция `before`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.1.0, v18.17.0 | В TestContext была добавлена ​​функция «before». |
-
 В каждую функцию теста передаётся экземпляр `TestContext` для работы с раннером.
 Конструктор `TestContext` в API не экспортируется.
 
@@ -4032,13 +3956,6 @@ changes:
     description: Функция больше не экспериментальная.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.9.0, v22.15.0 | Добавьте параметр `options`. |
-    | v23.4.0, v22.13.0 | Эта функция больше не является экспериментальной. |
-
 * `count` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Ожидаемое число утверждений и подтестов.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Дополнительные параметры плана.
   * `wait` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Поведение ожидания плана:
@@ -4204,13 +4121,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/43505
     description: Добавлена опция `timeout`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.8.0, v16.18.0 | Добавьте опцию «сигнал». |
-    | v18.7.0, v16.17.0 | Добавьте опцию «тайм-аут». |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя подтеста в отчёте.
   **По умолчанию:** свойство `name` у `fn` или `'<anonymous>'`, если у `fn` нет имени.

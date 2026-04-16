@@ -23,13 +23,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.0.0 | Больше не экспериментально. |
-    | v18.0.0 | Использование этого API больше не выводит предупреждение времени выполнения. |
-
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
@@ -137,12 +130,6 @@ changes:
 -->
 
 Добавлено в: v16.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
 
 #### `new ReadableStream([underlyingSource [, strategy]])`
 
@@ -357,12 +344,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.10.0, v16.18.0 | Поддержка tee для байтового читаемого потока. |
-
 * Возвращает: [`<ReadableStream[]>`](webstreams.md#readablestream)
 
 Возвращает пару новых экземпляров [ReadableStream](webstreams.md#readablestream), в которые пересылаются
@@ -540,12 +521,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 По умолчанию вызов `readableStream.getReader()` без аргументов
 возвращает экземпляр `ReadableStreamDefaultReader`. Обычный
 читатель обрабатывает фрагменты данных как непрозрачные
@@ -617,12 +592,6 @@ changes:
 -->
 
 Добавлено в: v16.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
 
 `ReadableStreamBYOBReader` — альтернативный потребитель для
 байто-ориентированных [ReadableStream](webstreams.md#readablestream) (создаются с
@@ -740,12 +709,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.7.0, v20.17.0 | Добавлена опция `min`. |
-
 * `view` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `min` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Если задано, промис выполнится только когда доступно
@@ -838,12 +801,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.10.0 | Поддержка BYOB pull-запроса от освобождённого читателя. |
-
 У каждого [ReadableStream](webstreams.md#readablestream) есть контроллер, отвечающий за
 внутреннее состояние и очередь потока.
 `ReadableByteStreamController` — для байто-ориентированных `ReadableStream`.
@@ -906,12 +863,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 При использовании `ReadableByteStreamController` в байто-ориентированных
 потоках и при использовании `ReadableStreamBYOBReader`
 свойство `readableByteStreamController.byobRequest`
@@ -961,12 +912,6 @@ changes:
 -->
 
 Добавлено в: v16.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
 
 `WritableStream` — приёмник, в который отправляются данные потока.
 
@@ -1090,12 +1035,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 #### `new WritableStreamDefaultWriter(stream)`
 
 <!-- YAML
@@ -1189,12 +1128,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 `WritableStreamDefaultController` управляет внутренним состоянием
 [WritableStream](webstreams.md#class-writablestream).
 
@@ -1226,12 +1159,6 @@ changes:
 -->
 
 Добавлено в: v16.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
 
 `TransformStream` объединяет [ReadableStream](webstreams.md#readablestream) и [WritableStream](webstreams.md#class-writablestream),
 соединённые так, что данные, записанные в `WritableStream`, поступают
@@ -1269,12 +1196,6 @@ changes:
 -->
 
 Добавлено в: v16.5.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.5.0, v20.14.0 | Поддержка колбэка `cancel` у трансформера. |
 
 * `transformer` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
@@ -1358,12 +1279,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 `TransformStreamDefaultController` управляет внутренним состоянием
 `TransformStream`.
 
@@ -1419,12 +1334,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 #### `new ByteLengthQueuingStrategy(init)`
 
 <!-- YAML
@@ -1464,12 +1373,6 @@ changes:
 
 Добавлено в: v16.5.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 #### `new CountQueuingStrategy(init)`
 
 <!-- YAML
@@ -1508,12 +1411,6 @@ changes:
 -->
 
 Добавлено в: v16.6.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
 
 #### `new TextEncoderStream()`
 
@@ -1560,12 +1457,6 @@ changes:
 -->
 
 Добавлено в: v16.6.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
 
 #### `new TextDecoderStream([encoding[, options]])`
 
@@ -1642,12 +1533,6 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 #### `new CompressionStream(format)`
 
 <!-- YAML
@@ -1666,13 +1551,6 @@ changes:
 -->
 
 Добавлено в: v17.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0, v22.20.0 | для format теперь допустимо значение `brotli`. |
-    | v21.2.0, v20.12.0 | для format теперь допустимо значение `deflate-raw`. |
 
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'deflate'`, `'deflate-raw'`, `'gzip'` или `'brotli'`.
 
@@ -1704,12 +1582,6 @@ changes:
 
 Добавлено в: v17.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Класс теперь доступен в глобальном объекте. |
-
 #### `new DecompressionStream(format)`
 
 <!-- YAML
@@ -1728,13 +1600,6 @@ changes:
 -->
 
 Добавлено в: v17.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0, v22.20.0 | для format теперь допустимо значение `brotli`. |
-    | v21.2.0, v20.12.0 | для format теперь допустимо значение `deflate-raw`. |
 
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'deflate'`, `'deflate-raw'`, `'gzip'` или `'brotli'`.
 

@@ -164,13 +164,6 @@ changes:
 
 Добавлено в: v8.3.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.7.0, v14.18.0 | Объект `options` теперь принимает опцию `tries`. |
-    | v12.18.3 | Конструктор теперь принимает объект options. Единственная поддерживаемая опция — «timeout». |
-
 Создаёт новый резолвер.
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -264,17 +257,6 @@ changes:
 -->
 
 Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | Опция `verbatim` теперь устарела в пользу новой опции `order`. |
-    | v18.4.0 | Для совместимости с node:net при передаче объекта опции параметром Family может быть строка IPv4 или строка IPv6. |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-    | v17.0.0 | Параметры `verbatim` теперь по умолчанию имеют значение `true`. |
-    | v8.5.0 | Опция `verbatim` теперь поддерживается. |
-    | v1.2.0 | Опция `all` теперь поддерживается. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -372,12 +354,6 @@ changes:
     description: Added support for the `dns.ALL` flag.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.13.0, v12.17.0 | Добавлена ​​поддержка флага `dns.ALL`. |
-
 В качестве подсказок для [`dns.lookup()`](#dnslookuphostname-options-callback) можно передать такие флаги:
 
 * `dns.ADDRCONFIG`: Возвращаемые типы адресов ограничены теми, что есть у нелокальных
@@ -399,12 +375,6 @@ changes:
 -->
 
 Добавлено в: v0.11.14
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -457,12 +427,6 @@ changes:
 
 Добавлено в: v0.1.27
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
 * `rrtype` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Тип ресурсной записи. **По умолчанию:** `'A'`.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -510,13 +474,6 @@ changes:
 
 Добавлено в: v0.1.16
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-    | v7.2.0 | Этот метод теперь поддерживает передачу «options», в частности «options.ttl». |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `ttl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Получать TTL каждой записи.
@@ -549,13 +506,6 @@ changes:
 
 Добавлено в: v0.1.16
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-    | v7.2.0 | Этот метод теперь поддерживает передачу «options», в частности «options.ttl». |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя хоста для разрешения.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `ttl` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Получать TTL каждой записи.
@@ -579,12 +529,6 @@ changes:
                  now throws `ERR_INVALID_ARG_TYPE` instead of
                  `ERR_INVALID_CALLBACK`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -648,12 +592,6 @@ changes:
 
 Добавлено в: v0.3.2
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -676,12 +614,6 @@ changes:
                  now throws `ERR_INVALID_ARG_TYPE` instead of
                  `ERR_INVALID_CALLBACK`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -707,12 +639,6 @@ changes:
 
 Добавлено в: v0.1.27
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -735,12 +661,6 @@ changes:
 -->
 
 Добавлено в: v0.9.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -784,12 +704,6 @@ changes:
 
 Добавлено в: v0.1.90
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -813,12 +727,6 @@ changes:
 
 Добавлено в: v6.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -840,12 +748,6 @@ changes:
 -->
 
 Добавлено в: v0.11.10
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -890,12 +792,6 @@ changes:
 -->
 
 Добавлено в: v0.1.27
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -971,12 +867,6 @@ changes:
 
 Добавлено в: v0.1.27
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
@@ -1020,13 +910,6 @@ changes:
     description: Changed default value to `verbatim`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | Значение `ipv6first` теперь поддерживается. |
-    | v17.0.0 | Изменено значение по умолчанию на `verbatim`. |
-
 * `order` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) должно быть `'ipv4first'`, `'ipv6first'` или `'verbatim'`.
 
 Задаёт значение `order` по умолчанию для [`dns.lookup()`](#dnslookuphostname-options-callback) и
@@ -1054,12 +937,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/52492
     description: The `ipv6first` value is supported now.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | Значение `ipv6first` теперь поддерживается. |
 
 Возвращает значение `order` по умолчанию для [`dns.lookup()`](#dnslookuphostname-options-callback) и
 [`dnsPromises.lookup()`](#dnspromiseslookuphostname-options):
@@ -1117,13 +994,6 @@ changes:
 -->
 
 Добавлено в: v10.6.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Представлено как `require('dns/promises')`. |
-    | v11.14.0, v10.17.0 | Этот API больше не является экспериментальным. |
 
 API `dns.promises` предлагает асинхронные методы DNS, возвращающие `Promise` вместо колбэков.
 Доступ: `require('node:dns').promises` или `require('node:dns/promises')`.
@@ -1235,12 +1105,6 @@ changes:
 -->
 
 Добавлено в: v10.6.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | Опция `verbatim` теперь устарела в пользу новой опции `order`. |
 
 * `hostname` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1677,13 +1541,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/39987
     description: Changed default value to `verbatim`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.1.0, v20.13.0 | Значение `ipv6first` теперь поддерживается. |
-    | v17.0.0 | Изменено значение по умолчанию на `verbatim`. |
 
 * `order` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) должно быть `'ipv4first'`, `'ipv6first'` или `'verbatim'`.
 

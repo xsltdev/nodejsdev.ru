@@ -19,12 +19,6 @@ changes:
     description: diagnostics_channel is now Stable.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.2.0, v18.13.0 | `diagnostics_channel` теперь стабилен. |
-
 <!--introduced_in=v15.1.0-->
 
 !!!success "Стабильность: 2 – Стабильная"
@@ -452,13 +446,6 @@ changes:
     description: Documentation-only deprecation.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0, v22.20.0 | Устаревание отменено. |
-    | v18.7.0, v16.17.0 | Прекращение поддержки только документации. |
-
 * `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обработчик сообщений канала
   * `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
   * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
@@ -513,14 +500,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/40433
     description: Added return value. Added to channels without subscribers.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.8.0, v22.20.0 | Устаревание отменено. |
-    | v18.7.0, v16.17.0 | Прекращение поддержки только документации. |
-    | v17.1.0, v16.14.0, v14.19.0 | Добавлено возвращаемое значение. Добавлено в каналы без подписчиков. |
 
 * `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ранее зарегистрированный обработчик для удаления
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик найден, иначе `false`.
@@ -1002,12 +981,6 @@ changes:
     description: Custom thenables will no longer be wrapped in native Promises.
                  Non-thenables will be returned with a warning.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Пользовательские thenables больше не будут заключены в собственные Promises. Нетоварные данные будут возвращены с предупреждением. |
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
 * `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект для корреляции событий трассировки

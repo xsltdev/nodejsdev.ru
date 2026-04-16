@@ -248,12 +248,6 @@ changes:
 
 Добавлено в: v0.1.18
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.0.0, v10.17.0 | Добавлен аргумент origin. |
-
 -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) необработанное исключение.
 -   `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) указывает, происходит ли исключение из необработанного отказа Promise или из синхронной ошибки. Может быть `'uncaughtException'` или `'unhandledRejection'`. Последнее используется, когда исключение возникает в асинхронном контексте на основе `Promise` (или отклонён `Promise`) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен в `strict` или `throw` (это значение по умолчанию), а отказ не обработан, либо когда отказ происходит на этапе статической загрузки ES-модуля точки входа командной строки.
 
@@ -377,13 +371,6 @@ changes:
 -->
 
 Добавлено в: v1.4.1
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v7.0.0 | Отказ от обработки отклонений Promise устарел. |
-    | v6.6.0 | Необработанные отклонения `Promise` теперь будут выдавать предупреждение процесса. |
 
 -   `reason` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | any значение, с которым Promise был отклонён (обычно объект [`Error`](errors.md#class-error)).
 -   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) отклонённый Promise.
@@ -832,12 +819,6 @@ changes:
     description: Change stability index for this feature from Experimental to Stable.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
-
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Возвращает объём свободной памяти, ещё доступной процессу (в байтах).
@@ -855,12 +836,6 @@ changes:
 -->
 
 Добавлено в: v7.1.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.0.0 | Объект больше не случайно предоставляет собственные привязки C++. |
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -941,13 +916,6 @@ changes:
 
 Добавлено в: v0.7.7
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Объект `process.config` теперь заморожен. |
-    | v16.0.0 | Изменение процесса.config устарело. |
-
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.config` возвращает замороженный `Object` с JavaScript-представлением опций `configure`, использованных при сборке текущего исполняемого файла Node.js. Это соответствует файлу `config.gypi`, который получился при запуске `./configure`.
@@ -1012,13 +980,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/52039
     description: Aligned return value with `uv_get_constrained_memory`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
-    | v22.0.0, v20.13.0 | Возвращаемое значение согласовано с uv_get_constrained_memory. |
 
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1148,12 +1109,6 @@ changes:
 -->
 
 Добавлено в: v0.1.16
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.0.0 | Добавлена ​​поддержка аргумента flags. |
 
 -   `module` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1465,13 +1420,6 @@ changes:
 
 Добавлено в: v0.1.27
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.14.0 | Рабочие потоки теперь по умолчанию будут использовать копию файла `process.env` родительского потока, который можно настроить с помощью опции `env` конструктора `Worker`. |
-    | v10.0.0 | Неявное преобразование значения переменной в строку устарело. |
-
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.env` возвращает объект с пользовательским окружением. См. environ(7).
@@ -1681,12 +1629,6 @@ changes:
 
 Добавлено в: v0.1.13
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Принимает код типа номера или строки типа, только если он представляет целое число. |
-
 -   `code` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined код выхода. Для строки допускаются только целочисленные строки (например `'1'`). **По умолчанию:** `0`.
 
 Метод `process.exit()` завершает процесс синхронно со статусом `code`. Если `code` не указан, используется код успеха `0` или значение `process.exitCode`, если оно задано. Node.js не завершится, пока не отработают все слушатели [`'exit'`](#event-exit).
@@ -1787,12 +1729,6 @@ changes:
 -->
 
 Добавлено в: v0.11.8
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.0.0 | Принимает код типа номера или строки типа, только если он представляет целое число. |
 
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null | undefined код выхода. Для строки допускаются только целочисленные строки (например `'1'`). **По умолчанию:** `undefined`.
 
@@ -1955,13 +1891,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/60600
     description: Type stripping is now stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Удалено значение «transform». |
-    | v25.2.0, v24.12.0 | Удаление типов теперь стабильно. |
 
 > Стабильность: 1.2 — кандидат в релиз
 
@@ -2203,12 +2132,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/57765
     description: Change stability index for this feature from Experimental to Stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.16.0 | Измените индекс стабильности для этой функции с «Экспериментального» на «Стабильный». |
 
 -   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -2647,12 +2570,6 @@ changes:
     description: This API is no longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.10.0, v22.21.0 | Этот API больше не является экспериментальным. |
-
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) | [`<Buffer>`](buffer.md#buffer) | undefined. **По умолчанию:** `'./.env'`
 
 Загружает файл `.env` в `process.env`. Использование `NODE_OPTIONS` в `.env` на Node.js не действует.
@@ -2702,13 +2619,6 @@ changes:
 -->
 
 Добавлено в: v0.1.16
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.9.0, v12.17.0 | К возвращаемому объекту добавлен ArrayBuffers. |
-    | v7.2.0 | К возвращаемому объекту добавлен `external`. |
 
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `rss` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -2819,14 +2729,6 @@ changes:
 -->
 
 Добавлено в: v0.1.26
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.7.0, v20.18.0 | Изменена стабильность на Legacy. |
-    | v18.0.0 | При передаче недопустимого обратного вызова в аргумент callback теперь выдается ERR_INVALID_ARG_TYPE вместо ERR_INVALID_CALLBACK. |
-    | v1.8.1 | Теперь поддерживаются дополнительные аргументы после обратного вызова. |
 
 > Стабильность: 3 — устаревшее. Используйте [`queueMicrotask()`](globals.md#queuemicrotaskcallback).
 
@@ -3207,12 +3109,6 @@ changes:
 
 Добавлено в: v3.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v4.2.0 | Свойство `lts` теперь поддерживается. |
-
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Свойство `process.release` возвращает `Object` с метаданными текущего релиза, включая URL архива исходников и архива только заголовков.
@@ -3255,12 +3151,6 @@ changes:
 -->
 
 Добавлено в: v11.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -3308,12 +3198,6 @@ changes:
 
 Добавлено в: v11.12.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог, куда пишется отчёт. По умолчанию пустая строка — тогда файлы попадают в текущий рабочий каталог процесса Node.js.
@@ -3347,12 +3231,6 @@ changes:
 -->
 
 Добавлено в: v11.12.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -3389,12 +3267,6 @@ changes:
 -->
 
 Добавлено в: v11.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
 -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) пользовательская ошибка для стека JavaScript в отчёте
 -   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -3445,12 +3317,6 @@ changes:
 
 Добавлено в: v11.12.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0, v14.17.0 | Этот API больше не является экспериментальным. |
-
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, диагностический отчёт создаётся при фатальных ошибках (например нехватка памяти или сбой C++-утверждения).
@@ -3485,12 +3351,6 @@ changes:
 
 Добавлено в: v11.12.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
-
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Если `true`, отчёт создаётся при получении процессом сигнала из `process.report.signal`.
@@ -3524,12 +3384,6 @@ changes:
 -->
 
 Добавлено в: v11.12.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -3577,12 +3431,6 @@ changes:
 
 Добавлено в: v11.12.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Сигнал для создания диагностического отчёта. По умолчанию `'SIGUSR2'`.
@@ -3616,12 +3464,6 @@ changes:
 -->
 
 Добавлено в: v11.8.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.17.0 | Этот API больше не является экспериментальным. |
 
 -   `filename` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя файла отчёта. Относительный путь дополняется к каталогу из `process.report.directory` или к текущему рабочему каталогу Node.js, если каталог не задан.
 
@@ -4005,12 +3847,6 @@ changes:
 
 Добавлено в: v9.3.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.9.0 | Используйте `process.addUncaughtExceptionCaptureCallback()` для регистрации нескольких обратных вызовов. |
-
 -   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) | null
 
 Функция `process.setUncaughtExceptionCaptureCallback()` задаёт функцию, вызываемую при необработанном исключении; первым аргументом передаётся само исключение.
@@ -4234,12 +4070,6 @@ changes:
 
 Добавлено в: v0.1.19
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.0.0, v12.19.0 | Вызов `process.umask()` без аргументов устарел. |
-
 > Стабильность: 0 — устарело. Вызов `process.umask()` без аргумента дважды записывает umask процесса, что даёт гонку между потоками и риск для безопасности. Безопасной кроссплатформенной замены нет.
 
 `process.umask()` возвращает маску создания файлов процесса Node.js. Дочерние процессы наследуют маску от родителя.
@@ -4350,13 +4180,6 @@ changes:
 -->
 
 Добавлено в: v0.2.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.0.0 | Свойство v8 теперь включает специальный суффикс Node.js. |
-    | v4.2.0 | Свойство `icu` теперь поддерживается. |
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 

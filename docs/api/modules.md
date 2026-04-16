@@ -195,15 +195,6 @@ changes:
     description: Support `'module.exports'` interop export in `require(esm)`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.4.0 | Эта функция больше не является экспериментальной. |
-    | v23.5.0, v22.13.0, v20.19.0 | Эта функция больше не выдает экспериментальное предупреждение по умолчанию, хотя предупреждение по-прежнему может быть выдано с помощью --trace-require-module. |
-    | v23.0.0, v22.12.0, v20.19.0 | Эта функция больше не скрывается за флагом CLI `--experimental-require-module`. |
-    | v23.0.0, v22.12.0 | Поддержка экспорта взаимодействия «module.exports» в «require(esm)». |
-
 Расширение `.mjs` зарезервировано для [ECMAScript Modules][ECMAScript Modules].
 См. раздел [Определение системы модулей][определение системы модулей], какие файлы разбираются как ECMAScript-модули.
 
@@ -513,12 +504,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/37246
     description: Added `node:` import support to `require(...)`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0, v14.18.0 | Добавлена ​​поддержка импорта `node:` в `require(...)`. |
 
 В Node.js несколько модулей встроено в бинарник; они подробнее описаны в других разделах документации.
 
@@ -958,12 +943,6 @@ changes:
 -->
 
 Добавлено в: v0.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.9.0 | Опция `paths` теперь поддерживается. |
 
 * `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь модуля, который нужно разрешить.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)

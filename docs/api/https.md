@@ -65,13 +65,6 @@ changes:
 
 Добавлено в: v0.4.5
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v5.3.0 | поддержка `0` `maxCachedSessions` для отключения кэширования сеанса TLS. |
-    | v2.5.0 | параметр maxCachedSessions добавлен в параметры для повторного использования сеансов TLS. |
-
 Объект [`Agent`](#class-httpsagent) для HTTPS, аналогичный [`http.Agent`](http.md#class-httpagent). Подробнее см. [`https.request()`](#httpsrequestoptions-callback).
 
 Как и у `http.Agent`, метод `createConnection(options[, callback])` можно переопределить, чтобы настроить установление TLS-соединений.
@@ -97,14 +90,6 @@ changes:
     description: do not automatically set servername if the target host was
                  specified using an IP address.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.5.0, v22.21.0 | Добавлена поддержка `proxyEnv`. |
-    | v24.5.0, v22.21.0 | Добавлена поддержка `defaultPort` и `protocol`. |
-    | v12.5.0 | Имя сервера больше не задаётся автоматически, если целевой хост указан IP-адресом. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента.
   Может содержать те же поля, что и [`http.Agent(options)`](http.md#new-agentoptions), а также
@@ -173,12 +158,6 @@ changes:
 
 Добавлено в: v20.4.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
-
 Вызывает [`server.close()`](#serverclosecallback) и возвращает промис, который выполняется, когда сервер закрыт.
 
 ### `server.closeAllConnections()`
@@ -231,12 +210,6 @@ changes:
 
 Добавлено в: v14.11.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Тайм-аут запроса по умолчанию изменен с «нет тайм-аута» на 300 с (5 минут). |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`
 
 См. [`server.requestTimeout`](http.md#serverrequesttimeout) в модуле `node:http`.
@@ -264,12 +237,6 @@ changes:
 -->
 
 Добавлено в: v0.11.2
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
 
@@ -400,13 +367,6 @@ changes:
 
 Добавлено в: v0.3.6
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.9.0 | Параметр `url` теперь можно передавать вместе с отдельным объектом `options`. |
-    | v7.5.0 | Параметр `options` может быть объектом `URL` WHATWG. |
-
 * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает те же `options`, что и
   [`https.request()`](#httpsrequestoptions-callback), метод по умолчанию — GET.
@@ -468,12 +428,6 @@ changes:
 
 Добавлено в: v0.5.9
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Агент теперь по умолчанию использует HTTP Keep-Alive и 5-секундный тайм-аут. |
-
 Глобальный экземпляр [`https.Agent`](#class-httpsagent) для всех клиентских HTTPS-запросов. Отличается от конфигурации [`https.Agent`](#class-httpsagent) по умолчанию тем, что у него включён `keepAlive` и `timeout` 5 секунд.
 
 ## `https.request(options[, callback])`
@@ -513,17 +467,6 @@ changes:
 -->
 
 Добавлено в: v0.3.6
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.4.0, v20.16.0 | Параметр clientCertEngine зависит от поддержки специального механизма в OpenSSL, который устарел в OpenSSL 3. |
-    | v16.7.0, v14.18.0 | При использовании объекта URL анализируемое имя пользователя и пароль теперь будут правильно декодированы URI. |
-    | v14.1.0, v13.14.0 | Опция `highWaterMark` теперь принята. |
-    | v10.9.0 | Параметр `url` теперь можно передавать вместе с отдельным объектом `options`. |
-    | v9.3.0 | Параметр `options` теперь может включать `clientCertEngine`. |
-    | v7.5.0 | Параметр `options` может быть объектом `URL` WHATWG. |
 
 * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает все `options` из

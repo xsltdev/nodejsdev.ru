@@ -148,17 +148,6 @@ changes:
 
 Добавлено в: v0.3.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.7.0, v22.20.0 | Добавьте поддержку AgentKeepAliveTimeoutBuffer. |
-    | v24.5.0, v22.21.0 | Добавьте поддержку proxyEnv. |
-    | v24.5.0, v22.21.0 | Добавьте поддержку defaultPort и протокола. |
-    | v15.6.0, v14.17.0 | Измените расписание по умолчанию с «fifo» на «lifo». |
-    | v14.5.0, v12.19.0 | Добавьте параметр maxTotalSockets в конструктор агента. |
-    | v14.5.0, v12.20.0 | Добавьте опцию «scheduling», чтобы указать стратегию планирования свободных сокетов. |
-
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента. Может содержать поля:
   * `keepAlive` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Сохранять сокеты даже при отсутствии невыполненных
     запросов, чтобы их можно было использовать для будущих запросов без
@@ -342,12 +331,6 @@ changes:
 
 Добавлено в: v0.11.4
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | Теперь свойство имеет нулевой прототип. |
-
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект с массивами сокетов, ожидающих использования агентом при включённом
@@ -369,12 +352,6 @@ changes:
 -->
 
 Добавлено в: v0.11.4
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.7.0, v16.15.0 | Параметр `options` теперь является необязательным. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор опций для формирования имени
   * `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Доменное имя или IP сервера, которому адресуется запрос
@@ -435,12 +412,6 @@ changes:
 
 Добавлено в: v0.5.9
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | Теперь свойство имеет нулевой прототип. |
-
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект с очередями запросов, ещё не назначенных на сокеты. Не изменяйте.
@@ -456,12 +427,6 @@ changes:
 -->
 
 Добавлено в: v0.3.6
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | Теперь свойство имеет нулевой прототип. |
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -913,12 +878,6 @@ changes:
 
 Добавлено в: v0.11.14
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.0.0 | Свойство aborted больше не является номером временной метки. |
-
 !!!warning "Стабильность: 0 - Устарело"
 
     Проверяйте [`request.destroyed`](#requestdestroyed).
@@ -967,13 +926,6 @@ changes:
 
 Добавлено в: v0.1.90
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Параметр data теперь может быть Uint8Array. |
-    | v10.0.0 | Этот метод теперь возвращает ссылку на ClientRequest. |
-
 * `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -999,12 +951,6 @@ changes:
 -->
 
 Добавлено в: v0.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.5.0 | Функция возвращает this для согласованности с другими потоками Readable. |
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Необязательная ошибка для события `'error'`.
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
@@ -1399,12 +1345,6 @@ changes:
 
 Добавлено в: v0.5.9
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.0.0 | Последовательно устанавливайте тайм-аут сокета только тогда, когда сокет подключается. |
-
 * `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Миллисекунды до таймаута запроса.
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция при таймауте; то же, что подписка
   на событие `'timeout'`.
@@ -1505,12 +1445,6 @@ changes:
 
 Добавлено в: v0.1.29
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Параметр chunk теперь может быть Uint8Array. |
-
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1596,14 +1530,6 @@ changes:
 -->
 
 Добавлено в: v0.1.94
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.0.0 | Поведение по умолчанию возвращает сообщение 431 «Слишком большие поля заголовка запроса» в случае возникновения ошибки HPE_HEADER_OVERFLOW. |
-    | v9.4.0 | `rawPacket` — это текущий буфер, который только что был проанализирован. Добавление этого буфера к объекту ошибки события clientError позволяет разработчикам регистрировать поврежденный пакет. |
-    | v6.0.0 | Действие по умолчанию по вызову .destroy() для сокета больше не будет выполняться, если к clientError подключены прослушиватели. |
 
 * `exception` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 * `socket` [`<stream.Duplex>`](stream.md#class-streamduplex)
@@ -1776,14 +1702,6 @@ changes:
 
 Добавлено в: v0.1.94
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Тела запросов больше не предоставляются в необработанном виде (не анализируются) в аргументе сокета. Вместо этого, если получено тело, аргумент потока будет дуплексом, который выдает содержимое сокета только после тела запроса, в то время как проанализированные данные тела запроса будут отправлены из запроса, как и в обычных событиях `'запроса'` сервера. |
-    | v24.9.0, v22.21.0 | Запуск этого события теперь можно контролировать с помощью `shouldUpgradeCallback`, и сокеты будут уничтожены при обновлении, пока ни один обработчик событий не прослушивает. |
-    | v10.0.0 | Отсутствие прослушивания этого события больше не приводит к уничтожению сокета, если клиент отправляет заголовок Upgrade. |
-
 * `request` [`<http.IncomingMessage>`](#httpincomingmessage) Аргументы HTTP-запроса, как в [`'request'`](#event-request)
 * `stream` [`<stream.Duplex>`](stream.md#class-streamduplex) Поток после обновления между сервером и клиентом
 * `head` [`<Buffer>`](buffer.md#buffer) Первый пакет обновлённого потока (может быть пустым)
@@ -1822,12 +1740,6 @@ changes:
 -->
 
 Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Метод закрывает простаивающие соединения перед возвратом. |
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -1939,12 +1851,6 @@ changes:
     description: The default is now set to the minimum between 60000 (60 seconds) or `requestTimeout`.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.4.0, v18.14.0 | По умолчанию теперь установлено минимальное значение между 60000 (60 секунд) или `requestTimeout`. |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** меньшее из [`server.requestTimeout`](#serverrequesttimeout) и `60000`.
 
 Ограничивает время ожидания полных HTTP-заголовков парсером.
@@ -1990,12 +1896,6 @@ changes:
 
 Добавлено в: v14.11.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.0.0 | Тайм-аут запроса по умолчанию изменен с «нет тайм-аута» на 300 с (5 минут). |
-
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`
 
 Таймаут в миллисекундах на приём всего запроса от клиента.
@@ -2016,12 +1916,6 @@ changes:
 -->
 
 Добавлено в: v0.9.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -2062,12 +1956,6 @@ changes:
 -->
 
 Добавлено в: v0.9.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.0.0 | Таймаут по умолчанию изменен со 120 с на 0 (таймаут отсутствует). |
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Таймаут в миллисекундах. **По умолчанию:** 0 (без таймаута)
 
@@ -2127,12 +2015,6 @@ changes:
 -->
 
 Добавлено в: v20.4.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.2.0 | Больше не экспериментально. |
 
 Вызывает [`server.close()`](#serverclosecallback) и возвращает промис, выполняющийся после закрытия сервера.
 
@@ -2227,13 +2109,6 @@ changes:
 -->
 
 Добавлено в: v0.1.90
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Параметр data теперь может быть Uint8Array. |
-    | v10.0.0 | Этот метод теперь возвращает ссылку на ServerResponse. |
 
 * `data` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -2594,12 +2469,6 @@ changes:
 
 Добавлено в: v0.1.29
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Параметр chunk теперь может быть Uint8Array. |
-
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `'utf8'`
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -2647,12 +2516,6 @@ changes:
 -->
 
 Добавлено в: v18.11.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.11.0 | Разрешить передачу подсказок как объекта. |
 
 * `hints` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -2708,14 +2571,6 @@ changes:
 -->
 
 Добавлено в: v0.1.30
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.14.0 | Разрешить передачу заголовков в виде массива. |
-    | v11.10.0, v10.17.0 | Верните `this` из `writeHead()`, чтобы разрешить цепочку с `end()`. |
-    | v5.11.0, v4.4.5 | Ошибка RangeError выдается, если statusCode не является числом в диапазоне [100, 999]`. |
 
 * `statusCode` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `statusMessage` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -2798,13 +2653,6 @@ changes:
 
 Добавлено в: v0.1.17
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.5.0 | Значение `destroyed` возвращает `true` после того, как входящие данные будут использованы. |
-    | v13.1.0, v12.16.0 | Значение `readableHighWaterMark` отражает значение сокета. |
-
 * Наследует: [`<stream.Readable>`](stream.md#streamreadable)
 
 Объект `IncomingMessage` создаётся [`http.Server`](#class-httpserver) или [`http.ClientRequest`](#class-httpclientrequest)
@@ -2842,12 +2690,6 @@ changes:
 -->
 
 Добавлено в: v0.4.2
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.0.0 | Событие закрытия теперь генерируется после завершения запроса, а не при закрытии базового сокета. |
 
 Генерируется по завершении запроса.
 
@@ -2925,12 +2767,6 @@ changes:
 
 Добавлено в: v0.3.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.5.0, v12.19.0 | Функция возвращает this для согласованности с другими потоками Readable. |
-
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
@@ -2959,13 +2795,6 @@ changes:
 -->
 
 Добавлено в: v0.1.5
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.5.0, v18.14.0 | >- Опция `joinDuplateHeaders` в функциях `http.request()` и `http.createServer()` гарантирует, что повторяющиеся заголовки не отбрасываются, а объединяются с использованием разделителя-запятой в соответствии с разделом 5.3 RFC 9110. |
-    | v15.1.0 | >- `message.headers` теперь лениво вычисляется с использованием свойства доступа прототипа и больше не является перечислимым. |
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -3386,13 +3215,6 @@ changes:
 
 Добавлено в: v0.1.90
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Параметр chunk теперь может быть Uint8Array. |
-    | v0.11.6 | добавьте аргумент обратного вызова. |
-
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательно. **По умолчанию:** `utf8`
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Optional
@@ -3683,13 +3505,6 @@ changes:
 
 Добавлено в: v0.1.29
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.0.0 | Параметр chunk теперь может быть Uint8Array. |
-    | v0.11.6 | Был добавлен аргумент обратного вызова. |
-
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) **По умолчанию:** `utf8`
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -3775,20 +3590,6 @@ changes:
 -->
 
 Добавлено в: v0.1.13
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.1.0, v24.12.0 | Добавьте опциюоптимизацииEmptyRequests. |
-    | v24.9.0, v22.21.0 | Опция «shouldUpgradeCallback» теперь поддерживается. |
-    | v20.1.0, v18.17.0 | Опция highWaterMark теперь поддерживается. |
-    | v18.0.0 | Параметры RequestTimeout, HeadersTimeout, KeepAliveTimeout и ConnectionCheckingInterval теперь поддерживаются. |
-    | v18.0.0 | Опция noDelay теперь по умолчанию имеет значение true. |
-    | v17.7.0, v16.15.0 | Параметры noDelay, KeepAlive и KeepAliveInitialDelay теперь поддерживаются. |
-    | v13.8.0, v12.15.0, v10.19.0 | Опция `insecureHTTPParser` теперь поддерживается. |
-    | v13.3.0 | Опция maxHeaderSize теперь поддерживается. |
-    | v9.6.0, v8.12.0 | Аргумент `options` теперь поддерживается. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `connectionsCheckingInterval`: Интервал в миллисекундах для проверки
@@ -3944,13 +3745,6 @@ changes:
 
 Добавлено в: v0.3.6
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.9.0 | Параметр `url` теперь можно передавать вместе с отдельным объектом `options`. |
-    | v7.5.0 | Параметр `options` может быть объектом `URL` WHATWG. |
-
 * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает те же `options`, что и
   [`http.request()`](#httprequestoptions-callback), но с методом `GET` по умолчанию.
@@ -4027,12 +3821,6 @@ changes:
 
 Добавлено в: v0.5.9
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.0.0 | Агент теперь по умолчанию использует HTTP Keep-Alive и 5-секундный тайм-аут. |
-
 * Тип: [`<http.Agent>`](http.md#class-httpagent)
 
 Глобальный `Agent` по умолчанию для всех HTTP-клиентских запросов. В отличие от
@@ -4090,17 +3878,6 @@ changes:
 -->
 
 Добавлено в: v0.3.6
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v16.7.0, v14.18.0 | При использовании объекта URL анализируемое имя пользователя и пароль теперь будут правильно декодированы URI. |
-    | v15.3.0, v14.17.0 | Можно прервать запрос с помощью AbortSignal. |
-    | v13.8.0, v12.15.0, v10.19.0 | Опция `insecureHTTPParser` теперь поддерживается. |
-    | v13.3.0 | Опция maxHeaderSize теперь поддерживается. |
-    | v10.9.0 | Параметр `url` теперь можно передавать вместе с отдельным объектом `options`. |
-    | v7.5.0 | Параметр `options` может быть объектом `URL` WHATWG. |
 
 * `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -4388,12 +4165,6 @@ changes:
 -->
 
 Добавлено в: v14.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v19.5.0, v18.14.0 | Добавлен параметр `label`. |
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `label` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Метка для сообщения об ошибке. **По умолчанию:** `'Header name'`.

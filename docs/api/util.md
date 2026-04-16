@@ -294,13 +294,6 @@ changes:
 
 Добавлено в: v0.8.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.2.0, v24.12.0 | Добавлен объект параметров с `modifyPrototype` для условного изменения прототипа устаревшего объекта. |
-    | v10.0.0 | Предупреждения об устаревании выдаются только один раз для каждого кода. |
-
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Помечаемая как устаревшая функция.
 * `msg` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Текст предупреждения при вызове устаревшей функции.
 * `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Код устаревания. Список кодов — в [списке устаревших API][list of deprecated APIS].
@@ -490,19 +483,6 @@ changes:
 
 Добавлено в: v0.5.3
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v12.11.0 | Спецификатор %c теперь игнорируется. |
-    | v12.0.0 | Аргумент `format` теперь принимается как таковой только в том случае, если он действительно содержит спецификаторы формата. |
-    | v12.0.0 | Если аргумент «формат» не является строкой формата, форматирование выходной строки больше не зависит от типа первого аргумента. Это изменение удаляет ранее существовавшие кавычки из строк, которые выводились, когда первый аргумент не был строкой. |
-    | v11.4.0 | Спецификаторы `%d`, `%f` и `%i` теперь правильно поддерживают символы. |
-    | v11.4.0 | Глубина спецификатора `%o` снова имеет глубину по умолчанию 4. |
-    | v11.0.0 | Опция «глубина» спецификатора `%o` теперь вернется к глубине по умолчанию. |
-    | v10.12.0 | Спецификаторы `%d` и `%i` теперь поддерживают BigInt. |
-    | v8.4.0 | Спецификаторы `%o` и `%O` теперь поддерживаются. |
-
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка формата в стиле `printf`.
 
 Метод `util.format()` возвращает отформатированную строку: первый аргумент —
@@ -600,14 +580,6 @@ changes:
 -->
 
 Добавлено в: v22.9.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.7.0, v22.14.0 | Свойство «column» устарело в пользу «columnNumber». |
-    | v23.7.0, v22.14.0 | Доступно свойство CallSite.scriptId. |
-    | v23.3.0, v22.12.0 | API переименован с util.getCallSite на util.getCallSites(). |
 
 > Стабильность: 1.1 — активная разработка
 
@@ -839,12 +811,6 @@ changes:
 
 Добавлено в: v0.3.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v5.0.0 | Параметр `constructor` теперь может ссылаться на класс ES6. |
-
 > Стабильность: 3 — устаревшее: используйте синтаксис классов ES2015 и ключевое слово `extends`.
 
 * `constructor` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1023,34 +989,6 @@ changes:
 -->
 
 Добавлено в: v0.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v25.0.0 | Стиль util.inspect.styles.regexp теперь является методом, который вызывается для раскрашивания строкового регулярного выражения. |
-    | v17.3.0, v16.14.0 | Опция `numericSeparator` теперь поддерживается. |
-    | v16.18.0 | Добавлена поддержка `maxArrayLength` при осмотре `Set` и `Map`. |
-    | v14.6.0, v12.19.0 | Если «объект» теперь принадлежит другому «vm.Context», пользовательская функция проверки на нем больше не будет получать аргументы, зависящие от контекста. |
-    | v13.13.0, v12.17.0 | Опция `maxStringLength` теперь поддерживается. |
-    | v13.5.0, v12.16.0 | Определенные пользователем свойства прототипа проверяются, если `showHidden` имеет значение `true`. |
-    | v13.0.0 | Круговые ссылки теперь включают в себя маркер ссылки. |
-    | v12.0.0 | Значение по умолчанию для параметра `compact` изменено на `3`, а значение по умолчанию для параметра `breakLength` изменено на `80`. |
-    | v12.0.0 | Внутренние свойства больше не отображаются в аргументе контекста пользовательской функции проверки. |
-    | v11.11.0 | Опция `compact` принимает числа для нового режима вывода. |
-    | v11.7.0 | ArrayBuffers теперь также отображают свое двоичное содержимое. |
-    | v11.5.0 | Опция `getters` теперь поддерживается. |
-    | v11.4.0 | Значение глубины по умолчанию снова изменено на «2». |
-    | v11.0.0 | Значение глубины по умолчанию изменено на «20». |
-    | v11.0.0 | Выходные данные проверки теперь ограничены примерно 128 МБ. Данные, превышающие этот размер, не будут полностью проверены. |
-    | v10.12.0 | Опция `sorted` теперь поддерживается. |
-    | v10.6.0 | Проверка связанных списков и подобных объектов теперь возможна до максимального размера стека вызовов. |
-    | v10.0.0 | Записи WeakMap и WeakSet теперь также можно проверить. |
-    | v9.9.0 | Опция `compact` теперь поддерживается. |
-    | v6.6.0 | Пользовательские функции проверки теперь могут возвращать `this`. |
-    | v6.3.0 | Опция `breakLength` теперь поддерживается. |
-    | v6.1.0 | Опция `maxArrayLength` теперь поддерживается; в частности, длинные массивы по умолчанию усекаются. |
-    | v6.1.0 | Опция `showProxy` теперь поддерживается. |
 
 * `object` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любой примитив JavaScript или `Object`.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1539,12 +1477,6 @@ changes:
 
 Добавлено в: v0.1.97
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v17.3.0, v16.14.0 | Аргумент проверки добавлен для большей совместимости. |
-
 Объекты также могут определять собственную функцию
 [`[util.inspect.custom](depth, opts, inspect)`][util.inspect.custom],
 которую `util.inspect()` вызовет и чей результат использует при осмотре
@@ -1660,12 +1592,6 @@ changes:
 
 Добавлено в: v6.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.12.0 | Теперь это определено как общий символ. |
-
 * Тип: [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Символ для объявления пользовательских функций осмотра.
 
 Помимо доступа через `util.inspect.custom`, этот
@@ -1747,12 +1673,6 @@ changes:
 
 Добавлено в: v9.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.9.0 | Добавлен параметр options, позволяющий пропустить сравнение прототипов. |
-
 * `val1` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `val2` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * `skipPrototype` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, при строгом глубоком сравнении
@@ -1808,12 +1728,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/57510
    description: Marking the API stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 Реализация [класса MIMEType](https://bmeck.github.io/node-proposal-mime-api/).
 
@@ -2225,15 +2139,6 @@ changes:
                  using `tokens` in input `config` and returned properties.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v22.4.0, v20.16.0 | Добавлена поддержка отрицательных опций во входном `config`. |
-    | v20.0.0 | API больше не является экспериментальным. |
-    | v18.11.0, v16.19.0 | Добавлена поддержка значений по умолчанию во входной `config`. |
-    | v18.7.0, v16.17.0 | Добавлен возврат подробной информации о разборе через токены во входном `config` и в возвращаемых свойствах. |
-
 * `config` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Задаёт аргументы для разбора и настраивает
   парсер. Поддерживаются свойства:
   * `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив строк аргументов. **По умолчанию:** `process.argv`
@@ -2440,12 +2345,6 @@ changes:
     description: This API is no longer experimental.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.10.0, v22.21.0 | Этот API больше не является экспериментальным. |
-
 * `content` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Сырое содержимое файла `.env`.
@@ -2484,12 +2383,6 @@ changes:
 -->
 
 Добавлено в: v8.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.8.0 | Вызов Promisify для функции, возвращающей Promise, устарел. |
 
 * `original` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -2696,12 +2589,6 @@ changes:
 
 Добавлено в: v8.0.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v13.12.0, v12.16.2 | Теперь это определено как общий символ. |
-
 * Тип: [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) Символ для объявления пользовательских promisify-обёрток;
   см. [Custom promisified functions][Custom promisified functions].
 
@@ -2765,15 +2652,6 @@ changes:
     description: Respect isTTY and environment variables
       such as NO_COLOR, NODE_DISABLE_COLORS, and FORCE_COLOR.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | REPLACEME | Добавить поддержку шестнадцатеричных цветов. |
-    | v24.2.0, v22.17.0 | Добавлен формат none как неоперационный формат. |
-    | v23.5.0, v22.13.0 | styleText теперь стабилен. |
-    | v22.8.0, v20.18.0 | Учитываются isTTY и переменные окружения NO_COLOR, NODE_DISABLE_COLORS и FORCE_COLOR. |
 
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Формат текста или массив
   форматов из `util.inspect.colors`, либо hex-цвет `#RGB`
@@ -2887,12 +2765,6 @@ changes:
 -->
 
 Добавлено в: v8.3.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.0.0 | Теперь класс доступен для глобального объекта. |
 
 Реализация API `TextDecoder` по [WHATWG Encoding Standard][WHATWG Encoding Standard].
 
@@ -3031,12 +2903,6 @@ changes:
 
 Добавлено в: v8.3.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.0.0 | Теперь класс доступен для глобального объекта. |
-
 Реализация API `TextEncoder` по [WHATWG Encoding Standard][WHATWG Encoding Standard]. Все
 экземпляры `TextEncoder` поддерживают только UTF-8.
 
@@ -3111,12 +2977,6 @@ changes:
 
 Добавлено в: v18.11.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
-
 Создаёт и возвращает [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController), у которого [AbortSignal](globals.md#abortsignal) помечен
 как передаваемый и может использоваться с `structuredClone()` или `postMessage()`.
 
@@ -3133,12 +2993,6 @@ changes:
 -->
 
 Добавлено в: v18.11.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v23.11.0, v22.15.0 | Маркировка стабильного API. |
 
 * `signal` [`<AbortSignal>`](globals.md#abortsignal)
 * Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
@@ -3165,12 +3019,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/57765
    description: Change stability index for this feature from Experimental to Stable.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v24.0.0, v22.16.0 | Индекс стабильности изменён с экспериментального на стабильный. |
 
 * `signal` [`<AbortSignal>`](globals.md#abortsignal)
 * `resource` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любой непустой объект, связанный с прерываемой операцией и удерживаемый слабо.
@@ -3240,12 +3088,6 @@ changes:
 -->
 
 Добавлено в: v10.0.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v15.3.0 | Представлено как `require('util/types')`. |
 
 `util.types` выполняет проверки типов встроенных объектов.
 В отличие от `instanceof` и `Object.prototype.toString.call(value)`, эти проверки не

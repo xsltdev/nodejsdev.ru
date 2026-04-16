@@ -279,13 +279,6 @@ changes:
 
 Добавлено в: v0.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v18.4.0 | Свойство `family` теперь возвращает строку вместо числа. |
-    | v18.0.0 | Свойство `family` теперь возвращает число вместо строки. |
-
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект с сетевыми интерфейсами, которым назначен адрес.
@@ -406,12 +399,6 @@ changes:
 
 Добавлено в: v0.9.9
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v2.0.0 | Эта функция теперь является кроссплатформенной и больше не возвращает путь с косой чертой на конце ни на одной платформе. |
-
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог временных файлов по умолчанию для ОС.
@@ -456,12 +443,6 @@ changes:
 -->
 
 Добавлено в: v0.3.3
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v10.0.0 | Результат этой функции больше не содержит дробный компонент в Windows. |
 
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -513,12 +494,6 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/6093
     description: Added support for `SIGINFO`.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v5.11.0 | Добавлена ​​поддержка SIGINFO. |
 
 Константы сигналов экспортируются в `os.constants.signals`.
 

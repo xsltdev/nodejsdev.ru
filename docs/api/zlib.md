@@ -805,15 +805,6 @@ changes:
 
 Добавлено в: v0.11.1
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.5.0, v12.19.0 | Опция `maxOutputLength` теперь поддерживается. |
-    | v9.4.0 | Опцией словаря может быть ArrayBuffer. |
-    | v8.0.0 | Опция словаря теперь может быть Uint8Array. |
-    | v5.11.0 | Опция FinishFlush теперь поддерживается. |
-
 <!--type=misc-->
 
 У каждого класса на базе zlib есть объект `options`. Он необязателен.
@@ -848,12 +839,6 @@ changes:
 -->
 
 Добавлено в: v11.7.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v14.5.0, v12.19.0 | Опция `maxOutputLength` теперь поддерживается. |
 
 <!--type=misc-->
 
@@ -943,14 +928,6 @@ changes:
 
 Добавлено в: v0.5.8
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.0.0 | Замыкание мусора в конце входного потока теперь приведет к событию ошибки. |
-    | v5.9.0 | Теперь поддерживается несколько объединенных элементов файла gzip. |
-    | v5.0.0 | Усеченный входной поток теперь приведет к событию «ошибка». |
-
 * Расширяет: [`ZlibBase`](#class-zlibzlibbase)
 
 Распаковка потока gzip.
@@ -977,12 +954,6 @@ changes:
 
 Добавлено в: v0.5.8
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v5.0.0 | Усеченный входной поток теперь приведет к событию «ошибка». |
-
 * Расширяет: [`ZlibBase`](#class-zlibzlibbase)
 
 Распаковка потока deflate.
@@ -1001,13 +972,6 @@ changes:
 -->
 
 Добавлено в: v0.5.8
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v6.8.0 | Пользовательские словари теперь поддерживаются InflateRaw. |
-    | v5.0.0 | Усеченный входной поток теперь приведет к событию «ошибка». |
 
 * Расширяет: [`ZlibBase`](#class-zlibzlibbase)
 
@@ -1036,12 +1000,6 @@ changes:
 -->
 
 Добавлено в: v0.5.8
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v11.7.0, v10.16.0 | Этот класс был переименован с Zlib на ZlibBase. |
 
 * Расширяет: [`stream.Transform`](stream.md#class-streamtransform)
 
@@ -1441,14 +1399,6 @@ changes:
 
 Добавлено в: v0.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
-
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1471,14 +1421,6 @@ changes:
 
 Добавлено в: v0.11.12
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
-
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
 
@@ -1498,13 +1440,6 @@ changes:
 -->
 
 Добавлено в: v0.6.0
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
@@ -1527,14 +1462,6 @@ changes:
 -->
 
 Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
@@ -1559,14 +1486,6 @@ changes:
 
 Добавлено в: v0.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
-
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1588,14 +1507,6 @@ changes:
 -->
 
 Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
@@ -1620,14 +1531,6 @@ changes:
 
 Добавлено в: v0.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
-
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1649,14 +1552,6 @@ changes:
 -->
 
 Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
@@ -1681,14 +1576,6 @@ changes:
 
 Добавлено в: v0.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
-
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1710,14 +1597,6 @@ changes:
 -->
 
 Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
@@ -1742,14 +1621,6 @@ changes:
 
 Добавлено в: v0.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
-
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1771,14 +1642,6 @@ changes:
 -->
 
 Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
@@ -1803,14 +1666,6 @@ changes:
 
 Добавлено в: v0.6.0
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
-
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -1832,14 +1687,6 @@ changes:
 -->
 
 Добавлено в: v0.11.12
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v9.4.0 | Параметр `buffer` может быть ArrayBuffer`. |
-    | v8.0.0 | Параметром `buffer` может быть любой `TypedArray` или `DataView`. |
-    | v8.0.0 | Параметр `buffer` теперь может быть `Uint8Array`. |
 
 * `buffer` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `options` [`<zlib options>`](zlib.md#class-options)

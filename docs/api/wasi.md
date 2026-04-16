@@ -124,12 +124,6 @@ changes:
     description: Clarify WASI security properties.
 -->
 
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v21.2.0, v20.11.0 | Уточнены свойства безопасности WASI. |
-
 WASI использует модель на основе возможностей (capabilities): приложениям предоставляются собственные настраиваемые возможности `env`, `preopens`, `stdin`, `stdout`, `stderr` и `exit`.
 
 **Текущая модель угроз Node.js не обеспечивает безопасную изоляцию в том виде, как это делают некоторые среды WASI.**
@@ -163,14 +157,6 @@ changes:
    pr-url: https://github.com/nodejs/node/pull/46469
    description: version field added to options.
 -->
-
-??? note "История"
-
-    | Версия | Изменения |
-    | --- | --- |
-    | v20.1.0 | Значение по умолчанию `returnOnExit` изменено на `true`. |
-    | v20.0.0 | Параметр версии теперь является обязательным и не имеет значения по умолчанию. |
-    | v19.8.0 | Поле версии добавлено в опции. |
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `args` [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Массив строк, которые приложение WebAssembly будет видеть как аргументы командной строки. Первый аргумент — виртуальный путь к самой команде WASI. **По умолчанию:** `[]`.
