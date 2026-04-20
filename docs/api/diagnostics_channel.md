@@ -5,27 +5,9 @@ description: Модуль node:diagnostics_channel — именованные к
 
 # Канал диагностики
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/diagnostics_channel.html)
-
-<!-- YAML
-added:
-  - v15.1.0
-  - v14.17.0
-changes:
-  - version:
-      - v19.2.0
-      - v18.13.0
-    pr-url: https://github.com/nodejs/node/pull/45290
-    description: diagnostics_channel is now Stable.
--->
-
-<!--introduced_in=v15.1.0-->
-
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
-
-<!-- source_link=lib/diagnostics_channel.js -->
 
 Модуль `node:diagnostics_channel` предоставляет API для создания именованных каналов передачи произвольных данных в целях диагностики.
 
@@ -104,14 +86,8 @@ changes:
 
 #### `diagnostics_channel.hasSubscribers(name)`
 
-<!-- YAML
-added:
- - v15.1.0
- - v14.17.0
--->
-
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) есть ли активные подписчики
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) есть ли активные подписчики
 
 Проверяет наличие активных подписчиков у именованного канала. Полезно, если подготовка сообщения может быть дорогой.
 
@@ -139,14 +115,8 @@ API необязательно, но удобно при публикации и
 
 #### `diagnostics_channel.channel(name)`
 
-<!-- YAML
-added:
- - v15.1.0
- - v14.17.0
--->
-
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
-* Возвращает: [`<Channel>`](diagnostics_channel.md) объект именованного канала
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
+-   Возвращает: [`<Channel>`](#class-channel) объект именованного канала
 
 Основная точка входа для публикации в именованный канал. Возвращает объект канала, оптимизированный для минимальных накладных расходов при публикации.
 
@@ -168,16 +138,10 @@ added:
 
 #### `diagnostics_channel.subscribe(name, onMessage)`
 
-<!-- YAML
-added:
- - v18.7.0
- - v16.17.0
--->
-
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
-* `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обработчик сообщений канала
-  * `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
-  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обработчик сообщений канала
+    -   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
 
 Регистрирует обработчик подписки на канал. Обработчик вызывается синхронно при каждой публикации. Ошибки в обработчике приводят к [`'uncaughtException'`](process.md#event-uncaughtexception).
 
@@ -203,15 +167,9 @@ added:
 
 #### `diagnostics_channel.unsubscribe(name, onMessage)`
 
-<!-- YAML
-added:
- - v18.7.0
- - v16.17.0
--->
-
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
-* `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ранее зарегистрированный обработчик для удаления
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик найден, иначе `false`.
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ранее зарегистрированный обработчик для удаления
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик найден, иначе `false`.
 
 Удаляет обработчик, ранее зарегистрированный через [`diagnostics_channel.subscribe(name, onMessage)`](#diagnostics_channelsubscribename-onmessage).
 
@@ -245,20 +203,14 @@ added:
 
 #### `diagnostics_channel.tracingChannel(nameOrChannels)`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-* `nameOrChannels` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<TracingChannel>`](#class-tracingchannel) имя канала или объект со всеми [каналами TracingChannel][TracingChannel Channels]
-* Возвращает: [`<TracingChannel>`](#class-tracingchannel) набор каналов для трассировки
+-   `nameOrChannels` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<TracingChannel>`](#class-tracingchannel) имя канала или объект со всеми [каналами TracingChannel](#tracingchannel-channels)
+-   Возвращает: [`<TracingChannel>`](#class-tracingchannel) набор каналов для трассировки
 
-Создаёт обёртку [`TracingChannel`](#class-tracingchannel) для заданных [каналов TracingChannel][TracingChannel Channels]. Если передано имя, соответствующие каналы трассировки создаются в виде `tracing:${name}:${eventType}`, где `eventType` соответствует типам [каналов TracingChannel][TracingChannel Channels].
+Создаёт обёртку [`TracingChannel`](#class-tracingchannel) для заданных [каналов TracingChannel](#tracingchannel-channels). Если передано имя, соответствующие каналы трассировки создаются в виде `tracing:${name}:${eventType}`, где `eventType` соответствует типам [каналов TracingChannel](#tracingchannel-channels).
 
 === "MJS"
 
@@ -298,16 +250,12 @@ added:
 
 #### `diagnostics_channel.boundedChannel(nameOrChannels)`
 
-<!-- YAML
-added: REPLACEME
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-* `nameOrChannels` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<BoundedChannel>`](#class-boundedchannel) имя канала или объект со всеми [каналами BoundedChannel][BoundedChannel Channels]
-* Возвращает: [`<BoundedChannel>`](#class-boundedchannel) набор каналов для трассировки
+-   `nameOrChannels` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<BoundedChannel>`](#class-boundedchannel) имя канала или объект со всеми [каналами BoundedChannel](#boundedchannel-channels)
+-   Возвращает: [`<BoundedChannel>`](#class-boundedchannel) набор каналов для трассировки
 
 Создаёт обёртку [`BoundedChannel`](#class-boundedchannel) для заданных каналов. Если передано имя, каналы создаются в виде `tracing:${name}:${eventType}`, где `eventType` — `start` или `end`.
 
@@ -343,25 +291,13 @@ added: REPLACEME
     });
     ```
 
-### Класс: `Channel`
-
-<!-- YAML
-added:
- - v15.1.0
- - v14.17.0
--->
+### Класс: `Channel` {#class-channel}
 
 Класс `Channel` представляет отдельный именованный канал в конвейере данных. Отслеживает подписчиков и публикует сообщения при их наличии. Отдельный объект нужен, чтобы не выполнять поиск канала при публикации — это даёт высокую скорость публикации и низкую стоимость при активном использовании. Каналы создаются через [`diagnostics_channel.channel(name)`](#diagnostics_channelchannelname); прямой вызов `new Channel(name)` не поддерживается.
 
 #### `channel.hasSubscribers`
 
-<!-- YAML
-added:
- - v15.1.0
- - v14.17.0
--->
-
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) есть ли активные подписчики
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) есть ли активные подписчики
 
 Проверяет наличие активных подписчиков у этого канала. Полезно, если подготовка сообщения может быть дорогой.
 
@@ -393,13 +329,7 @@ API необязательно, но удобно при публикации и
 
 #### `channel.publish(message)`
 
-<!-- YAML
-added:
- - v15.1.0
- - v14.17.0
--->
-
-* `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков канала
+-   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков канала
 
 Публикует сообщение всем подписчикам канала. Обработчики вызываются синхронно в том же контексте.
 
@@ -429,26 +359,9 @@ added:
 
 #### `channel.subscribe(onMessage)`
 
-<!-- YAML
-added:
- - v15.1.0
- - v14.17.0
-changes:
-  - version:
-    - v24.8.0
-    - v22.20.0
-    pr-url: https://github.com/nodejs/node/pull/59758
-    description: Deprecation revoked.
-  - version:
-    - v18.7.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/44943
-    description: Documentation-only deprecation.
--->
-
-* `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обработчик сообщений канала
-  * `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
-  * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) обработчик сообщений канала
+    -   `message` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные сообщения
+    -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type) имя канала
 
 Регистрирует обработчик подписки на этот канал. Обработчик выполняется синхронно при каждой публикации. Ошибки в обработчике приводят к [`'uncaughtException'`](process.md#event-uncaughtexception).
 
@@ -478,31 +391,8 @@ changes:
 
 #### `channel.unsubscribe(onMessage)`
 
-<!-- YAML
-added:
- - v15.1.0
- - v14.17.0
-changes:
-  - version:
-    - v24.8.0
-    - v22.20.0
-    pr-url: https://github.com/nodejs/node/pull/59758
-    description: Deprecation revoked.
-  - version:
-    - v18.7.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/44943
-    description: Documentation-only deprecation.
-  - version:
-    - v17.1.0
-    - v16.14.0
-    - v14.19.0
-    pr-url: https://github.com/nodejs/node/pull/40433
-    description: Added return value. Added to channels without subscribers.
--->
-
-* `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ранее зарегистрированный обработчик для удаления
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик найден, иначе `false`.
+-   `onMessage` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) ранее зарегистрированный обработчик для удаления
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если обработчик найден, иначе `false`.
 
 Удаляет обработчик, ранее зарегистрированный через [`channel.subscribe(onMessage)`](#channelsubscribeonmessage).
 
@@ -540,19 +430,12 @@ changes:
 
 #### `channel.bindStore(store[, transform])`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-* `store` [`<AsyncLocalStorage>`](async_context.md#class-asynclocalstorage) хранилище для привязки контекста
-* `transform` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) преобразование данных контекста перед установкой в хранилище
+-   `store` [`<AsyncLocalStorage>`](async_context.md#class-asynclocalstorage) хранилище для привязки контекста
+-   `transform` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) преобразование данных контекста перед установкой в хранилище
 
 При вызове [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) указанные данные контекста применяются ко всем хранилищам, привязанным к каналу. Если хранилище уже было привязано, предыдущая функция `transform` заменяется новой. Функцию `transform` можно опустить — тогда данные контекста задают контекст хранилища напрямую.
 
@@ -588,19 +471,12 @@ added:
 
 #### `channel.unbindStore(store)`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-* `store` [`<AsyncLocalStorage>`](async_context.md#class-asynclocalstorage) хранилище для отвязки от канала
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если хранилище найдено, иначе `false`.
+-   `store` [`<AsyncLocalStorage>`](async_context.md#class-asynclocalstorage) хранилище для отвязки от канала
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если хранилище найдено, иначе `false`.
 
 Удаляет привязку хранилища, ранее созданную [`channel.bindStore(store)`](#channelbindstorestore-transform).
 
@@ -634,27 +510,20 @@ added:
 
 #### `channel.runStores(context, fn[, thisArg[, ...args]])`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-* `context` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков и привязки к хранилищам
-* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция, выполняемая во введённом контексте хранилища
-* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова функции
-* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+-   `context` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) сообщение для подписчиков и привязки к хранилищам
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция, выполняемая во введённом контексте хранилища
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова функции
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
 
 Применяет данные ко всем экземплярам `AsyncLocalStorage`, привязанным к каналу, на время выполнения `fn`, затем публикует в канал в области, где данные применены к хранилищам.
 
 Если в [`channel.bindStore(store)`](#channelbindstorestore-transform) задана функция преобразования, она применяется к данным сообщения до того, как они станут контекстом хранилища. Предыдущий контекст хранилища доступен внутри `transform`, если нужна связка контекстов.
 
-Контекст хранилища должен быть доступен в асинхронном коде, продолжающем выполнение, начатое в `fn`; однако возможна [потеря контекста][context loss].
+Контекст хранилища должен быть доступен в асинхронном коде, продолжающем выполнение, начатое в `fn`; однако возможна [потеря контекста](async_context.md#troubleshooting-context-loss).
 
 === "MJS"
 
@@ -696,17 +565,12 @@ added:
 
 #### `channel.withStoreScope(data)`
 
-<!-- YAML
-added: REPLACEME
--->
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-* `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные для привязки к хранилищам
-* Возвращает: [`<RunStoresScope>`](diagnostics_channel.md) объект области видимости с `Disposable`
+-   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) данные для привязки к хранилищам
+-   Возвращает: [`<RunStoresScope>`](#class-runstoresscope) объект области видимости с `Disposable`
 
 Создаёт область с автоматическим освобождением: привязывает данные к экземплярам `AsyncLocalStorage`, привязанным к каналу, и публикует их подписчикам. При освобождении восстанавливает предыдущие контексты хранилищ.
 
@@ -727,10 +591,10 @@ added: REPLACEME
 
     {
       using scope = ch.withStoreScope({ request: 'data' });
-      // Store is entered, data is published
+      // хранилище введено, данные опубликованы
       console.log(store.getStore()); // { request: 'data', timestamp: ... }
     }
-    // Store is automatically restored on scope exit
+    // при выходе из области хранилище автоматически восстанавливается
     ```
 
 === "CJS"
@@ -748,56 +612,38 @@ added: REPLACEME
 
     {
       using scope = ch.withStoreScope({ request: 'data' });
-      // Store is entered, data is published
+      // хранилище введено, данные опубликованы
       console.log(store.getStore()); // { request: 'data', timestamp: ... }
     }
-    // Store is automatically restored on scope exit
+    // при выходе из области хранилище автоматически восстанавливается
     ```
 
-### Класс: `RunStoresScope`
-
-<!-- YAML
-added: REPLACEME
--->
+### Класс: `RunStoresScope` {#class-runstoresscope}
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
-
 
 Класс `RunStoresScope` — область с `Disposable`, создаваемая [`channel.withStoreScope(data)`](#channelwithstorescopedata). Управляет жизненным циклом контекстов хранилищ и восстанавливает их при выходе из области.
 
 Область нужно использовать с синтаксисом `using`, чтобы гарантировать освобождение.
 
-### Класс: `TracingChannel`
-
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
+### Класс: `TracingChannel` {#class-tracingchannel}
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-Класс `TracingChannel` объединяет [каналы TracingChannel][TracingChannel Channels], описывающие одно трассируемое действие. Формализует и упрощает генерацию событий для трассировки потока выполнения. Экземпляр создаётся через [`diagnostics_channel.tracingChannel()`](#diagnostics_channeltracingchannelnameorchannels). Как и для `Channel`, рекомендуется создавать один `TracingChannel` на уровне модуля и переиспользовать, а не создавать динамически.
+Класс `TracingChannel` объединяет [каналы TracingChannel](#tracingchannel-channels), описывающие одно трассируемое действие. Формализует и упрощает генерацию событий для трассировки потока выполнения. Экземпляр создаётся через [`diagnostics_channel.tracingChannel()`](#diagnostics_channeltracingchannelnameorchannels). Как и для `Channel`, рекомендуется создавать один `TracingChannel` на уровне модуля и переиспользовать, а не создавать динамически.
 
 #### `tracingChannel.subscribe(subscribers)`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
-* `subscribers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) набор подписчиков [каналов TracingChannel][TracingChannel Channels]
-  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие start`](#startevent)
-  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие end`](#endevent)
-  * `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие asyncStart`](#asyncstartevent)
-  * `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие asyncEnd`](#asyncendevent)
-  * `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие error`](#errorevent)
+-   `subscribers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) набор подписчиков [каналов TracingChannel](#tracingchannel-channels)
+    -   `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие start`](#startevent)
+    -   `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие end`](#endevent)
+    -   `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие asyncStart`](#asyncstartevent)
+    -   `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие asyncEnd`](#asyncendevent)
+    -   `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события [`событие error`](#errorevent)
 
 Вспомогательный метод подписки набора функций на соответствующие каналы. Эквивалентно вызову [`channel.subscribe(onMessage)`](#channelsubscribeonmessage) для каждого канала по отдельности.
 
@@ -810,19 +656,19 @@ added:
 
     channels.subscribe({
       start(message) {
-        // Handle start message
+        // обработка сообщения start
       },
       end(message) {
-        // Handle end message
+        // обработка сообщения end
       },
       asyncStart(message) {
-        // Handle asyncStart message
+        // обработка сообщения asyncStart
       },
       asyncEnd(message) {
-        // Handle asyncEnd message
+        // обработка сообщения asyncEnd
       },
       error(message) {
-        // Handle error message
+        // обработка сообщения error
       },
     });
     ```
@@ -836,38 +682,32 @@ added:
 
     channels.subscribe({
       start(message) {
-        // Handle start message
+        // обработка сообщения start
       },
       end(message) {
-        // Handle end message
+        // обработка сообщения end
       },
       asyncStart(message) {
-        // Handle asyncStart message
+        // обработка сообщения asyncStart
       },
       asyncEnd(message) {
-        // Handle asyncEnd message
+        // обработка сообщения asyncEnd
       },
       error(message) {
-        // Handle error message
+        // обработка сообщения error
       },
     });
     ```
 
 #### `tracingChannel.unsubscribe(subscribers)`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
-* `subscribers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) набор подписчиков [каналов TracingChannel][TracingChannel Channels]
-  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие start`](#startevent)
-  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие end`](#endevent)
-  * `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие asyncStart`](#asyncstartevent)
-  * `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие asyncEnd`](#asyncendevent)
-  * `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие error`](#errorevent)
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если все обработчики сняты, иначе `false`.
+-   `subscribers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) набор подписчиков [каналов TracingChannel](#tracingchannel-channels)
+    -   `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие start`](#startevent)
+    -   `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие end`](#endevent)
+    -   `asyncStart` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие asyncStart`](#asyncstartevent)
+    -   `asyncEnd` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие asyncEnd`](#asyncendevent)
+    -   `error` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик [`событие error`](#errorevent)
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если все обработчики сняты, иначе `false`.
 
 Отписка набора функций от соответствующих каналов. Эквивалентно [`channel.unsubscribe(onMessage)`](#channelunsubscribeonmessage) на каждом канале отдельно.
 
@@ -880,19 +720,19 @@ added:
 
     channels.unsubscribe({
       start(message) {
-        // Handle start message
+        // обработка сообщения start
       },
       end(message) {
-        // Handle end message
+        // обработка сообщения end
       },
       asyncStart(message) {
-        // Handle asyncStart message
+        // обработка сообщения asyncStart
       },
       asyncEnd(message) {
-        // Handle asyncEnd message
+        // обработка сообщения asyncEnd
       },
       error(message) {
-        // Handle error message
+        // обработка сообщения error
       },
     });
     ```
@@ -906,36 +746,30 @@ added:
 
     channels.unsubscribe({
       start(message) {
-        // Handle start message
+        // обработка сообщения start
       },
       end(message) {
-        // Handle end message
+        // обработка сообщения end
       },
       asyncStart(message) {
-        // Handle asyncStart message
+        // обработка сообщения asyncStart
       },
       asyncEnd(message) {
-        // Handle asyncEnd message
+        // обработка сообщения asyncEnd
       },
       error(message) {
-        // Handle error message
+        // обработка сообщения error
       },
     });
     ```
 
 #### `tracingChannel.traceSync(fn[, context[, thisArg[, ...args]]])`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
-* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
-* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект для корреляции событий
-* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
-* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект для корреляции событий
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
 Трассирует синхронный вызов: всегда генерируются [`событие start`](#startevent) и [`событие end`](#endevent) вокруг выполнения и при необходимости [`событие error`](#errorevent), если функция выбросила ошибку. Функция выполняется через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`, чтобы привязанные хранилища соответствовали контексту трассировки.
 
@@ -949,7 +783,7 @@ added:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     channels.traceSync(() => {
-      // Do something
+      // полезная работа
     }, {
       some: 'thing',
     });
@@ -963,7 +797,7 @@ added:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     channels.traceSync(() => {
-      // Do something
+      // полезная работа
     }, {
       some: 'thing',
     });
@@ -971,24 +805,13 @@ added:
 
 #### `tracingChannel.tracePromise(fn[, context[, thisArg[, ...args]]])`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
-changes:
-  - version: REPLACEME
-    pr-url: https://github.com/nodejs/node/pull/61766
-    description: Custom thenables will no longer be wrapped in native Promises.
-                 Non-thenables will be returned with a warning.
--->
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект для корреляции событий трассировки
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат `fn` или результат `.then(...)`, если у канала трассировки есть активные подписчики. Если значение не `Promise` и не thenable, оно возвращается как есть и выводится предупреждение.
 
-* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
-* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект для корреляции событий трассировки
-* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
-* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат `fn` или результат `.then(...)`, если у канала трассировки есть активные подписчики. Если значение не `Promise` и не thenable, оно возвращается как есть и выводится предупреждение.
-
-Трассирует асинхронный вызов, возвращающий [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) или [thenable-объект][thenable-объект]. Всегда генерируются [`событие start`](#startevent) и [`событие end`](#endevent) вокруг синхронной части; при разрешении или отклонении промиса — [`событие asyncStart`](#asyncstartevent) и [`событие asyncEnd`](#asyncendevent). Возможен [`событие error`](#errorevent), если функция выбросила ошибку или промис отклонён. Выполнение идёт через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
+Трассирует асинхронный вызов, возвращающий [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) или [thenable-объект](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables). Всегда генерируются [`событие start`](#startevent) и [`событие end`](#endevent) вокруг синхронной части; при разрешении или отклонении промиса — [`событие asyncStart`](#asyncstartevent) и [`событие asyncEnd`](#asyncendevent). Возможен [`событие error`](#errorevent), если функция выбросила ошибку или промис отклонён. Выполнение идёт через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
 
 Если `fn` вернула не промис и не thenable, значение возвращается с предупреждением, без событий `asyncStart` и `asyncEnd`.
 
@@ -1002,7 +825,7 @@ changes:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     channels.tracePromise(async () => {
-      // Do something
+      // полезная работа
     }, {
       some: 'thing',
     });
@@ -1016,7 +839,7 @@ changes:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     channels.tracePromise(async () => {
-      // Do something
+      // полезная работа
     }, {
       some: 'thing',
     });
@@ -1024,18 +847,12 @@ changes:
 
 #### `tracingChannel.traceCallback(fn[, position[, context[, thisArg[, ...args]]]])`
 
-<!-- YAML
-added:
- - v19.9.0
- - v18.19.0
--->
-
-* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция, принимающая колбэк, для обёртки трассировкой
-* `position` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) индекс (с нуля) аргумента с ожидаемым колбэком (по умолчанию — последний аргумент, если передан `undefined`)
-* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции (по умолчанию `{}`, если `undefined`)
-* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) аргументы вызова (должен включать колбэк)
-* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция, принимающая колбэк, для обёртки трассировкой
+-   `position` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) индекс (с нуля) аргумента с ожидаемым колбэком (по умолчанию — последний аргумент, если передан `undefined`)
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции (по умолчанию `{}`, если `undefined`)
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) аргументы вызова (должен включать колбэк)
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
 Трассирует вызов функции с колбэком в типичной конвенции «ошибка первым аргументом». Всегда даёт [`событие start`](#startevent) и [`событие end`](#endevent) вокруг синхронной части и [`событие asyncStart`](#asyncstartevent) с [`событие asyncEnd`](#asyncendevent) вокруг выполнения колбэка. Возможен [`событие error`](#errorevent), если функция выбросила ошибку или в колбэк передан первый аргумент (ошибка). Выполнение через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
 
@@ -1049,7 +866,7 @@ added:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     channels.traceCallback((arg1, callback) => {
-      // Do something
+      // полезная работа
       callback(null, 'result');
     }, 1, {
       some: 'thing',
@@ -1064,14 +881,14 @@ added:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     channels.traceCallback((arg1, callback) => {
-      // Do something
+      // полезная работа
       callback(null, 'result');
     }, 1, {
       some: 'thing',
     }, thisArg, arg1, callback);
     ```
 
-Колбэк также выполняется внутри [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args), что в ряде случаев помогает восстановить контекст после [потери контекста][context loss].
+Колбэк также выполняется внутри [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args), что в ряде случаев помогает восстановить контекст после [потери контекста](async_context.md#troubleshooting-context-loss).
 
 === "MJS"
 
@@ -1117,15 +934,9 @@ added:
 
 #### `tracingChannel.hasSubscribers`
 
-<!-- YAML
-added:
- - v22.0.0
- - v20.13.0
--->
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если хотя бы у одного из каналов есть подписчик, иначе `false`.
 
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если хотя бы у одного из каналов есть подписчик, иначе `false`.
-
-Вспомогательное свойство экземпляра [`TracingChannel`](#class-tracingchannel): есть ли подписчики у любого из [каналов TracingChannel][TracingChannel Channels].
+Вспомогательное свойство экземпляра [`TracingChannel`](#class-tracingchannel): есть ли подписчики у любого из [каналов TracingChannel](#tracingchannel-channels).
 
 === "MJS"
 
@@ -1135,7 +946,7 @@ added:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     if (channels.hasSubscribers) {
-      // Do something
+      // полезная работа
     }
     ```
 
@@ -1147,20 +958,15 @@ added:
     const channels = diagnostics_channel.tracingChannel('my-channel');
 
     if (channels.hasSubscribers) {
-      // Do something
+      // полезная работа
     }
     ```
 
-### Класс: `BoundedChannel`
-
-<!-- YAML
-added: REPLACEME
--->
+### Класс: `BoundedChannel` {#class-boundedchannel}
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
-
 
 Класс `BoundedChannel` — упрощённый [`TracingChannel`](#class-tracingchannel): трассируются только синхронные операции; два канала (`start` и `end`) вместо пяти, без `asyncStart`, `asyncEnd` и `error`. Подходит для операций без асинхронных продолжений и отдельной обработки ошибок.
 
@@ -1168,11 +974,7 @@ added: REPLACEME
 
 #### `boundedChannel.hasSubscribers`
 
-<!-- YAML
-added: REPLACEME
--->
-
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если у одного из каналов есть подписчик, иначе `false`.
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если у одного из каналов есть подписчик, иначе `false`.
 
 Проверяет наличие подписчиков у каналов `start` или `end`.
 
@@ -1202,13 +1004,9 @@ added: REPLACEME
 
 #### `boundedChannel.subscribe(handlers)`
 
-<!-- YAML
-added: REPLACEME
--->
-
-* `handlers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) подписчики каналов
-  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события start
-  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события end
+-   `handlers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) подписчики каналов
+    -   `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события start
+    -   `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события end
 
 Подписка на события bounded-канала. Эквивалентно [`channel.subscribe(onMessage)`](#channelsubscribeonmessage) для каждого канала.
 
@@ -1221,10 +1019,10 @@ added: REPLACEME
 
     wc.subscribe({
       start(message) {
-        // Handle start
+        // обработка start
       },
       end(message) {
-        // Handle end
+        // обработка end
       },
     });
     ```
@@ -1238,24 +1036,20 @@ added: REPLACEME
 
     wc.subscribe({
       start(message) {
-        // Handle start
+        // обработка start
       },
       end(message) {
-        // Handle end
+        // обработка end
       },
     });
     ```
 
 #### `boundedChannel.unsubscribe(handlers)`
 
-<!-- YAML
-added: REPLACEME
--->
-
-* `handlers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) подписчики каналов
-  * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события start
-  * `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события end
-* Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если все обработчики сняты, иначе `false`.
+-   `handlers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) подписчики каналов
+    -   `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события start
+    -   `end` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) подписчик события end
+-   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если все обработчики сняты, иначе `false`.
 
 Отписка от событий bounded-канала. Эквивалентно [`channel.unsubscribe(onMessage)`](#channelunsubscribeonmessage) на каждом канале.
 
@@ -1293,15 +1087,11 @@ added: REPLACEME
 
 #### `boundedChannel.run(context, fn[, thisArg[, ...args]])`
 
-<!-- YAML
-added: REPLACEME
--->
-
-* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции событий
-* `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
-* `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
-* `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
-* Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции событий
+-   `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) функция для обёртки трассировкой
+-   `thisArg` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) значение `this` для вызова
+-   `...args` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) необязательные аргументы функции
+-   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) результат вызова `fn`
 
 Трассирует синхронный вызов: события `start` и `end` вокруг выполнения. Функция выполняется через [`channel.runStores(context, ...)`](#channelrunstorescontext-fn-thisarg-args) на канале `start`.
 
@@ -1313,7 +1103,7 @@ added: REPLACEME
     const wc = boundedChannel('my-operation');
 
     const result = wc.run({ operationId: '123' }, () => {
-      // Perform operation
+      // выполнение операции
       return 42;
     });
     ```
@@ -1326,19 +1116,15 @@ added: REPLACEME
     const wc = boundedChannel('my-operation');
 
     const result = wc.run({ operationId: '123' }, () => {
-      // Perform operation
+      // выполнение операции
       return 42;
     });
     ```
 
 #### `boundedChannel.withScope([context])`
 
-<!-- YAML
-added: REPLACEME
--->
-
-* `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции событий
-* Возвращает: [`<BoundedChannelScope>`](diagnostics_channel.md) объект области с `Disposable`
+-   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) общий объект корреляции событий
+-   Возвращает: [`<BoundedChannelScope>`](#class-boundedchannelscope) объект области с `Disposable`
 
 Создаёт область для трассировки синхронной операции с явным управлением ресурсами (синтаксис `using`). Публикует события `start` и `end`, входит в привязанные хранилища и выполняет очистку при освобождении.
 
@@ -1352,12 +1138,12 @@ added: REPLACEME
     const context = { operationId: '123' };
     {
       using scope = wc.withScope(context);
-      // Stores are entered, start event is published
+      // хранилища введены, опубликовано событие start
 
-      // Perform work and set result on context
+      // работа и запись результата в context
       context.result = 42;
     }
-    // End event is published, stores are restored automatically
+    // публикуется событие end, хранилища автоматически восстанавливаются
     ```
 
 === "CJS"
@@ -1370,24 +1156,19 @@ added: REPLACEME
     const context = { operationId: '123' };
     {
       using scope = wc.withScope(context);
-      // Stores are entered, start event is published
+      // хранилища введены, опубликовано событие start
 
-      // Perform work and set result on context
+      // работа и запись результата в context
       context.result = 42;
     }
-    // End event is published, stores are restored automatically
+    // публикуется событие end, хранилища автоматически восстанавливаются
     ```
 
-### Класс: `BoundedChannelScope`
-
-<!-- YAML
-added: REPLACEME
--->
+### Класс: `BoundedChannelScope` {#class-boundedchannelscope}
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
-
 
 Класс `BoundedChannelScope` — область с `Disposable`, создаваемая [`boundedChannel.withScope(context)`](#boundedchannelwithscopecontext). Управляет жизненным циклом трассируемой операции, публикует события и контексты хранилищ.
 
@@ -1403,9 +1184,9 @@ added: REPLACEME
     const context = {};
     {
       using scope = wc.withScope(context);
-      // Start event is published, stores are entered
+      // публикуется событие start, вводятся хранилища
       context.result = performOperation();
-      // End event is automatically published at end of block
+      // событие end автоматически публикуется в конце блока
     }
     ```
 
@@ -1419,22 +1200,22 @@ added: REPLACEME
     const context = {};
     {
       using scope = wc.withScope(context);
-      // Start event is published, stores are entered
+      // публикуется событие start, вводятся хранилища
       context.result = performOperation();
-      // End event is automatically published at end of block
+      // событие end автоматически публикуется в конце блока
     }
     ```
 
-### Каналы BoundedChannel {: #boundedchannel-channels}
+### Каналы BoundedChannel {#boundedchannel-channels}
 
 `BoundedChannel` состоит из двух каналов диагностики, описывающих жизненный цикл области, созданной синтаксисом `using`:
 
-* `tracing:${name}:start` — публикуется при выполнении оператора `using` (создание области)
-* `tracing:${name}:end` — публикуется при выходе из блока (освобождение области)
+-   `tracing:${name}:start` — публикуется при выполнении оператора `using` (создание области)
+-   `tracing:${name}:end` — публикуется при выходе из блока (освобождение области)
 
 При использовании `using` с [`boundedChannel.withScope([context])`][] событие `start` публикуется сразу при входе в оператор, а `end` — автоматически при освобождении в конце блока. Все события разделяют один объект контекста, который при выполнении области можно дополнять полями вроде `result`.
 
-### Каналы TracingChannel {: #tracingchannel-channels}
+### Каналы TracingChannel {#tracingchannel-channels}
 
 `TracingChannel` — набор нескольких `diagnostics_channel`, соответствующих этапам жизненного цикла одного трассируемого действия. Поведение разбито на пять каналов: `start`, `end`, `asyncStart`, `asyncEnd` и `error`. Одно трассируемое действие использует один и тот же объект события во всех точках — это удобно для корреляции (например через `WeakMap`).
 
@@ -1444,21 +1225,21 @@ added: REPLACEME
 
 Имена каналов трассировки рекомендуется задавать по шаблону:
 
-* `tracing:module.class.method:start` или `tracing:module.function:start`
-* `tracing:module.class.method:end` или `tracing:module.function:end`
-* `tracing:module.class.method:asyncStart` или `tracing:module.function:asyncStart`
-* `tracing:module.class.method:asyncEnd` или `tracing:module.function:asyncEnd`
-* `tracing:module.class.method:error` или `tracing:module.function:error`
+-   `tracing:module.class.method:start` или `tracing:module.function:start`
+-   `tracing:module.class.method:end` или `tracing:module.function:end`
+-   `tracing:module.class.method:asyncStart` или `tracing:module.function:asyncStart`
+-   `tracing:module.class.method:asyncEnd` или `tracing:module.function:asyncEnd`
+-   `tracing:module.class.method:error` или `tracing:module.function:error`
 
 #### `start(event)`
 
-* Имя: `tracing:${name}:start`
+-   Имя: `tracing:${name}:start`
 
 Событие `start` — момент вызова функции. В данных события могут быть аргументы функции или любая информация, доступная в самом начале выполнения.
 
 #### `end(event)`
 
-* Имя: `tracing:${name}:end`
+-   Имя: `tracing:${name}:end`
 
 Событие `end` — момент возврата значения из вызова функции. Для асинхронной функции это момент возврата промиса, а не внутреннего `return` в теле. Если трассируемая функция синхронна, поле `result` содержит возвращаемое значение; при ошибке может быть поле `error`.
 
@@ -1466,7 +1247,7 @@ added: REPLACEME
 
 #### `asyncStart(event)`
 
-* Имя: `tracing:${name}:asyncStart`
+-   Имя: `tracing:${name}:asyncStart`
 
 Событие `asyncStart` — достижение колбэка или продолжения трассируемой функции. Здесь доступны аргументы колбэка и др., описывающие «результат» действия.
 
@@ -1478,13 +1259,13 @@ added: REPLACEME
 
 #### `asyncEnd(event)`
 
-* Имя: `tracing:${name}:asyncEnd`
+-   Имя: `tracing:${name}:asyncEnd`
 
 Событие `asyncEnd` — завершение колбэка асинхронной функции. Данные после `asyncStart` обычно не меняются, но полезно зафиксировать момент окончания колбэка.
 
 #### `error(event)`
 
-* Имя: `tracing:${name}:error`
+-   Имя: `tracing:${name}:error`
 
 Событие `error` — любая ошибка трассируемой функции, синхронная или асинхронная. Исключение в синхронной части попадает в поле `error` и вызывает событие `error`. Ошибка из колбэка или отклонение промиса также попадают в `error` и вызывают событие.
 
@@ -1498,34 +1279,33 @@ added: REPLACEME
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
 ##### Событие: `'console.log'`
 
-* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.log()`. Передаётся массив аргументов вызова `console.log()`.
 
 ##### Событие: `'console.info'`
 
-* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.info()`. Передаётся массив аргументов вызова `console.info()`.
 
 ##### Событие: `'console.debug'`
 
-* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.debug()`. Передаётся массив аргументов вызова `console.debug()`.
 
 ##### Событие: `'console.warn'`
 
-* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.warn()`. Передаётся массив аргументов вызова `console.warn()`.
 
 ##### Событие: `'console.error'`
 
-* `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
+-   `args` [`<any[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
 Генерируется при вызове `console.error()`. Передаётся массив аргументов вызова `console.error()`.
 
@@ -1535,55 +1315,54 @@ added: REPLACEME
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
 ##### Событие: `'http.client.request.created'`
 
-* `request` [`<http.ClientRequest>`](#httpclientrequest)
+-   `request` [`<http.ClientRequest>`](http.md#class-httpclientrequest)
 
 Генерируется, когда клиент создаёт объект запроса. В отличие от `http.client.request.start`, событие до отправки запроса.
 
 ##### Событие: `'http.client.request.start'`
 
-* `request` [`<http.ClientRequest>`](#httpclientrequest)
+-   `request` [`<http.ClientRequest>`](http.md#class-httpclientrequest)
 
 Генерируется, когда клиент начинает запрос.
 
 ##### Событие: `'http.client.request.error'`
 
-* `request` [`<http.ClientRequest>`](#httpclientrequest)
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `request` [`<http.ClientRequest>`](http.md#class-httpclientrequest)
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке клиентского запроса.
 
 ##### Событие: `'http.client.response.finish'`
 
-* `request` [`<http.ClientRequest>`](#httpclientrequest)
-* `response` [`<http.IncomingMessage>`](#httpincomingmessage)
+-   `request` [`<http.ClientRequest>`](http.md#class-httpclientrequest)
+-   `response` [`<http.IncomingMessage>`](http.md#class-httpincomingmessage)
 
 Генерируется, когда клиент получил ответ.
 
 ##### Событие: `'http.server.request.start'`
 
-* `request` [`<http.IncomingMessage>`](#httpincomingmessage)
-* `response` [`<http.ServerResponse>`](#httpserverresponse)
-* `socket` [`<net.Socket>`](net.md#class-netsocket)
-* `server` [`<http.Server>`](#httpserver)
+-   `request` [`<http.IncomingMessage>`](http.md#class-httpincomingmessage)
+-   `response` [`<http.ServerResponse>`](http.md#class-httpserverresponse)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket)
+-   `server` [`<http.Server>`](http.md#class-httpserver)
 
 Генерируется, когда сервер получил запрос.
 
 ##### Событие: `'http.server.response.created'`
 
-* `request` [`<http.IncomingMessage>`](#httpincomingmessage)
-* `response` [`<http.ServerResponse>`](#httpserverresponse)
+-   `request` [`<http.IncomingMessage>`](http.md#class-httpincomingmessage)
+-   `response` [`<http.ServerResponse>`](http.md#class-httpserverresponse)
 
 Генерируется, когда сервер создал объект ответа. Событие до отправки ответа.
 
 ##### Событие: `'http.server.response.finish'`
 
-* `request` [`<http.IncomingMessage>`](#httpincomingmessage)
-* `response` [`<http.ServerResponse>`](#httpserverresponse)
-* `socket` [`<net.Socket>`](net.md#class-netsocket)
-* `server` [`<http.Server>`](#httpserver)
+-   `request` [`<http.IncomingMessage>`](http.md#class-httpincomingmessage)
+-   `response` [`<http.ServerResponse>`](http.md#class-httpserverresponse)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket)
+-   `server` [`<http.Server>`](http.md#class-httpserver)
 
 Генерируется, когда сервер отправил ответ.
 
@@ -1593,91 +1372,90 @@ added: REPLACEME
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
 ##### Событие: `'http2.client.stream.created'`
 
-* `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
-* `headers` [`<HTTP/2 Headers Object>`](#headers-object)
+-   `stream` [`<ClientHttp2Stream>`](http2.md#class-clienthttp2stream)
+-   `headers` [`<HTTP/2 Headers Object>`](http2.md#headers-object)
 
 Генерируется при создании потока на клиенте.
 
 ##### Событие: `'http2.client.stream.start'`
 
-* `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
-* `headers` [`<HTTP/2 Headers Object>`](#headers-object)
+-   `stream` [`<ClientHttp2Stream>`](http2.md#class-clienthttp2stream)
+-   `headers` [`<HTTP/2 Headers Object>`](http2.md#headers-object)
 
 Генерируется при старте потока на клиенте.
 
 ##### Событие: `'http2.client.stream.error'`
 
-* `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `stream` [`<ClientHttp2Stream>`](http2.md#class-clienthttp2stream)
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке обработки потока на клиенте.
 
 ##### Событие: `'http2.client.stream.finish'`
 
-* `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
-* `headers` [`<HTTP/2 Headers Object>`](#headers-object)
-* `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `stream` [`<ClientHttp2Stream>`](http2.md#class-clienthttp2stream)
+-   `headers` [`<HTTP/2 Headers Object>`](http2.md#headers-object)
+-   `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Генерируется при получении потока на клиенте.
 
 ##### Событие: `'http2.client.stream.bodyChunkSent'`
 
-* `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
-* `writev` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
-* `data` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer[]>`](buffer.md#buffer) | [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `chunk` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-  * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `stream` [`<ClientHttp2Stream>`](http2.md#class-clienthttp2stream)
+-   `writev` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
+-   `data` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer[]>`](buffer.md#buffer) | [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `chunk` [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Генерируется при отправке фрагмента тела потока клиента.
 
 ##### Событие: `'http2.client.stream.bodySent'`
 
-* `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
+-   `stream` [`<ClientHttp2Stream>`](http2.md#class-clienthttp2stream)
 
 Генерируется после полной отправки тела потока клиента.
 
 ##### Событие: `'http2.client.stream.close'`
 
-* `stream` [`<ClientHttp2Stream>`](#class-clienthttp2stream)
+-   `stream` [`<ClientHttp2Stream>`](http2.md#class-clienthttp2stream)
 
 Генерируется при закрытии потока на клиенте. Код ошибки HTTP/2 при закрытии доступен в `stream.rstCode`.
 
 ##### Событие: `'http2.server.stream.created'`
 
-* `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
-* `headers` [`<HTTP/2 Headers Object>`](#headers-object)
+-   `stream` [`<ServerHttp2Stream>`](http2.md#class-serverhttp2stream)
+-   `headers` [`<HTTP/2 Headers Object>`](http2.md#headers-object)
 
 Генерируется при создании потока на сервере.
 
 ##### Событие: `'http2.server.stream.start'`
 
-* `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
-* `headers` [`<HTTP/2 Headers Object>`](#headers-object)
+-   `stream` [`<ServerHttp2Stream>`](http2.md#class-serverhttp2stream)
+-   `headers` [`<HTTP/2 Headers Object>`](http2.md#headers-object)
 
 Генерируется при старте потока на сервере.
 
 ##### Событие: `'http2.server.stream.error'`
 
-* `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `stream` [`<ServerHttp2Stream>`](http2.md#class-serverhttp2stream)
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке обработки потока на сервере.
 
 ##### Событие: `'http2.server.stream.finish'`
 
-* `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
-* `headers` [`<HTTP/2 Headers Object>`](#headers-object)
-* `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `stream` [`<ServerHttp2Stream>`](http2.md#class-serverhttp2stream)
+-   `headers` [`<HTTP/2 Headers Object>`](http2.md#headers-object)
+-   `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Генерируется при отправке потока с сервера.
 
 ##### Событие: `'http2.server.stream.close'`
 
-* `stream` [`<ServerHttp2Stream>`](#class-serverhttp2stream)
+-   `stream` [`<ServerHttp2Stream>`](http2.md#class-serverhttp2stream)
 
 Генерируется при закрытии потока на сервере. Код ошибки HTTP/2 при закрытии доступен в `stream.rstCode`.
 
@@ -1687,54 +1465,53 @@ added: REPLACEME
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
 ##### Событие: `'module.require.start'`
 
-* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
-  * `id` — аргумент `require()`, имя модуля.
-  * `parentFilename` — файл модуля, вызвавшего `require(id)`.
+-   `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
+    -   `id` — аргумент `require()`, имя модуля.
+    -   `parentFilename` — файл модуля, вызвавшего `require(id)`.
 
 Генерируется при выполнении `require()`. См. [`событие start`](#startevent).
 
 ##### Событие: `'module.require.end'`
 
-* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
-  * `id` — аргумент `require()`, имя модуля.
-  * `parentFilename` — файл модуля, вызвавшего `require(id)`.
+-   `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
+    -   `id` — аргумент `require()`, имя модуля.
+    -   `parentFilename` — файл модуля, вызвавшего `require(id)`.
 
 Генерируется при возврате из `require()`. См. [`событие end`](#endevent).
 
 ##### Событие: `'module.require.error'`
 
-* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
-  * `id` — аргумент `require()`, имя модуля.
-  * `parentFilename` — файл модуля, вызвавшего `require(id)`.
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
+    -   `id` — аргумент `require()`, имя модуля.
+    -   `parentFilename` — файл модуля, вызвавшего `require(id)`.
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке `require()`. См. [`событие error`](#errorevent).
 
 ##### Событие: `'module.import.asyncStart'`
 
-* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
-  * `id` — аргумент `import()`, имя модуля.
-  * `parentURL` — URL модуля, вызвавшего `import(id)`.
+-   `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
+    -   `id` — аргумент `import()`, имя модуля.
+    -   `parentURL` — URL модуля, вызвавшего `import(id)`.
 
 Генерируется при вызове `import()`. См. [`событие asyncStart`](#asyncstartevent).
 
 ##### Событие: `'module.import.asyncEnd'`
 
-* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
-  * `id` — аргумент `import()`, имя модуля.
-  * `parentURL` — URL модуля, вызвавшего `import(id)`.
+-   `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
+    -   `id` — аргумент `import()`, имя модуля.
+    -   `parentURL` — URL модуля, вызвавшего `import(id)`.
 
 Генерируется по завершении `import()`. См. [`событие asyncEnd`](#asyncendevent).
 
 ##### Событие: `'module.import.error'`
 
-* `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
-  * `id` — аргумент `import()`, имя модуля.
-  * `parentURL` — URL модуля, вызвавшего `import(id)`.
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `event` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) со свойствами:
+    -   `id` — аргумент `import()`, имя модуля.
+    -   `parentURL` — URL модуля, вызвавшего `import(id)`.
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке `import()`. См. [`событие error`](#errorevent).
 
@@ -1744,36 +1521,35 @@ added: REPLACEME
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
 ##### Событие: `'net.client.socket'`
 
-* `socket` [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
 
 Генерируется при создании нового клиентского TCP- или pipe-сокета.
 
 ##### Событие: `'net.server.socket'`
 
-* `socket` [`<net.Socket>`](net.md#class-netsocket)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket)
 
 Генерируется при приёме нового TCP- или pipe-подключения.
 
 ##### Событие: `'tracing:net.server.listen:asyncStart'`
 
-* `server` [`<net.Server>`](net.md#class-netserver)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `server` [`<net.Server>`](net.md#class-netserver)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Генерируется при вызове [`net.Server.listen()`](net.md#serverlisten), до настройки порта или pipe.
 
 ##### Событие: `'tracing:net.server.listen:asyncEnd'`
 
-* `server` [`<net.Server>`](net.md#class-netserver)
+-   `server` [`<net.Server>`](net.md#class-netserver)
 
 Генерируется после завершения [`net.Server.listen()`](net.md#serverlisten) — сервер готов принимать соединения.
 
 ##### Событие: `'tracing:net.server.listen:error'`
 
-* `server` [`<net.Server>`](net.md#class-netserver)
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `server` [`<net.Server>`](net.md#class-netserver)
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке [`net.Server.listen()`](net.md#serverlisten).
 
@@ -1783,10 +1559,9 @@ added: REPLACEME
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
 ##### Событие: `'udp.socket'`
 
-* `socket` [`<dgram.Socket>`](dgram.md#class-dgramsocket)
+-   `socket` [`<dgram.Socket>`](dgram.md#class-dgramsocket)
 
 Генерируется при создании нового UDP-сокета.
 
@@ -1796,42 +1571,37 @@ added: REPLACEME
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-<!-- YAML
-added: v16.18.0
--->
-
 ##### Событие: `'child_process'`
 
-* `process` [`<ChildProcess>`](child_process.md#class-childprocess)
+-   `process` [`<ChildProcess>`](child_process.md#class-childprocess)
 
 Генерируется при создании нового дочернего процесса.
 
 `tracing:child_process.spawn:start`
 
-* `process` [`<ChildProcess>`](child_process.md#class-childprocess)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `process` [`<ChildProcess>`](child_process.md#class-childprocess)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Генерируется при вызове [`child_process.spawn()`](child_process.md#child_processspawncommand-args-options), до фактического запуска процесса.
 
 `tracing:child_process.spawn:end`
 
-* `process` [`<ChildProcess>`](child_process.md#class-childprocess)
+-   `process` [`<ChildProcess>`](child_process.md#class-childprocess)
 
 Генерируется после успешного завершения [`child_process.spawn()`](child_process.md#child_processspawncommand-args-options) — процесс создан.
 
 `tracing:child_process.spawn:error`
 
-* `process` [`<ChildProcess>`](child_process.md#class-childprocess)
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
+-   `process` [`<ChildProcess>`](child_process.md#class-childprocess)
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
 Генерируется при ошибке [`child_process.spawn()`](child_process.md#child_processspawncommand-args-options).
 
 ##### Событие: `'execve'`
 
-* `execPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `env` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `execPath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `args` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `env` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Генерируется при вызове [`process.execve()`](process.md#processexecvefile-args-env).
 
@@ -1841,41 +1611,36 @@ added: v16.18.0
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-<!-- YAML
-added: v25.9.0
--->
-
 Эти каналы генерируются при каждом вызове [`locks.request()`](worker_threads.md#locksrequestname-options-callback). Подробнее о механизме веб-блокировок — [`worker_threads.locks`](worker_threads.md#worker_threadslocks).
 
 ##### Событие: `'locks.request.start'`
 
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
-* `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
+-   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
 
 Генерируется при инициации запроса блокировки, до её выдачи.
 
 ##### Событие: `'locks.request.grant'`
 
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
-* `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
+-   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
 
 Генерируется при успешной выдаче блокировки, непосредственно перед запуском колбэка.
 
 ##### Событие: `'locks.request.miss'`
 
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
-* `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
+-   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
 
 Генерируется, если `ifAvailable` равен `true`, блокировка сразу недоступна и колбэк вызывается с `null` вместо объекта `Lock`.
 
 ##### Событие: `'locks.request.end'`
 
-* `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
-* `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
-* `steal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) используется ли семантика steal
-* `ifAvailable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) используется ли семантика ifAvailable
-* `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | undefined ошибка из колбэка, если была
+-   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) имя ресурса блокировки
+-   `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) режим: `'exclusive'` или `'shared'`
+-   `steal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) используется ли семантика steal
+-   `ifAvailable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) используется ли семантика ifAvailable
+-   `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) | undefined ошибка из колбэка, если была
 
 Генерируется по завершении запроса блокировки: успех колбэка, исключение или украденная блокировка.
 
@@ -1885,40 +1650,8 @@ added: v25.9.0
 
     Фича изменяется и не допускается флагом командной строки. Может быть изменена или удалена в последующих версиях.
 
-
-<!-- YAML
-added: v16.18.0
--->
-
 ##### Событие: `'worker_threads'`
 
-* `worker` [`<Worker>`](worker_threads.md#class-worker)
+-   `worker` [`<Worker>`](worker_threads.md#class-worker)
 
 Генерируется при создании нового потока worker.
-
-[BoundedChannel Channels]: #boundedchannel-channels
-[TracingChannel Channels]: #tracingchannel-channels
-[`'uncaughtException'`]: process.md#event-uncaughtexception
-[`BoundedChannel`]: #class-boundedchannel
-[`TracingChannel`]: #class-tracingchannel
-[`событие asyncEnd`]: #asyncendevent
-[`событие asyncStart`]: #asyncstartevent
-[`boundedChannel.withScope(context)`]: #boundedchannelwithscopecontext
-[`channel.bindStore(store)`]: #channelbindstorestore-transform
-[`channel.runStores(context, ...)`]: #channelrunstorescontext-fn-thisarg-args
-[`channel.subscribe(onMessage)`]: #channelsubscribeonmessage
-[`channel.unsubscribe(onMessage)`]: #channelunsubscribeonmessage
-[`channel.withStoreScope(data)`]: #channelwithstorescopedata
-[`child_process.spawn()`]: child_process.md#child_processspawncommand-args-options
-[`diagnostics_channel.channel(name)`]: #diagnostics_channelchannelname
-[`diagnostics_channel.subscribe(name, onMessage)`]: #diagnostics_channelsubscribename-onmessage
-[`diagnostics_channel.tracingChannel()`]: #diagnostics_channeltracingchannelnameorchannels
-[`событие end`]: #endevent
-[`событие error`]: #errorevent
-[`locks.request()`]: worker_threads.md#locksrequestname-options-callback
-[`net.Server.listen()`]: net.md#serverlisten
-[`process.execve()`]: process.md#processexecvefile-args-env
-[`событие start`]: #startevent
-[`worker_threads.locks`]: worker_threads.md#worker_threadslocks
-[context loss]: async_context.md#troubleshooting-context-loss
-[thenable-объект]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables
