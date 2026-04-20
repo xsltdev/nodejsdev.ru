@@ -7,17 +7,15 @@ description: Устаревший модуль node:punycode — обёртка 
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/punycode.html)
 
-<!-- YAML
-deprecated: v7.0.0
--->
 
-<!--introduced_in=v0.10.0-->
+
+
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
     Эта возможность проблемна и может измениться. Полагаться на неё не следует. Её использование может приводить к ошибкам. Обратная совместимость не гарантируется.
 
-<!-- source_link=lib/punycode.js -->
+
 
 **Версия модуля punycode, входящего в состав Node.js, объявлена устаревающей.**
 В одной из будущих основных версий Node.js этот модуль будет удалён. Пользователям,
@@ -45,9 +43,7 @@ const punycode = require('node:punycode');
 
 ## `punycode.decode(string)`
 
-<!-- YAML
-added: v0.5.1
--->
+
 
 * `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -61,9 +57,7 @@ punycode.decode('--dqo34k'); // '☃-⌘'
 
 ## `punycode.encode(string)`
 
-<!-- YAML
-added: v0.5.1
--->
+
 
 * `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -77,9 +71,7 @@ punycode.encode('☃-⌘'); // '--dqo34k'
 
 ## `punycode.toASCII(domain)`
 
-<!-- YAML
-added: v0.6.1
--->
+
 
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -96,9 +88,7 @@ punycode.toASCII('example.com'); // 'example.com'
 
 ## `punycode.toUnicode(domain)`
 
-<!-- YAML
-added: v0.6.1
--->
+
 
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -114,15 +104,11 @@ punycode.toUnicode('example.com');       // 'example.com'
 
 ## `punycode.ucs2`
 
-<!-- YAML
-added: v0.7.0
--->
+
 
 ### `punycode.ucs2.decode(string)`
 
-<!-- YAML
-added: v0.7.0
--->
+
 
 * `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -137,9 +123,7 @@ punycode.ucs2.decode('\uD834\uDF06'); // [0x1D306]
 
 ### `punycode.ucs2.encode(codePoints)`
 
-<!-- YAML
-added: v0.7.0
--->
+
 
 * `codePoints` [`<integer[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -152,9 +136,7 @@ punycode.ucs2.encode([0x1D306]); // '\uD834\uDF06'
 
 ## `punycode.version`
 
-<!-- YAML
-added: v0.6.1
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 

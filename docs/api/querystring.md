@@ -7,15 +7,15 @@ description: Модуль node:querystring предоставляет утили
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/querystring.html)
 
-<!--introduced_in=v0.1.25-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
-<!--name=querystring-->
 
-<!-- source_link=lib/querystring.js -->
+
+
 
 Модуль `node:querystring` предоставляет утилиты для разбора и форматирования строк запросов URL. Доступ к нему можно получить так:
 
@@ -27,25 +27,19 @@ const querystring = require('node:querystring');
 
 ## `querystring.decode()`
 
-<!-- YAML
-added: v0.1.99
--->
+
 
 Функция `querystring.decode()` является псевдонимом для `querystring.parse()`.
 
 ## `querystring.encode()`
 
-<!-- YAML
-added: v0.1.99
--->
+
 
 Функция `querystring.encode()` является псевдонимом для `querystring.stringify()`.
 
 ## `querystring.escape(str)`
 
-<!-- YAML
-added: v0.1.25
--->
+
 
 * `str` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -55,21 +49,7 @@ added: v0.1.25
 
 ## `querystring.parse(str[, sep[, eq[, options]]])`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version: v8.0.0
-    pr-url: https://github.com/nodejs/node/pull/10967
-    description: Multiple empty entries are now parsed correctly (e.g. `&=&=`).
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/6055
-    description: The returned object no longer inherits from `Object.prototype`.
-  - version:
-    - v6.0.0
-    - v4.2.4
-    pr-url: https://github.com/nodejs/node/pull/3807
-    description: The `eq` parameter may now have a length of more than `1`.
--->
+
 
 Добавлено в: v0.1.25
 
@@ -104,9 +84,7 @@ querystring.parse('w=%D6%D0%CE%C4&foo=bar', null, null,
 
 ## `querystring.stringify(obj[, sep[, eq[, options]]])`
 
-<!-- YAML
-added: v0.1.25
--->
+
 
 * `obj` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект для сериализации в строку запроса URL
 * `sep` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Подстрока, используемая для разделения пар ключей и значений в строке запроса. **По умолчанию:** `'&'`.
@@ -139,9 +117,7 @@ querystring.stringify({ w: '中文', foo: 'bar' }, null, null,
 
 ## `querystring.unescape(str)`
 
-<!-- YAML
-added: v0.1.25
--->
+
 
 * `str` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 

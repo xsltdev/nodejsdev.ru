@@ -7,13 +7,13 @@ description: Модуль node:url — разбор и формирование 
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/url.html)
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-<!-- source_link=lib/url.js -->
+
 
 Модуль `node:url` предоставляет средства для разрешения и разбора URL. Подключение:
 
@@ -118,15 +118,7 @@ console.log(myURL.href);
 
 ### Класс: `URL`
 
-<!-- YAML
-added:
-  - v7.0.0
-  - v6.13.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18281
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Совместимый с браузерами класс `URL`, реализованный по [WHATWG URL Standard][WHATWG URL Standard].
 [Примеры разобранных URL][examples of parsed URLs] приведены в самом стандарте.
@@ -140,14 +132,7 @@ changes:
 
 #### `new URL(input[, base])`
 
-<!-- YAML
-changes:
-  - version:
-    - v20.0.0
-    - v18.17.0
-    pr-url: https://github.com/nodejs/node/pull/47339
-    description: Требование ICU снято.
--->
+
 
 * `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный или относительный входной URL для разбора. Если `input`
   относительный, нужен `base`. Если `input` абсолютный, `base` игнорируется. Если `input`
@@ -306,13 +291,7 @@ console.log(myURL.href);
 
 #### `url.origin`
 
-<!-- YAML
-changes:
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/33325
-    description: Схема «gopher» больше не особая; для неё `url.origin` теперь
-                 возвращает `'null'`.
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -375,12 +354,7 @@ console.log(myURL.href);
 
 #### `url.port`
 
-<!-- YAML
-changes:
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/33325
-    description: Схема «gopher» больше не особая.
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -476,12 +450,7 @@ console.log(myURL.href);
 
 ##### Особые схемы
 
-<!-- YAML
-changes:
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/33325
-    description: Схема «gopher» больше не особая.
--->
+
 
 [WHATWG URL Standard][WHATWG URL Standard] считает ряд схем URL _особенными_ с точки зрения разбора
 и сериализации. Если URL разобран с особой схемой, свойство `url.protocol` можно
@@ -590,11 +559,7 @@ console.log(myURL.href);
 
 #### `url.toJSON()`
 
-<!-- YAML
-added:
-  - v7.7.0
-  - v6.13.0
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -615,15 +580,7 @@ console.log(JSON.stringify(myURLs));
 
 #### `URL.createObjectURL(blob)`
 
-<!-- YAML
-added: v16.7.0
-changes:
- - version:
-    - v24.0.0
-    - v22.17.0
-   pr-url: https://github.com/nodejs/node/pull/57513
-   description: API помечен как стабильный.
--->
+
 
 Добавлено в: v16.7.0
 
@@ -656,15 +613,7 @@ console.log(otherBlob.size);
 
 #### `URL.revokeObjectURL(id)`
 
-<!-- YAML
-added: v16.7.0
-changes:
- - version:
-    - v24.0.0
-    - v22.17.0
-   pr-url: https://github.com/nodejs/node/pull/57513
-   description: API помечен как стабильный.
--->
+
 
 Добавлено в: v16.7.0
 
@@ -676,11 +625,7 @@ id завершается без ошибки.
 
 #### `URL.canParse(input[, base])`
 
-<!-- YAML
-added:
-  - v19.9.0
-  - v18.17.0
--->
+
 
 * `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный или относительный входной URL. Если `input`
   относительный, нужен `base`. Если абсолютный — `base` игнорируется. Если `input`
@@ -699,9 +644,7 @@ const isNotValid = URL.canParse('/foo'); // false
 
 #### `URL.parse(input[, base])`
 
-<!-- YAML
-added: v22.1.0
--->
+
 
 * `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный или относительный входной URL. Если `input`
   относительный, нужен `base`. Если абсолютный — `base` игнорируется. Если `input`
@@ -715,9 +658,7 @@ added: v22.1.0
 
 ### Класс: `URLPattern`
 
-<!-- YAML
-added: v23.8.0
--->
+
 
 !!!warning "Стабильность: 1 - Экспериментальная"
 
@@ -827,15 +768,7 @@ console.log(myPattern.test('https://nodejs.org/docs/latest/api/dns.html'));
 
 ### Класс: `URLSearchParams`
 
-<!-- YAML
-added:
-  - v7.5.0
-  - v6.13.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18281
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 API `URLSearchParams` даёт доступ на чтение и запись к строке запроса `URL`. Класс
 можно использовать отдельно — ниже четыре варианта конструктора. Класс также
@@ -905,11 +838,7 @@ console.log(params.toString());
 
 #### `new URLSearchParams(obj)`
 
-<!-- YAML
-added:
-  - v7.10.0
-  - v6.13.0
--->
+
 
 * `obj` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с парами ключ–значение
 
@@ -932,11 +861,7 @@ console.log(params.toString());
 
 #### `new URLSearchParams(iterable)`
 
-<!-- YAML
-added:
-  - v7.10.0
-  - v6.13.0
--->
+
 
 * `iterable` [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) Итерируемый объект с парами ключ–значение
 
@@ -994,14 +919,7 @@ new URLSearchParams([
 
 #### `urlSearchParams.delete(name[, value])`
 
-<!-- YAML
-changes:
-  - version:
-      - v20.2.0
-      - v18.18.0
-    pr-url: https://github.com/nodejs/node/pull/47885
-    description: Добавлена поддержка необязательного аргумента `value`.
--->
+
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1021,13 +939,7 @@ changes:
 
 #### `urlSearchParams.forEach(fn[, thisArg])`
 
-<!-- YAML
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Некорректный callback в `fn` теперь даёт `ERR_INVALID_ARG_TYPE`,
-                 а не `ERR_INVALID_CALLBACK`.
--->
+
 
 * `fn` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Вызывается для каждой пары имя–значение
 * `thisArg` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Значение `this` при вызове `fn`
@@ -1060,14 +972,7 @@ myURL.searchParams.forEach((value, name, searchParams) => {
 
 #### `urlSearchParams.has(name[, value])`
 
-<!-- YAML
-changes:
-  - version:
-      - v20.2.0
-      - v18.18.0
-    pr-url: https://github.com/nodejs/node/pull/47885
-    description: Добавлена поддержка необязательного аргумента `value`.
--->
+
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1120,21 +1025,13 @@ console.log(params.toString());
 
 #### `urlSearchParams.size`
 
-<!-- YAML
-added:
- - v19.8.0
- - v18.16.0
--->
+
 
 Общее число записей параметров.
 
 #### `urlSearchParams.sort()`
 
-<!-- YAML
-added:
-  - v7.7.0
-  - v6.13.0
--->
+
 
 Сортирует пары имя–значение на месте по имени. Используется [устойчивый алгоритм
 сортировки][stable sorting algorithm], порядок пар с одинаковым именем сохраняется.
@@ -1181,17 +1078,7 @@ for (const [name, value] of params) {
 
 ### `url.domainToASCII(domain)`
 
-<!-- YAML
-added:
-  - v7.4.0
-  - v6.13.0
-changes:
-  - version:
-    - v20.0.0
-    - v18.17.0
-    pr-url: https://github.com/nodejs/node/pull/47339
-    description: Требование ICU снято.
--->
+
 
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1229,17 +1116,7 @@ changes:
 
 ### `url.domainToUnicode(domain)`
 
-<!-- YAML
-added:
-  - v7.4.0
-  - v6.13.0
-changes:
-  - version:
-    - v20.0.0
-    - v18.17.0
-    pr-url: https://github.com/nodejs/node/pull/47339
-    description: Требование ICU снято.
--->
+
 
 * `domain` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -1276,15 +1153,7 @@ changes:
 
 ### `url.fileURLToPath(url[, options])`
 
-<!-- YAML
-added: v10.12.0
-changes:
-  - version:
-    - v22.1.0
-    - v20.13.0
-    pr-url: https://github.com/nodejs/node/pull/52509
-    description: Аргумент `options` задаёт способ разбора аргумента `path`.
--->
+
 
 Добавлено в: v10.12.0
 
@@ -1348,11 +1217,7 @@ changes:
 
 ### `url.fileURLToPathBuffer(url[, options])`
 
-<!--
-added:
- - v24.3.0
- - v22.18.0
--->
+
 
 * `url` [`<URL>`](url.md#the-whatwg-url-api) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строка file URL или объект URL для преобразования в путь.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1372,9 +1237,7 @@ added:
 
 ### `url.format(URL[, options])`
 
-<!-- YAML
-added: v7.6.0
--->
+
 
 * `URL` [`<URL>`](url.md#the-whatwg-url-api) Объект [WHATWG URL][WHATWG URL]
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1425,15 +1288,7 @@ added: v7.6.0
 
 ### `url.pathToFileURL(path[, options])`
 
-<!-- YAML
-added: v10.12.0
-changes:
-  - version:
-    - v22.1.0
-    - v20.13.0
-    pr-url: https://github.com/nodejs/node/pull/52509
-    description: Аргумент `options` задаёт способ возврата значения `path`.
--->
+
 
 Добавлено в: v10.12.0
 
@@ -1477,18 +1332,7 @@ changes:
 
 ### `url.urlToHttpOptions(url)`
 
-<!-- YAML
-added:
-  - v15.7.0
-  - v14.18.0
-changes:
-  - version:
-    - v19.9.0
-    - v18.17.0
-    pr-url: https://github.com/nodejs/node/pull/46989
-    description: Возвращаемый объект также содержит все собственные перечислимые
-                 свойства аргумента `url`.
--->
+
 
 * `url` [`<URL>`](url.md#the-whatwg-url-api) Объект [WHATWG URL][WHATWG URL] для преобразования в объект опций.
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект опций
@@ -1550,17 +1394,7 @@ changes:
 
 ## Унаследованный API URL
 
-<!-- YAML
-changes:
-  - version:
-      - v15.13.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/37784
-    description: Deprecation revoked. Status changed to "Legacy".
-  - version: v11.0.0
-    pr-url: https://github.com/nodejs/node/pull/22715
-    description: This API is deprecated.
--->
+
 
 !!!warning "Стабильность: 3 - Устаревшее"
 
@@ -1568,17 +1402,7 @@ changes:
 
 ### Устаревший `urlObject`
 
-<!-- YAML
-changes:
-  - version:
-      - v15.13.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/37784
-    description: Deprecation revoked. Status changed to "Legacy".
-  - version: v11.0.0
-    pr-url: https://github.com/nodejs/node/pull/22715
-    description: The Legacy URL API is deprecated. Use the WHATWG URL API.
--->
+
 
 Унаследованный `urlObject` (`require('node:url').Url` или
 `import { Url } from 'node:url'`) создаётся и возвращается функцией `url.parse()`.
@@ -1670,29 +1494,7 @@ changes:
 
 ### `url.format(urlObject)`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version: v17.0.0
-    pr-url: https://github.com/nodejs/node/pull/38631
-    description: Now throws an `ERR_INVALID_URL` exception when Punycode
-                 conversion of a hostname introduces changes that could cause
-                 the URL to be re-parsed differently.
-  - version:
-      - v15.13.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/37784
-    description: Deprecation revoked. Status changed to "Legacy".
-  - version: v11.0.0
-    pr-url: https://github.com/nodejs/node/pull/22715
-    description: The Legacy URL API is deprecated. Use the WHATWG URL API.
-  - version: v7.0.0
-    pr-url: https://github.com/nodejs/node/pull/7234
-    description: URLs with a `file:` scheme will now always use the correct
-                 number of slashes regardless of `slashes` option. A falsy
-                 `slashes` option with no protocol is now also respected at all
-                 times.
--->
+
 
 Добавлено в: v0.1.25
 
@@ -1759,14 +1561,7 @@ npx codemod@latest @nodejs/node-url-to-whatwg-url
 
 ### `url.format(urlString)`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version:
-      - v24.0.0
-    pr-url: https://github.com/nodejs/node/pull/55017
-    description: Application deprecation.
--->
+
 
 Добавлено в: v0.1.25
 
@@ -1807,41 +1602,7 @@ changes:
 
 ### `url.parse(urlString[, parseQueryString[, slashesDenoteHost]])`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version:
-      - v24.0.0
-    pr-url: https://github.com/nodejs/node/pull/55017
-    description: Application deprecation.
-  - version:
-      - v19.9.0
-      - v18.17.0
-    pr-url: https://github.com/nodejs/node/pull/47203
-    description: Added support for `--pending-deprecation`.
-  - version:
-      - v19.0.0
-      - v18.13.0
-    pr-url: https://github.com/nodejs/node/pull/44919
-    description: Documentation-only deprecation.
-  - version:
-      - v15.13.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/37784
-    description: Deprecation revoked. Status changed to "Legacy".
-  - version: v11.14.0
-    pr-url: https://github.com/nodejs/node/pull/26941
-    description: The `pathname` property on the returned URL object is now `/`
-                 when there is no path and the protocol scheme is `ws:` or
-                 `wss:`.
-  - version: v11.0.0
-    pr-url: https://github.com/nodejs/node/pull/22715
-    description: The Legacy URL API is deprecated. Use the WHATWG URL API.
-  - version: v9.0.0
-    pr-url: https://github.com/nodejs/node/pull/13606
-    description: The `search` property on the returned URL object is now `null`
-                 when no query string is present.
--->
+
 
 Добавлено в: v0.1.25
 
@@ -1892,35 +1653,7 @@ npx codemod@latest @nodejs/node-url-to-whatwg-url
 
 ### `url.resolve(from, to)`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version:
-      - v24.0.0
-    pr-url: https://github.com/nodejs/node/pull/55017
-    description: Deprecated again through DEP0169.
-  - version:
-      - v15.13.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/37784
-    description: Deprecation revoked. Status changed to "Legacy".
-  - version: v11.0.0
-    pr-url: https://github.com/nodejs/node/pull/22715
-    description: The Legacy URL API is deprecated. Use the WHATWG URL API.
-  - version: v6.6.0
-    pr-url: https://github.com/nodejs/node/pull/8215
-    description: The `auth` fields are now kept intact when `from` and `to`
-                 refer to the same host.
-  - version:
-    - v6.5.0
-    - v4.6.2
-    pr-url: https://github.com/nodejs/node/pull/8214
-    description: The `port` field is copied correctly now.
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/1480
-    description: The `auth` fields is cleared now the `to` parameter
-                 contains a hostname.
--->
+
 
 Добавлено в: v0.1.25
 

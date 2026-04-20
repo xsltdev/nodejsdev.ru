@@ -7,13 +7,13 @@ description: Модуль node:inspector — API взаимодействия с
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/inspector.html)
 
-<!--introduced_in=v8.0.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
-<!-- source_link=lib/inspector.js -->
+
 
 Модуль `node:inspector` предоставляет API для взаимодействия с инспектором V8.
 
@@ -47,9 +47,7 @@ description: Модуль node:inspector — API взаимодействия с
 
 ## API на промисах
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -63,9 +61,7 @@ added: v19.0.0
 
 #### `new inspector.Session()`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 Создаёт новый экземпляр класса `inspector.Session`. Сессию нужно подключить через [`session.connect()`](#sessionconnect) до отправки сообщений в бэкенд инспектора.
 
@@ -73,9 +69,7 @@ added: v8.0.0
 
 #### Событие: `'inspectorNotification'`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
@@ -93,9 +87,7 @@ session.on('inspectorNotification', (message) => console.log(message.method));
 
 #### Событие: `<inspector-protocol-method>`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
@@ -114,33 +106,25 @@ session.on('Debugger.paused', ({ params }) => {
 
 #### `session.connect()`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 Подключает сессию к бэкенду инспектора.
 
 #### `session.connectToMainThread()`
 
-<!-- YAML
-added: v12.11.0
--->
+
 
 Подключает сессию к бэкенду инспектора основного потока. Если API вызван не в потоке `Worker`, будет выброшено исключение.
 
 #### `session.disconnect()`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 Немедленно закрывает сессию. Все ожидающие колбэки сообщений будут вызваны с ошибкой. Чтобы снова отправлять сообщения, нужно снова вызвать [`session.connect()`](#sessionconnect). После переподключения сессия теряет состояние инспектора: включённые агенты, настроенные точки останова и т.д.
 
 #### `session.post(method[, params])`
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 * `method` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -229,9 +213,7 @@ added: v19.0.0
 
 #### `new inspector.Session()`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 Создаёт новый экземпляр класса `inspector.Session`. Сессию нужно подключить через [`session.connect()`](#sessionconnect) до отправки сообщений в бэкенд инспектора.
 
@@ -239,9 +221,7 @@ added: v8.0.0
 
 #### Событие: `'inspectorNotification'`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
@@ -259,9 +239,7 @@ session.on('inspectorNotification', (message) => console.log(message.method));
 
 #### Событие: `<inspector-protocol-method>`;
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) объект сообщения-уведомления
 
@@ -280,39 +258,25 @@ session.on('Debugger.paused', ({ params }) => {
 
 #### `session.connect()`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 Подключает сессию к бэкенду инспектора.
 
 #### `session.connectToMainThread()`
 
-<!-- YAML
-added: v12.11.0
--->
+
 
 Подключает сессию к бэкенду инспектора основного потока. Если API вызван не в потоке `Worker`, будет выброшено исключение.
 
 #### `session.disconnect()`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 Немедленно закрывает сессию. Все ожидающие колбэки сообщений будут вызваны с ошибкой. Чтобы снова отправлять сообщения, нужно снова вызвать [`session.connect()`](#sessionconnect). После переподключения сессия теряет состояние инспектора: включённые агенты, настроенные точки останова и т.д.
 
 #### `session.post(method[, params][, callback])`
 
-<!-- YAML
-added: v8.0.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.0.0
 
@@ -391,13 +355,7 @@ session.post('HeapProfiler.takeHeapSnapshot', null, (err, r) => {
 
 ### `inspector.close()`
 
-<!-- YAML
-added: v9.0.0
-changes:
-  - version: v18.10.0
-    pr-url: https://github.com/nodejs/node/pull/44489
-    description: The API is exposed in the worker threads.
--->
+
 
 Добавлено в: v9.0.0
 
@@ -415,12 +373,7 @@ require('node:inspector').console.log('a message');
 
 ### `inspector.open([port[, host[, wait]]])`
 
-<!-- YAML
-changes:
-  - version: v20.6.0
-    pr-url: https://github.com/nodejs/node/pull/48765
-    description: inspector.open() now returns a `Disposable` object.
--->
+
 
 * `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
 * `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост для приёма подключений инспектора. Необязательно. **По умолчанию:** как задано в командной строке.
@@ -456,9 +409,7 @@ undefined
 
 ### `inspector.waitForDebugger()`
 
-<!-- YAML
-added: v12.7.0
--->
+
 
 Блокирует выполнение до тех пор, пока клиент (уже подключённый или подключившийся позже) не отправит команду `Runtime.runIfWaitingForDebugger`.
 
@@ -490,11 +441,7 @@ inspector.Network.requestWillBeSent({
 
 ### `inspector.Network.dataReceived([params])`
 
-<!-- YAML
-added:
- - v24.2.0
- - v22.17.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -506,11 +453,7 @@ added:
 
 ### `inspector.Network.dataSent([params])`
 
-<!-- YAML
-added:
-  - v24.3.0
-  - v22.18.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -520,11 +463,7 @@ added:
 
 ### `inspector.Network.requestWillBeSent([params])`
 
-<!-- YAML
-added:
- - v22.6.0
- - v20.18.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -534,11 +473,7 @@ added:
 
 ### `inspector.Network.responseReceived([params])`
 
-<!-- YAML
-added:
- - v22.6.0
- - v20.18.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -548,11 +483,7 @@ added:
 
 ### `inspector.Network.loadingFinished([params])`
 
-<!-- YAML
-added:
- - v22.6.0
- - v20.18.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -562,11 +493,7 @@ added:
 
 ### `inspector.Network.loadingFailed([params])`
 
-<!-- YAML
-added:
- - v22.7.0
- - v20.18.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -576,10 +503,7 @@ added:
 
 ### `inspector.Network.webSocketCreated([params])`
 
-<!-- YAML
-added:
-  - v24.7.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -589,10 +513,7 @@ added:
 
 ### `inspector.Network.webSocketHandshakeResponseReceived([params])`
 
-<!-- YAML
-added:
-  - v24.7.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -603,10 +524,7 @@ added:
 
 ### `inspector.Network.webSocketClosed([params])`
 
-<!-- YAML
-added:
-  - v24.7.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -617,11 +535,7 @@ added:
 
 ### `inspector.NetworkResources.put`
 
-<!-- YAML
-added:
-  - v24.5.0
-  - v22.19.0
--->
+
 
 !!!warning "Стабильность: 1.1 – активная разработка"
 
@@ -655,10 +569,7 @@ setNetworkResources().then(() => {
 
 ### `inspector.DOMStorage.domStorageItemAdded`
 
-<!-- YAML
-added:
-  - v25.5.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -675,10 +586,7 @@ added:
 
 ### `inspector.DOMStorage.domStorageItemRemoved`
 
-<!-- YAML
-added:
-  - v25.5.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -694,10 +602,7 @@ added:
 
 ### `inspector.DOMStorage.domStorageItemUpdated`
 
-<!-- YAML
-added:
-  - v25.5.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -715,10 +620,7 @@ added:
 
 ### `inspector.DOMStorage.domStorageItemsCleared`
 
-<!-- YAML
-added:
-  - v25.5.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `storageId` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -732,10 +634,7 @@ added:
 
 ### `inspector.DOMStorage.registerStorage`
 
-<!-- YAML
-added:
-  - v25.5.0
--->
+
 
 * `params` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `isLocalStorage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)

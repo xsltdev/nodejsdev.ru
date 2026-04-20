@@ -7,7 +7,7 @@ description: Модель разрешений Node.js для ограничен
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/permissions.html)
 
-<!--introduced_in=v20.0.0-->
+
 
 Разрешения позволяют контролировать, к каким системным ресурсам имеет доступ процесс Node.js и какие действия с этими ресурсами он может выполнять.
 
@@ -21,15 +21,7 @@ description: Модель разрешений Node.js для ограничен
 
 ### Модель разрешений
 
-<!-- YAML
-added: v20.0.0
-changes:
-  - version:
-    - v23.5.0
-    - v22.13.0
-    pr-url: https://github.com/nodejs/node/pull/56201
-    description: This feature is no longer experimental.
--->
+
 
 Добавлено в: v20.0.0
 

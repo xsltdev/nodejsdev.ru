@@ -946,13 +946,13 @@ npx codemod@latest @nodejs/zlib-bytesread-to-byteswritten
 
 Функция `crypto._toBuf()` не предназначалась для использования модулями вне ядра Node.js и была удалена.
 
-<!--lint disable nodejs-yaml-comments -->
+
 
 ### DEP0115: `crypto.prng()`, `crypto.pseudoRandomBytes()`, `crypto.rng()`
 
 Тип: только документация (Documentation-only) (supports [`--pending-deprecation`](cli.md#--pending-deprecation))
 
-<!--lint enable nodejs-yaml-comments -->
+
 
 В последних версиях Node.js [`crypto.randomBytes()`](crypto.md#cryptorandombytessize-callback) и `crypto.pseudoRandomBytes()` не различаются. Второй объявлен устаревшим вместе с недокументированными псевдонимами `crypto.prng()` и `crypto.rng()` в пользу [`crypto.randomBytes()`](crypto.md#cryptorandombytessize-callback) и может быть удалён в будущем выпуске.
 
@@ -1497,7 +1497,7 @@ npx codemod@latest @nodejs/dirent-path-to-parent-path
 npx codemod@latest @nodejs/repl-classes-with-new
 ```
 
-<!-- md-lint skip-deprecation DEP0186 -->
+
 
 ### DEP0187: Passing invalid argument types to `fs.existsSync`
 

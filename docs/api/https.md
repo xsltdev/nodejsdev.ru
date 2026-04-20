@@ -7,13 +7,13 @@ description: HTTPS — протокол HTTP поверх TLS/SSL; в Node.js р
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/https.html)
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
-<!-- source_link=lib/https.js -->
+
 
 **HTTPS** — это протокол HTTP поверх TLS/SSL. В Node.js он реализован отдельным модулем.
 
@@ -51,17 +51,7 @@ Node.js может быть собран без поддержки модуля 
 
 ## Класс: `https.Agent`
 
-<!-- YAML
-added: v0.4.5
-changes:
-  - version: v5.3.0
-    pr-url: https://github.com/nodejs/node/pull/4252
-    description: support `0` `maxCachedSessions` to disable TLS session caching.
-  - version: v2.5.0
-    pr-url: https://github.com/nodejs/node/pull/2228
-    description: parameter `maxCachedSessions` added to `options` for TLS
-                 sessions reuse.
--->
+
 
 Добавлено в: v0.4.5
 
@@ -73,23 +63,7 @@ changes:
 
 ### `new Agent([options])`
 
-<!-- YAML
-changes:
-  - version:
-    - v24.5.0
-    - v22.21.0
-    pr-url: https://github.com/nodejs/node/pull/58980
-    description: Add support for `proxyEnv`.
-  - version:
-    - v24.5.0
-    - v22.21.0
-    pr-url: https://github.com/nodejs/node/pull/58980
-    description: Add support for `defaultPort` and `protocol`.
-  - version: v12.5.0
-    pr-url: https://github.com/nodejs/node/pull/28209
-    description: do not automatically set servername if the target host was
-                 specified using an IP address.
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента.
   Может содержать те же поля, что и [`http.Agent(options)`](http.md#new-agentoptions), а также
@@ -105,11 +79,7 @@ changes:
 
 #### Событие: `'keylog'`
 
-<!-- YAML
-added:
- - v13.2.0
- - v12.16.0
--->
+
 
 * `line` [`<Buffer>`](buffer.md#buffer) Строка ASCII-текста в формате NSS `SSLKEYLOGFILE`.
 * `tlsSocket` [`<tls.TLSSocket>`](tls.md#class-tlstlssocket) Экземпляр `tls.TLSSocket`, для которого материал был сгенерирован.
@@ -127,9 +97,7 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ## Класс: `https.Server`
 
-<!-- YAML
-added: v0.3.4
--->
+
 
 * Наследует: [`<tls.Server>`](#class-tlsserver)
 
@@ -137,9 +105,7 @@ added: v0.3.4
 
 ### `server.close([callback])`
 
-<!-- YAML
-added: v0.1.90
--->
+
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 * Возвращает: [`<https.Server>`](https.md)
@@ -148,13 +114,7 @@ added: v0.1.90
 
 ### `server[Symbol.asyncDispose]()`
 
-<!-- YAML
-added: v20.4.0
-changes:
- - version: v24.2.0
-   pr-url: https://github.com/nodejs/node/pull/58467
-   description: No longer experimental.
--->
+
 
 Добавлено в: v20.4.0
 
@@ -162,25 +122,19 @@ changes:
 
 ### `server.closeAllConnections()`
 
-<!-- YAML
-added: v18.2.0
--->
+
 
 См. [`server.closeAllConnections()`](http.md#servercloseallconnections) в модуле `node:http`.
 
 ### `server.closeIdleConnections()`
 
-<!-- YAML
-added: v18.2.0
--->
+
 
 См. [`server.closeIdleConnections()`](http.md#servercloseidleconnections) в модуле `node:http`.
 
 ### `server.headersTimeout`
 
-<!-- YAML
-added: v11.3.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `60000`
 
@@ -199,14 +153,7 @@ added: v11.3.0
 
 ### `server.requestTimeout`
 
-<!-- YAML
-added: v14.11.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41263
-    description: The default request timeout changed
-                 from no timeout to 300s (5 minutes).
--->
+
 
 Добавлено в: v14.11.0
 
@@ -216,9 +163,7 @@ changes:
 
 ### `server.setTimeout([msecs][, callback])`
 
-<!-- YAML
-added: v0.11.2
--->
+
 
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `120000` (2 минуты)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -228,13 +173,7 @@ added: v0.11.2
 
 ### `server.timeout`
 
-<!-- YAML
-added: v0.11.2
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+
 
 Добавлено в: v0.11.2
 
@@ -244,9 +183,7 @@ changes:
 
 ### `server.keepAliveTimeout`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5000` (5 секунд)
 
@@ -254,9 +191,7 @@ added: v8.0.0
 
 ## `https.createServer([options][, requestListener])`
 
-<!-- YAML
-added: v0.3.4
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `options` из [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener),
   [`tls.createSecureContext()`](tls.md#tlscreatesecurecontextoptions) и [`http.createServer()`](http.md#httpcreateserveroptions-requestlistener).
@@ -353,17 +288,7 @@ openssl pkcs12 -certpbe AES-256-CBC -export -out test_cert.pfx \
 
 ## `https.get(url[, options][, callback])`
 
-<!-- YAML
-added: v0.3.6
-changes:
-  - version: v10.9.0
-    pr-url: https://github.com/nodejs/node/pull/21616
-    description: The `url` parameter can now be passed along with a separate
-                 `options` object.
-  - version: v7.5.0
-    pr-url: https://github.com/nodejs/node/pull/10638
-    description: The `options` parameter can be a WHATWG `URL` object.
--->
+
 
 Добавлено в: v0.3.6
 
@@ -416,15 +341,7 @@ changes:
 
 ## `https.globalAgent`
 
-<!-- YAML
-added: v0.5.9
-changes:
-  - version:
-      - v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/43522
-    description: The agent now uses HTTP Keep-Alive and a 5 second timeout by
-                 default.
--->
+
 
 Добавлено в: v0.5.9
 
@@ -434,37 +351,7 @@ changes:
 
 ## `https.request(url[, options][, callback])`
 
-<!-- YAML
-added: v0.3.6
-changes:
-  - version:
-    - v22.4.0
-    - v20.16.0
-    pr-url: https://github.com/nodejs/node/pull/53329
-    description: The `clientCertEngine` option depends on custom engine
-                 support in OpenSSL which is deprecated in OpenSSL 3.
-  - version:
-    - v16.7.0
-    - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/39310
-    description: When using a `URL` object parsed username
-                 and password will now be properly URI decoded.
-  - version:
-      - v14.1.0
-      - v13.14.0
-    pr-url: https://github.com/nodejs/node/pull/32786
-    description: The `highWaterMark` option is accepted now.
-  - version: v10.9.0
-    pr-url: https://github.com/nodejs/node/pull/21616
-    description: The `url` parameter can now be passed along with a separate
-                 `options` object.
-  - version: v9.3.0
-    pr-url: https://github.com/nodejs/node/pull/14903
-    description: The `options` parameter can now include `clientCertEngine`.
-  - version: v7.5.0
-    pr-url: https://github.com/nodejs/node/pull/10638
-    description: The `options` parameter can be a WHATWG `URL` object.
--->
+
 
 Добавлено в: v0.3.6
 

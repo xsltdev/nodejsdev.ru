@@ -7,32 +7,9 @@ description: Встроенная поддержка TypeScript в Node.js — �
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/typescript.html)
 
-<!-- YAML
-changes:
-  - version: REPLACEME
-    pr-url: https://github.com/nodejs/node/pull/61803
-    description: Removed `--experimental-transform-types` flag.
-  - version:
-      - v25.2.0
-      - v24.12.0
-    pr-url: https://github.com/nodejs/node/pull/60600
-    description: Type stripping is now stable.
-  - version:
-     - v24.3.0
-     - v22.18.0
-    pr-url: https://github.com/nodejs/node/pull/58643
-    description: Type stripping no longer emits an experimental warning.
-  - version:
-     - v23.6.0
-     - v22.18.0
-    pr-url: https://github.com/nodejs/node/pull/56350
-    description: Type stripping is enabled by default.
-  - version: v22.7.0
-    pr-url: https://github.com/nodejs/node/pull/54283
-    description: Added `--experimental-transform-types` flag.
--->
 
-<!--introduced_in=v22.6.0-->
+
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -74,15 +51,7 @@ changes:
 
 ## Снятие типов {: #type-stripping}
 
-<!-- YAML
-added: v22.6.0
-changes:
-  - version:
-      - v25.2.0
-      - v24.12.0
-    pr-url: https://github.com/nodejs/node/pull/60600
-    description: Type stripping is now stable.
--->
+
 
 Добавлено в: v22.6.0
 
@@ -225,7 +194,7 @@ Node.js не обрабатывает файлы `.ts` внутри катало
 Настройка [`tsconfig` "paths"](https://www.typescriptlang.org/tsconfig/#paths) не трансформируется и приводит к ошибке. Ближайший аналог —
 [подпути импорта][subpath imports], с ограничением: они должны начинаться с `#`.
 
-<!-- markdownlint-disable MD051 --><!-- внутренние якоря через pymdown `{: #id}` -->
+
 [CommonJS]: modules.md
 [ES Modules]: esm.md
 [Full TypeScript support]: #full-typescript-support
@@ -239,4 +208,4 @@ Node.js не обрабатывает файлы `.ts` внутри катало
 [subpath imports]: packages.md#subpath-imports
 [the same way as `.js` files.]: packages.md#determining-module-system
 [type stripping]: #type-stripping
-<!-- markdownlint-enable MD051 -->
+

@@ -7,13 +7,13 @@ description: Модуль node:tty предоставляет классы tty.R
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/tty.html)
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
-<!-- source_link=lib/tty.js -->
+
 
 Модуль `node:tty` предоставляет классы `tty.ReadStream` и `tty.WriteStream`.
 В большинстве случаев не потребуется и не получится использовать этот модуль напрямую. Тем не менее к нему можно обратиться так:
@@ -37,9 +37,7 @@ false
 
 ## Класс: `tty.ReadStream`
 
-<!-- YAML
-added: v0.5.8
--->
+
 
 * Расширяет: [net.Socket](net.md#class-netsocket)
 
@@ -48,9 +46,7 @@ added: v0.5.8
 
 ### `readStream.isRaw`
 
-<!-- YAML
-added: v0.7.7
--->
+
 
 Значение `boolean`: `true`, если TTY в данный момент настроен на работу в режиме «сырого» устройства.
 
@@ -59,17 +55,13 @@ added: v0.7.7
 
 ### `readStream.isTTY`
 
-<!-- YAML
-added: v0.5.8
--->
+
 
 Значение `boolean`, которое для экземпляров `tty.ReadStream` всегда `true`.
 
 ### `readStream.setRawMode(mode)`
 
-<!-- YAML
-added: v0.7.7
--->
+
 
 * `mode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, настраивает `tty.ReadStream` на работу в режиме «сырого» устройства. Если `false` — на обычный режим. Свойство `readStream.isRaw` будет установлено в соответствующий режим.
 * Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this) Экземпляр потока чтения.
@@ -81,9 +73,7 @@ added: v0.7.7
 
 ## Класс: `tty.WriteStream`
 
-<!-- YAML
-added: v0.5.8
--->
+
 
 * Расширяет: [net.Socket](net.md#class-netsocket)
 
@@ -93,12 +83,7 @@ added: v0.5.8
 
 ### `new tty.ReadStream(fd[, options])`
 
-<!-- YAML
-added: v0.5.8
-changes:
-  - version: v0.9.4
-    description: The `options` argument is supported.
--->
+
 
 Добавлено в: v0.5.8
 
@@ -111,9 +96,7 @@ changes:
 
 ### `new tty.WriteStream(fd)`
 
-<!-- YAML
-added: v0.5.8
--->
+
 
 * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Дескриптор файла, связанный с TTY.
 * Возвращает: [`<tty.WriteStream>`](tty.md)
@@ -122,9 +105,7 @@ added: v0.5.8
 
 ### Событие: `'resize'`
 
-<!-- YAML
-added: v0.7.7
--->
+
 
 Событие `'resize'` генерируется всякий раз, когда меняется одно из свойств `writeStream.columns`
 или `writeStream.rows`. При вызове обработчика аргументы не передаются.
@@ -138,13 +119,7 @@ process.stdout.on('resize', () => {
 
 ### `writeStream.clearLine(dir[, callback])`
 
-<!-- YAML
-added: v0.7.7
-changes:
-  - version: v12.7.0
-    pr-url: https://github.com/nodejs/node/pull/28721
-    description: The stream's write() callback and return value are exposed.
--->
+
 
 Добавлено в: v0.7.7
 
@@ -160,13 +135,7 @@ changes:
 
 ### `writeStream.clearScreenDown([callback])`
 
-<!-- YAML
-added: v0.7.7
-changes:
-  - version: v12.7.0
-    pr-url: https://github.com/nodejs/node/pull/28721
-    description: The stream's write() callback and return value are exposed.
--->
+
 
 Добавлено в: v0.7.7
 
@@ -178,22 +147,14 @@ changes:
 
 ### `writeStream.columns`
 
-<!-- YAML
-added: v0.7.7
--->
+
 
 Число (`number`), задающее текущее число колонок TTY. Это свойство
 обновляется при каждом событии `'resize'`.
 
 ### `writeStream.cursorTo(x[, y][, callback])`
 
-<!-- YAML
-added: v0.7.7
-changes:
-  - version: v12.7.0
-    pr-url: https://github.com/nodejs/node/pull/28721
-    description: The stream's write() callback and return value are exposed.
--->
+
 
 Добавлено в: v0.7.7
 
@@ -207,9 +168,7 @@ changes:
 
 ### `writeStream.getColorDepth([env])`
 
-<!-- YAML
-added: v9.9.0
--->
+
 
 * `env` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект с переменными окружения для проверки. Это
   позволяет имитировать использование конкретного терминала. **По умолчанию:**
@@ -238,9 +197,7 @@ added: v9.9.0
 
 ### `writeStream.getWindowSize()`
 
-<!-- YAML
-added: v0.7.7
--->
+
 
 * Возвращает: [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -251,11 +208,7 @@ added: v0.7.7
 
 ### `writeStream.hasColors([count][, env])`
 
-<!-- YAML
-added:
- - v11.13.0
- - v10.16.0
--->
+
 
 * `count` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Запрашиваемое число цветов (минимум 2).
   **По умолчанию:** 16.
@@ -283,21 +236,13 @@ process.stdout.hasColors(2 ** 24, { TMUX: '1' });
 
 ### `writeStream.isTTY`
 
-<!-- YAML
-added: v0.5.8
--->
+
 
 Значение `boolean`, которое всегда `true`.
 
 ### `writeStream.moveCursor(dx, dy[, callback])`
 
-<!-- YAML
-added: v0.7.7
-changes:
-  - version: v12.7.0
-    pr-url: https://github.com/nodejs/node/pull/28721
-    description: The stream's write() callback and return value are exposed.
--->
+
 
 Добавлено в: v0.7.7
 
@@ -311,18 +256,14 @@ changes:
 
 ### `writeStream.rows`
 
-<!-- YAML
-added: v0.7.7
--->
+
 
 Число (`number`), задающее текущее число строк TTY. Это свойство
 обновляется при каждом событии `'resize'`.
 
 ## `tty.isatty(fd)`
 
-<!-- YAML
-added: v0.5.8
--->
+
 
 * `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Числовой дескриптор файла
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)

@@ -7,19 +7,9 @@ description: Реализация стандарта WHATWG Streams — Readable
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/webstreams.html)
 
-<!--introduced_in=v16.5.0-->
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version:
-    - v21.0.0
-    pr-url: https://github.com/nodejs/node/pull/45684
-    description: Больше не экспериментально.
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Использование этого API больше не выводит предупреждение времени выполнения.
--->
+
+
 
 Добавлено в: v16.5.0
 
@@ -121,23 +111,15 @@ changes:
 
 ### Класс: `ReadableStream`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
 #### `new ReadableStream([underlyingSource [, strategy]])`
 
-<!-- YAML
-added: v16.5.0
--->
 
-<!--lint disable maximum-line-length remark-lint-->
+
+
 
 * `underlyingSource` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
@@ -167,13 +149,11 @@ added: v16.5.0
     * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     * Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 #### `readableStream.locked`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если для этого [ReadableStream](webstreams.md#readablestream) есть активный читатель.
 
@@ -182,18 +162,14 @@ added: v16.5.0
 
 #### `readableStream.cancel([reason])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined` после завершения отмены.
 
 #### `readableStream.getReader([options])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `mode` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `'byob'` или `undefined`
@@ -227,9 +203,7 @@ added: v16.5.0
 
 #### `readableStream.pipeThrough(transform[, options])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `transform` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `readable` [`<ReadableStream>`](webstreams.md#readablestream) `ReadableStream`, в который
@@ -312,9 +286,7 @@ added: v16.5.0
 
 #### `readableStream.pipeTo(destination[, options])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `destination` [`<WritableStream>`](webstreams.md#class-writablestream) [WritableStream](webstreams.md#class-writablestream), в который записываются
   данные этого `ReadableStream`.
@@ -332,15 +304,7 @@ added: v16.5.0
 
 #### `readableStream.tee()`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version:
-    - v18.10.0
-    - v16.18.0
-    pr-url: https://github.com/nodejs/node/pull/44505
-    description: Поддержка tee для байтового читаемого потока.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -353,9 +317,7 @@ changes:
 
 #### `readableStream.values([options])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `preventCancel` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, [ReadableStream](webstreams.md#readablestream) не закрывается
@@ -425,9 +387,7 @@ port2.postMessage(stream, [stream]);
 
 ### `ReadableStream.from(iterable)`
 
-<!-- YAML
-added: v20.6.0
--->
+
 
 * `iterable` [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) Объект, реализующий протокол итерируемости `Symbol.asyncIterator` или
   `Symbol.iterator`.
@@ -511,13 +471,7 @@ added: v20.6.0
 
 ### Класс: `ReadableStreamDefaultReader`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -529,9 +483,7 @@ changes:
 
 #### `new ReadableStreamDefaultReader(stream)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream)
 
@@ -540,9 +492,7 @@ added: v16.5.0
 
 #### `readableStreamDefaultReader.cancel([reason])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
@@ -552,9 +502,7 @@ added: v16.5.0
 
 #### `readableStreamDefaultReader.closed`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
   [ReadableStream](webstreams.md#readablestream) закрыт, или отклоняется при ошибке потока или снятии
@@ -562,9 +510,7 @@ added: v16.5.0
 
 #### `readableStreamDefaultReader.read()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Возвращает: промис, выполняемый с объектом:
   * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -575,21 +521,13 @@ added: v16.5.0
 
 #### `readableStreamDefaultReader.releaseLock()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 Снимает блокировку этого читателя с нижележащего [ReadableStream](webstreams.md#readablestream).
 
 ### Класс: `ReadableStreamBYOBReader`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -664,9 +602,7 @@ changes:
 
 #### `new ReadableStreamBYOBReader(stream)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream)
 
@@ -675,9 +611,7 @@ added: v16.5.0
 
 #### `readableStreamBYOBReader.cancel([reason])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
@@ -687,9 +621,7 @@ added: v16.5.0
 
 #### `readableStreamBYOBReader.closed`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
   [ReadableStream](webstreams.md#readablestream) закрыт, или отклоняется при ошибке потока или снятии
@@ -697,15 +629,7 @@ added: v16.5.0
 
 #### `readableStreamBYOBReader.read(view[, options])`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version:
-    - v21.7.0
-    - v20.17.0
-    pr-url: https://github.com/nodejs/node/pull/50888
-    description: Добавлена опция `min`.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -734,17 +658,13 @@ Pooled-`Buffer` создаются через `Buffer.allocUnsafe()`,
 
 #### `readableStreamBYOBReader.releaseLock()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 Снимает блокировку этого читателя с нижележащего [ReadableStream](webstreams.md#readablestream).
 
 ### Класс: `ReadableStreamDefaultController`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 У каждого [ReadableStream](webstreams.md#readablestream) есть контроллер, отвечающий за
 внутреннее состояние и очередь потока.
@@ -753,17 +673,13 @@ added: v16.5.0
 
 #### `readableStreamDefaultController.close()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 Закрывает [ReadableStream](webstreams.md#readablestream), с которым связан этот контроллер.
 
 #### `readableStreamDefaultController.desiredSize`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -771,9 +687,7 @@ added: v16.5.0
 
 #### `readableStreamDefaultController.enqueue([chunk])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -781,9 +695,7 @@ added: v16.5.0
 
 #### `readableStreamDefaultController.error([error])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -791,13 +703,7 @@ added: v16.5.0
 
 ### Класс: `ReadableByteStreamController`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.10.0
-    pr-url: https://github.com/nodejs/node/pull/44702
-    description: Поддержка BYOB pull-запроса от освобождённого читателя.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -807,25 +713,19 @@ changes:
 
 #### `readableByteStreamController.byobRequest`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<ReadableStreamBYOBRequest>`](webstreams.md#class-readablestreambyobrequest)
 
 #### `readableByteStreamController.close()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 Закрывает [ReadableStream](webstreams.md#readablestream), с которым связан этот контроллер.
 
 #### `readableByteStreamController.desiredSize`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -833,9 +733,7 @@ added: v16.5.0
 
 #### `readableByteStreamController.enqueue(chunk)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `chunk` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
@@ -843,9 +741,7 @@ added: v16.5.0
 
 #### `readableByteStreamController.error([error])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -853,13 +749,7 @@ added: v16.5.0
 
 ### Класс: `ReadableStreamBYOBRequest`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -875,9 +765,7 @@ changes:
 
 #### `readableStreamBYOBRequest.respond(bytesWritten)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `bytesWritten` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -885,9 +773,7 @@ added: v16.5.0
 
 #### `readableStreamBYOBRequest.respondWithNewView(view)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `view` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
@@ -895,21 +781,13 @@ added: v16.5.0
 
 #### `readableStreamBYOBRequest.view`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
 ### Класс: `WritableStream`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -933,9 +811,7 @@ changes:
 
 #### `new WritableStream([underlyingSink[, strategy]])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `underlyingSink` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `start` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Пользовательская функция, вызываемая сразу при создании
@@ -965,9 +841,7 @@ added: v16.5.0
 
 #### `writableStream.abort([reason])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
@@ -977,9 +851,7 @@ added: v16.5.0
 
 #### `writableStream.close()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Возвращает: промис, выполняемый с `undefined`.
 
@@ -987,9 +859,7 @@ added: v16.5.0
 
 #### `writableStream.getWriter()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Возвращает: [`<WritableStreamDefaultWriter>`](webstreams.md#class-writablestreamdefaultwriter)
 
@@ -998,9 +868,7 @@ added: v16.5.0
 
 #### `writableStream.locked`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1025,21 +893,13 @@ port2.postMessage(stream, [stream]);
 
 ### Класс: `WritableStreamDefaultWriter`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
 #### `new WritableStreamDefaultWriter(stream)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `stream` [`<WritableStream>`](webstreams.md#class-writablestream)
 
@@ -1048,9 +908,7 @@ added: v16.5.0
 
 #### `writableStreamDefaultWriter.abort([reason])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
@@ -1060,9 +918,7 @@ added: v16.5.0
 
 #### `writableStreamDefaultWriter.close()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Возвращает: промис, выполняемый с `undefined`.
 
@@ -1070,9 +926,7 @@ added: v16.5.0
 
 #### `writableStreamDefaultWriter.closed`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется с `undefined`, когда связанный
   [WritableStream](webstreams.md#class-writablestream) закрыт, или отклоняется при ошибке потока или снятии
@@ -1080,9 +934,7 @@ added: v16.5.0
 
 #### `writableStreamDefaultWriter.desiredSize`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1090,26 +942,20 @@ added: v16.5.0
 
 #### `writableStreamDefaultWriter.ready`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Выполняется со значением `undefined`, когда writer готов
   к использованию.
 
 #### `writableStreamDefaultWriter.releaseLock()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 Снимает блокировку этого writer с нижележащего [WritableStream](webstreams.md#class-writablestream).
 
 #### `writableStreamDefaultWriter.write([chunk])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 * Возвращает: промис, выполняемый с `undefined`.
@@ -1118,13 +964,7 @@ added: v16.5.0
 
 ### Класс: `WritableStreamDefaultController`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -1133,9 +973,7 @@ changes:
 
 #### `writableStreamDefaultController.error([error])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `error` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -1150,13 +988,7 @@ added: v16.5.0
 
 ### Класс: `TransformStream`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -1185,15 +1017,7 @@ changes:
 
 #### `new TransformStream([transformer[, writableStrategy[, readableStrategy]]])`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version:
-    - v21.5.0
-    - v20.14.0
-    pr-url: https://github.com/nodejs/node/pull/50126
-    description: Поддержка колбэка `cancel` у трансформера.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -1236,17 +1060,13 @@ changes:
 
 #### `transformStream.readable`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `transformStream.writable`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
@@ -1269,13 +1089,7 @@ port2.postMessage(stream, [stream]);
 
 ### Класс: `TransformStreamDefaultController`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
@@ -1284,9 +1098,7 @@ changes:
 
 #### `transformStreamDefaultController.desiredSize`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1294,9 +1106,7 @@ added: v16.5.0
 
 #### `transformStreamDefaultController.enqueue([chunk])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -1304,9 +1114,7 @@ added: v16.5.0
 
 #### `transformStreamDefaultController.error([reason])`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -1315,47 +1123,33 @@ added: v16.5.0
 
 #### `transformStreamDefaultController.terminate()`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 Закрывает читающую сторону и приводит к немедленному закрытию записывающей стороны
 с ошибкой.
 
 ### Класс: `ByteLengthQueuingStrategy`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
 #### `new ByteLengthQueuingStrategy(init)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `init` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `byteLengthQueuingStrategy.highWaterMark`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `byteLengthQueuingStrategy.size`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -1363,38 +1157,26 @@ added: v16.5.0
 
 ### Класс: `CountQueuingStrategy`
 
-<!-- YAML
-added: v16.5.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.5.0
 
 #### `new CountQueuingStrategy(init)`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * `init` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `countQueuingStrategy.highWaterMark`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 #### `countQueuingStrategy.size`
 
-<!-- YAML
-added: v16.5.0
--->
+
 
 * Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
   * `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
@@ -1402,29 +1184,19 @@ added: v16.5.0
 
 ### Класс: `TextEncoderStream`
 
-<!-- YAML
-added: v16.6.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.6.0
 
 #### `new TextEncoderStream()`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 Создаёт новый экземпляр `TextEncoderStream`.
 
 #### `textEncoderStream.encoding`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1432,37 +1204,25 @@ added: v16.6.0
 
 #### `textEncoderStream.readable`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `textEncoderStream.writable`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Класс: `TextDecoderStream`
 
-<!-- YAML
-added: v16.6.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v16.6.0
 
 #### `new TextDecoderStream([encoding[, options]])`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка, которую поддерживает этот `TextDecoder`.
   **По умолчанию:** `'utf-8'`.
@@ -1477,9 +1237,7 @@ added: v16.6.0
 
 #### `textDecoderStream.encoding`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1487,9 +1245,7 @@ added: v16.6.0
 
 #### `textDecoderStream.fatal`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1497,9 +1253,7 @@ added: v16.6.0
 
 #### `textDecoderStream.ignoreBOM`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1507,48 +1261,25 @@ added: v16.6.0
 
 #### `textDecoderStream.readable`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `textDecoderStream.writable`
 
-<!-- YAML
-added: v16.6.0
--->
+
 
 * Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Класс: `CompressionStream`
 
-<!-- YAML
-added: v17.0.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v17.0.0
 
 #### `new CompressionStream(format)`
 
-<!-- YAML
-added: v17.0.0
-changes:
-  - version:
-    - v24.7.0
-    - v22.20.0
-    pr-url: https://github.com/nodejs/node/pull/59464
-    description: для format теперь допустимо значение `brotli`.
-  - version:
-    - v21.2.0
-    - v20.12.0
-    pr-url: https://github.com/nodejs/node/pull/50097
-    description: для format теперь допустимо значение `deflate-raw`.
--->
+
 
 Добавлено в: v17.0.0
 
@@ -1556,48 +1287,25 @@ changes:
 
 #### `compressionStream.readable`
 
-<!-- YAML
-added: v17.0.0
--->
+
 
 * Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `compressionStream.writable`
 
-<!-- YAML
-added: v17.0.0
--->
+
 
 * Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Класс: `DecompressionStream`
 
-<!-- YAML
-added: v17.0.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/42225
-    description: Класс теперь доступен в глобальном объекте.
--->
+
 
 Добавлено в: v17.0.0
 
 #### `new DecompressionStream(format)`
 
-<!-- YAML
-added: v17.0.0
-changes:
-  - version:
-    - v24.7.0
-    - v22.20.0
-    pr-url: https://github.com/nodejs/node/pull/59464
-    description: для format теперь допустимо значение `brotli`.
-  - version:
-    - v21.2.0
-    - v20.12.0
-    pr-url: https://github.com/nodejs/node/pull/50097
-    description: для format теперь допустимо значение `deflate-raw`.
--->
+
 
 Добавлено в: v17.0.0
 
@@ -1605,25 +1313,19 @@ changes:
 
 #### `decompressionStream.readable`
 
-<!-- YAML
-added: v17.0.0
--->
+
 
 * Тип: [`<ReadableStream>`](webstreams.md#readablestream)
 
 #### `decompressionStream.writable`
 
-<!-- YAML
-added: v17.0.0
--->
+
 
 * Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### Утилиты-потребители
 
-<!-- YAML
-added: v16.7.0
--->
+
 
 Вспомогательные функции-потребители задают общие варианты чтения
 потоков.
@@ -1656,9 +1358,7 @@ added: v16.7.0
 
 #### `streamConsumers.arrayBuffer(stream)`
 
-<!-- YAML
-added: v16.7.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с `ArrayBuffer`, содержащим полное
@@ -1698,9 +1398,7 @@ added: v16.7.0
 
 #### `streamConsumers.blob(stream)`
 
-<!-- YAML
-added: v16.7.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), содержащим полное содержимое
@@ -1735,9 +1433,7 @@ added: v16.7.0
 
 #### `streamConsumers.buffer(stream)`
 
-<!-- YAML
-added: v16.7.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Buffer](buffer.md#buffer), содержащим полное
@@ -1776,11 +1472,7 @@ added: v16.7.0
 
 #### `streamConsumers.bytes(stream)`
 
-<!-- YAML
-added:
- - v25.6.0
- - v24.14.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), содержащим полное
@@ -1819,9 +1511,7 @@ added:
 
 #### `streamConsumers.json(stream)`
 
-<!-- YAML
-added: v16.7.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка, затем результат `JSON.parse()`.
@@ -1871,9 +1561,7 @@ added: v16.7.0
 
 #### `streamConsumers.text(stream)`
 
-<!-- YAML
-added: v16.7.0
--->
+
 
 * `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка.

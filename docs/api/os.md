@@ -7,13 +7,13 @@ description: Модуль node:os — методы и свойства для с
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/os.html)
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-<!-- source_link=lib/os.js -->
+
 
 Модуль `node:os` предоставляет утилиты, связанные с операционной системой. Подключение:
 
@@ -31,9 +31,7 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.EOL`
 
-<!-- YAML
-added: v0.7.8
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -44,11 +42,7 @@ added: v0.7.8
 
 ## `os.availableParallelism()`
 
-<!-- YAML
-added:
-  - v19.4.0
-  - v18.14.0
--->
+
 
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -59,9 +53,7 @@ added:
 
 ## `os.arch()`
 
-<!-- YAML
-added: v0.5.0
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -73,9 +65,7 @@ added: v0.5.0
 
 ## `os.constants`
 
-<!-- YAML
-added: v6.3.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -84,9 +74,7 @@ added: v6.3.0
 
 ## `os.cpus()`
 
-<!-- YAML
-added: v0.3.3
--->
+
 
 * Возвращает: [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -104,7 +92,7 @@ added: v0.3.3
   * `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в простое
   * `irq` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды обработки IRQ
 
-<!-- eslint-disable @stylistic/js/semi -->
+
 
 ```js
 [
@@ -162,11 +150,7 @@ added: v0.3.3
 
 ## `os.devNull`
 
-<!-- YAML
-added:
-  - v16.3.0
-  - v14.18.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -177,9 +161,7 @@ added:
 
 ## `os.endianness()`
 
-<!-- YAML
-added: v0.9.4
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -189,9 +171,7 @@ added: v0.9.4
 
 ## `os.freemem()`
 
-<!-- YAML
-added: v0.3.3
--->
+
 
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -199,9 +179,7 @@ added: v0.3.3
 
 ## `os.getPriority([pid])`
 
-<!-- YAML
-added: v10.10.0
--->
+
 
 * `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для запроса приоритета планирования.
   **По умолчанию:** `0`.
@@ -211,9 +189,7 @@ added: v10.10.0
 
 ## `os.homedir()`
 
-<!-- YAML
-added: v2.3.0
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -226,9 +202,7 @@ added: v2.3.0
 
 ## `os.hostname()`
 
-<!-- YAML
-added: v0.3.3
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -236,9 +210,7 @@ added: v0.3.3
 
 ## `os.loadavg()`
 
-<!-- YAML
-added: v0.3.3
--->
+
 
 * Возвращает: [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -250,11 +222,7 @@ added: v0.3.3
 
 ## `os.machine()`
 
-<!-- YAML
-added:
-  - v18.9.0
-  - v16.18.0
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -266,16 +234,7 @@ added:
 
 ## `os.networkInterfaces()`
 
-<!-- YAML
-added: v0.6.0
-changes:
-  - version: v18.4.0
-    pr-url: https://github.com/nodejs/node/pull/43054
-    description: The `family` property now returns a string instead of a number.
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41431
-    description: The `family` property now returns a number instead of a string.
--->
+
 
 Добавлено в: v0.6.0
 
@@ -295,7 +254,7 @@ changes:
 * `scopeid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) числовой IPv6 scope ID (только при `family` равном `IPv6`)
 * `cidr` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) адрес в нотации CIDR с префиксом маршрутизации. При неверной `netmask` — `null`.
 
-<!-- eslint-skip -->
+
 
 ```js
 {
@@ -342,9 +301,7 @@ changes:
 
 ## `os.platform()`
 
-<!-- YAML
-added: v0.5.0
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -359,9 +316,7 @@ added: v0.5.0
 
 ## `os.release()`
 
-<!-- YAML
-added: v0.3.3
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -372,9 +327,7 @@ added: v0.3.3
 
 ## `os.setPriority([pid, ]priority)`
 
-<!-- YAML
-added: v10.10.0
--->
+
 
 * `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для установки приоритета.
   **По умолчанию:** `0`.
@@ -388,14 +341,7 @@ added: v10.10.0
 
 ## `os.tmpdir()`
 
-<!-- YAML
-added: v0.9.9
-changes:
-  - version: v2.0.0
-    pr-url: https://github.com/nodejs/node/pull/747
-    description: This function is now cross-platform consistent and no longer
-                 returns a path with a trailing slash on any platform.
--->
+
 
 Добавлено в: v0.9.9
 
@@ -411,9 +357,7 @@ changes:
 
 ## `os.totalmem()`
 
-<!-- YAML
-added: v0.3.3
--->
+
 
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -421,9 +365,7 @@ added: v0.3.3
 
 ## `os.type()`
 
-<!-- YAML
-added: v0.3.3
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -433,14 +375,7 @@ added: v0.3.3
 
 ## `os.uptime()`
 
-<!-- YAML
-added: v0.3.3
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/20129
-    description: The result of this function no longer contains a fraction
-                 component on Windows.
--->
+
 
 Добавлено в: v0.3.3
 
@@ -450,9 +385,7 @@ changes:
 
 ## `os.userInfo([options])`
 
-<!-- YAML
-added: v6.0.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для строк результата.
@@ -467,11 +400,7 @@ added: v6.0.0
 
 ## `os.version()`
 
-<!-- YAML
-added:
- - v13.11.0
- - v12.17.0
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -488,12 +417,7 @@ added:
 
 ### Константы сигналов
 
-<!-- YAML
-changes:
-  - version: v5.11.0
-    pr-url: https://github.com/nodejs/node/pull/6093
-    description: Added support for `SIGINFO`.
--->
+
 
 Константы сигналов экспортируются в `os.constants.signals`.
 
@@ -703,9 +627,7 @@ changes:
 
 ### Константы приоритета
 
-<!-- YAML
-added: v10.10.0
--->
+
 
 Константы планирования процессов экспортируются в
 `os.constants.priority`.

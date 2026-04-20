@@ -7,15 +7,15 @@ description: Модуль node:dgram предоставляет реализац
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/dgram.html)
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-<!-- name=dgram -->
 
-<!-- source_link=lib/dgram.js -->
+
+
 
 Модуль `node:dgram` реализует сокеты UDP-датаграмм.
 

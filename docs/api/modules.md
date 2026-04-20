@@ -5,11 +5,11 @@ description: Система модулей CommonJS — require, module.exports,
 
 # Модули: CommonJS {: #modules-commonjs-modules}
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
-<!--name=module-->
+
 
 **Модули CommonJS** — изначальный способ упаковки кода JavaScript для Node.js.
 Node.js также поддерживает стандарт [модулей ECMAScript][ECMAScript Modules], который используют браузеры
@@ -75,7 +75,7 @@ module.exports = class Square {
 
 ## Включение {: #enabling}
 
-<!-- type=misc -->
+
 
 У Node.js две системы модулей: CommonJS и [модули ECMAScript][ECMAScript Modules].
 
@@ -106,7 +106,7 @@ module.exports = class Square {
 
 ## Доступ к главному модулю {: #accessing-the-main-module}
 
-<!-- type=misc -->
+
 
 Когда файл запускается напрямую из Node.js, `require.main` указывает на его
 `module`. Значит, можно определить, запущен ли файл напрямую, проверкой `require.main === module`.
@@ -119,7 +119,7 @@ module.exports = class Square {
 
 ## Советы по менеджерам пакетов {: #package-manager-tips}
 
-<!-- type=misc -->
+
 
 Семантика функции Node.js `require()` рассчитана на достаточно общую поддержку
 разумных структур каталогов. Программы менеджеров пакетов вроде `dpkg`, `rpm` и `npm`
@@ -166,34 +166,7 @@ module.exports = class Square {
 
 ## Загрузка ECMAScript-модулей через `require()` {: #loading-ecmascript-modules-using-require}
 
-<!-- YAML
-added:
-  - v22.0.0
-  - v20.17.0
-changes:
-  - version:
-    - v25.4.0
-    pr-url: https://github.com/nodejs/node/pull/60959
-    description: This feature is no longer experimental.
-  - version:
-    - v23.5.0
-    - v22.13.0
-    - v20.19.0
-    pr-url: https://github.com/nodejs/node/pull/56194
-    description: This feature no longer emits an experimental warning by default,
-                 though the warning can still be emitted by --trace-require-module.
-  - version:
-    - v23.0.0
-    - v22.12.0
-    - v20.19.0
-    pr-url: https://github.com/nodejs/node/pull/55085
-    description: This feature is no longer behind the `--experimental-require-module` CLI flag.
-  - version:
-    - v23.0.0
-    - v22.12.0
-    pr-url: https://github.com/nodejs/node/pull/54563
-    description: Support `'module.exports'` interop export in `require(esm)`.
--->
+
 
 Расширение `.mjs` зарезервировано для [ECMAScript Modules][ECMAScript Modules].
 См. раздел [Определение системы модулей][определение системы модулей], какие файлы разбираются как ECMAScript-модули.
@@ -261,7 +234,7 @@ changes:
 Чтобы задать, что именно вернёт `require(esm)` напрямую, ES-модуль может экспортировать
 нужное значение под строковым именем `"module.exports"`.
 
-<!-- eslint-disable @stylistic/js/semi -->
+
 
 === "MJS"
 
@@ -277,7 +250,7 @@ changes:
     export { Point as 'module.exports' }
     ```
 
-<!-- eslint-disable node-core/no-duplicate-requires -->
+
 
 === "CJS"
 
@@ -295,7 +268,7 @@ changes:
 можно сделать default-экспорт объектом со свойствами-экспортами. В этом примере
 `distance` можно привязать к default-экспорту — классу `Point` — как статический метод.
 
-<!-- eslint-disable @stylistic/js/semi -->
+
 
 === "MJS"
 
@@ -310,7 +283,7 @@ changes:
     export { Point as 'module.exports' }
     ```
 
-<!-- eslint-disable node-core/no-duplicate-requires -->
+
 
 === "CJS"
 
@@ -340,7 +313,7 @@ changes:
 
 ## Всё вместе {: #all-together}
 
-<!-- type=misc -->
+
 
 Чтобы узнать точное имя файла, которое загрузит `require()`, используйте
 `require.resolve()`.
@@ -468,7 +441,7 @@ RESOLVE_ESM_MATCH(MATCH)
 
 ## Кэширование {: #caching}
 
-<!--type=misc-->
+
 
 Модули кэшируются после первой загрузки. В частности, каждый вызов `require('foo')`
 возвращает один и тот же объект, если он разрешается в тот же файл.
@@ -481,7 +454,7 @@ RESOLVE_ESM_MATCH(MATCH)
 
 ### Ограничения кэша модулей
 
-<!--type=misc-->
+
 
 Кэш привязан к разрешённому имени файла. Так как модуль может разрешаться в разные
 файлы в зависимости от места вызывающего модуля (загрузка из `node_modules`),
@@ -494,16 +467,9 @@ RESOLVE_ESM_MATCH(MATCH)
 
 ## Встроенные модули {: #built-in-modules}
 
-<!--type=misc-->
 
-<!-- YAML
-changes:
-  - version:
-      - v16.0.0
-      - v14.18.0
-    pr-url: https://github.com/nodejs/node/pull/37246
-    description: Added `node:` import support to `require(...)`.
--->
+
+
 
 В Node.js несколько модулей встроено в бинарник; они подробнее описаны в других разделах документации.
 
@@ -534,7 +500,7 @@ changes:
 
 ## Циклы {: #cycles}
 
-<!--type=misc-->
+
 
 При циклических вызовах `require()` модуль может быть возвращён до завершения выполнения.
 
@@ -595,7 +561,7 @@ in main, a.done = true, b.done = true
 
 ## Файлы как модули
 
-<!--type=misc-->
+
 
 Если файл с точным именем не найден, Node.js пробует добавить расширения `.js`, `.json` и
 наконец `.node`. Для другого расширения (например `.cjs`) нужно передать в `require()` полное имя
@@ -619,7 +585,7 @@ in main, a.done = true, b.done = true
 
 ## Каталоги как модули {: #folders-as-modules}
 
-<!--type=misc-->
+
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -659,7 +625,7 @@ Error: Cannot find module 'some-library'
 
 ## Загрузка из каталогов `node_modules` {: #loading-from-node_modules-folders}
 
-<!--type=misc-->
+
 
 Если идентификатор для `require()` — не [встроенный](#built-in-modules) модуль и не начинается с `'/'`, `'../'` или
 `'./'`, Node.js начинает с каталога текущего модуля,
@@ -685,7 +651,7 @@ Error: Cannot find module 'some-library'
 
 ## Загрузка из глобальных каталогов {: #loading-from-the-global-folders}
 
-<!-- type=misc -->
+
 
 Если задана переменная окружения `NODE_PATH` со списком абсолютных путей через двоеточие,
 Node.js ищет модули и там, если не нашла раньше.
@@ -714,7 +680,7 @@ Node.js ищет модули и там, если не нашла раньше.
 
 ## Обёртка модуля {: #the-module-wrapper}
 
-<!-- type=misc -->
+
 
 Перед выполнением кода модуля Node.js оборачивает его в функцию
 вида:
@@ -737,9 +703,7 @@ Node.js ищет модули и там, если не нашла раньше.
 
 ### `__dirname`
 
-<!-- YAML
-added: v0.1.27
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -757,9 +721,7 @@ console.log(path.dirname(__filename));
 
 ### `__filename` {: #__filename}
 
-<!-- YAML
-added: v0.0.1
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -792,9 +754,7 @@ console.log(__dirname);
 
 ### `exports` {: #exports}
 
-<!-- YAML
-added: v0.1.12
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -804,9 +764,7 @@ added: v0.1.12
 
 ### `module` {: #module}
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 * Тип: [`<module>`](modules.md#module)
 
@@ -815,9 +773,7 @@ added: v0.1.16
 
 ### `require(id)` {: #requireid}
 
-<!-- YAML
-added: v0.1.13
--->
+
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя модуля или путь
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Экспортированное содержимое модуля
@@ -842,9 +798,7 @@ const crypto = require('node:crypto');
 
 #### `require.cache` {: #requirecache}
 
-<!-- YAML
-added: v0.3.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -856,7 +810,7 @@ added: v0.3.0
 встроенный модуль получат только вызовы с префиксом `node:`.
 Пользуйтесь осторожно!
 
-<!-- eslint-disable node-core/no-duplicate-requires, no-restricted-syntax -->
+
 
 ```js
 const assert = require('node:assert');
@@ -871,10 +825,7 @@ assert.strictEqual(require('node:fs'), realFs);
 
 #### `require.extensions` {: #requireextensions}
 
-<!-- YAML
-added: v0.3.0
-deprecated: v0.10.6
--->
+
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -895,9 +846,7 @@ require.extensions['.sjs'] = require.extensions['.js'];
 
 #### `require.main` {: #requiremain}
 
-<!-- YAML
-added: v0.1.17
--->
+
 
 * Тип: [`<module>`](modules.md#module) | undefined
 
@@ -915,7 +864,7 @@ console.log(require.main);
 node entry.js
 ```
 
-<!-- eslint-skip -->
+
 
 ```js
 Module {
@@ -934,13 +883,7 @@ Module {
 
 #### `require.resolve(request[, options])`
 
-<!-- YAML
-added: v0.3.0
-changes:
-  - version: v8.9.0
-    pr-url: https://github.com/nodejs/node/pull/16397
-    description: The `paths` option is now supported.
--->
+
 
 Добавлено в: v0.3.0
 
@@ -958,9 +901,7 @@ changes:
 
 ##### `require.resolve.paths(request)` {: #requireresolvepathsrequest}
 
-<!-- YAML
-added: v8.9.0
--->
+
 
 * `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь модуля, для которого нужно получить пути поиска.
 * Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
@@ -971,11 +912,9 @@ added: v8.9.0
 
 ## Объект `module` {: #the-module-object}
 
-<!-- YAML
-added: v0.1.16
--->
 
-<!-- name=module -->
+
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -984,9 +923,7 @@ added: v0.1.16
 
 ### `module.children` {: #modulechildren}
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 * Тип: [`<module[]>`](modules.md#module)
 
@@ -994,9 +931,7 @@ added: v0.1.16
 
 ### `module.exports` {: #moduleexports}
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1046,9 +981,7 @@ console.log(x.a);
 
 #### Сокращение `exports` {: #exports-shortcut}
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 Переменная `exports` есть в области файла модуля и до выполнения равна `module.exports`.
 
@@ -1063,7 +996,7 @@ exports = { hello: false };  // Not exported, only available in the module
 Когда `module.exports` полностью заменяют новым объектом,
 часто одновременно переприсваивают `exports`:
 
-<!-- eslint-disable func-name-matching -->
+
 
 ```js
 module.exports = exports = function Constructor() {
@@ -1092,9 +1025,7 @@ function require(/* ... */) {
 
 ### `module.filename`
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1102,9 +1033,7 @@ added: v0.1.16
 
 ### `module.id` {: #moduleid}
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1112,19 +1041,13 @@ added: v0.1.16
 
 ### `module.isPreloading` {: #moduleispreloading}
 
-<!-- YAML
-added:
-  - v15.4.0
-  - v14.17.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если модуль выполняется на фазе предзагрузки Node.js.
 
 ### `module.loaded` {: #moduleloaded}
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1132,12 +1055,7 @@ added: v0.1.16
 
 ### `module.parent` {: #moduleparent}
 
-<!-- YAML
-added: v0.1.16
-deprecated:
-  - v14.6.0
-  - v12.19.0
--->
+
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -1151,9 +1069,7 @@ deprecated:
 
 ### `module.path` {: #modulepath}
 
-<!-- YAML
-added: v11.14.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1162,9 +1078,7 @@ added: v11.14.0
 
 ### `module.paths`
 
-<!-- YAML
-added: v0.4.0
--->
+
 
 * Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1172,9 +1086,7 @@ added: v0.4.0
 
 ### `module.require(id)` {: #modulerequireid}
 
-<!-- YAML
-added: v0.5.1
--->
+
 
 * `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Экспортированное содержимое модуля
@@ -1189,7 +1101,7 @@ added: v0.5.1
 Раздел перенесён в
 [Модули: встроенный модуль `module`](module.md#the-module-object).
 
-<!-- Anchors to make sure old links find a target -->
+
 
 * <a id="modules_module_builtinmodules" href="module.html#modulebuiltinmodules">`module.builtinModules`</a>
 * <a id="modules_module_createrequire_filename" href="module.html#modulecreaterequirefilename">`module.createRequire(filename)`</a>
@@ -1200,7 +1112,7 @@ added: v0.5.1
 Раздел перенесён в
 [Модули: встроенный модуль `module`](module.md#source-map-support).
 
-<!-- Anchors to make sure old links find a target -->
+
 
 * <a id="modules_module_findsourcemap_path_error" href="module.html#modulefindsourcemappath">`module.findSourceMap(path)`</a>
 * <a id="modules_class_module_sourcemap" href="module.html#class-modulesourcemap">Class: `module.SourceMap`</a>

@@ -7,13 +7,13 @@ description: Модуль node:path — утилиты для работы с п
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/path.html)
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
-<!-- source_link=lib/path.js -->
+
 
 Модуль `node:path` предоставляет утилиты для работы с путями к файлам и каталогам. Подключение:
 
@@ -77,13 +77,7 @@ path.posix.basename('/tmp/myfile.html');
 
 ## `path.basename(path[, suffix])`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5348
-    description: Passing a non-string as the `path` argument will throw now.
--->
+
 
 Добавлено в: v0.1.25
 
@@ -117,9 +111,7 @@ path.win32.basename('C:\\foo.HTML', '.html');
 
 ## `path.delimiter`
 
-<!-- YAML
-added: v0.9.3
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -150,13 +142,7 @@ process.env.PATH.split(path.delimiter);
 
 ## `path.dirname(path)`
 
-<!-- YAML
-added: v0.1.16
-changes:
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5348
-    description: Passing a non-string as the `path` argument will throw now.
--->
+
 
 Добавлено в: v0.1.16
 
@@ -175,13 +161,7 @@ path.dirname('/foo/bar/baz/asdf/quux');
 
 ## `path.extname(path)`
 
-<!-- YAML
-added: v0.1.25
-changes:
-  - version: v6.0.0
-    pr-url: https://github.com/nodejs/node/pull/5348
-    description: Passing a non-string as the `path` argument will throw now.
--->
+
 
 Добавлено в: v0.1.25
 
@@ -215,13 +195,7 @@ path.extname('.index.md');
 
 ## `path.format(pathObject)`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/44349
-    description: The dot will be added if it is not specified in `ext`.
--->
+
 
 Добавлено в: v0.11.15
 
@@ -290,17 +264,7 @@ path.format({
 
 ## `path.matchesGlob(path, pattern)`
 
-<!-- YAML
-added:
-  - v22.5.0
-  - v20.17.0
-changes:
-  - version:
-    - v24.8.0
-    - v22.20.0
-    pr-url: https://github.com/nodejs/node/pull/59572
-    description: Marking the API stable.
--->
+
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь для сопоставления с шаблоном.
 * `pattern` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Glob-шаблон.
@@ -319,9 +283,7 @@ path.matchesGlob('/foo/bar*', 'foo/bird'); // false
 
 ## `path.isAbsolute(path)`
 
-<!-- YAML
-added: v0.11.2
--->
+
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -356,9 +318,7 @@ path.isAbsolute('.');           // false
 
 ## `path.join([...paths])`
 
-<!-- YAML
-added: v0.1.16
--->
+
 
 * `...paths` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность сегментов пути
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -379,9 +339,7 @@ path.join('foo', {}, 'bar');
 
 ## `path.normalize(path)`
 
-<!-- YAML
-added: v0.1.23
--->
+
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -419,9 +377,7 @@ path.win32.normalize('C:////temp\\\\/\\/\\/foo/bar');
 
 ## `path.parse(path)`
 
-<!-- YAML
-added: v0.11.15
--->
+
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -484,13 +440,7 @@ path.parse('C:\\path\\dir\\file.txt');
 
 ## `path.posix`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v15.3.0
-    pr-url: https://github.com/nodejs/node/pull/34962
-    description: Exposed as `require('path/posix')`.
--->
+
 
 Добавлено в: v0.11.15
 
@@ -502,14 +452,7 @@ changes:
 
 ## `path.relative(from, to)`
 
-<!-- YAML
-added: v0.5.0
-changes:
-  - version: v6.8.0
-    pr-url: https://github.com/nodejs/node/pull/8523
-    description: On Windows, the leading slashes for UNC paths are now included
-                 in the return value.
--->
+
 
 Добавлено в: v0.5.0
 
@@ -539,9 +482,7 @@ path.relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb');
 
 ## `path.resolve([...paths])`
 
-<!-- YAML
-added: v0.3.4
--->
+
 
 * `...paths` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Последовательность путей или сегментов
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -577,9 +518,7 @@ path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 
 ## `path.sep`
 
-<!-- YAML
-added: v0.7.9
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -606,9 +545,7 @@ added: v0.7.9
 
 ## `path.toNamespacedPath(path)`
 
-<!-- YAML
-added: v9.0.0
--->
+
 
 * `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -619,13 +556,7 @@ added: v9.0.0
 
 ## `path.win32`
 
-<!-- YAML
-added: v0.11.15
-changes:
-  - version: v15.3.0
-    pr-url: https://github.com/nodejs/node/pull/34962
-    description: Exposed as `require('path/win32')`.
--->
+
 
 Добавлено в: v0.11.15
 

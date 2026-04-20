@@ -7,9 +7,9 @@ description: Глобальные объекты и API, доступные во
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/globals.html)
 
-<!--introduced_in=v0.10.0-->
 
-<!-- type=misc -->
+
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -37,15 +37,7 @@ description: Глобальные объекты и API, доступные во
 
 ## Класс: `AbortController`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.17.0
-changes:
-  - version: v15.4.0
-    pr-url: https://github.com/nodejs/node/pull/35949
-    description: No longer experimental.
--->
+
 
 Вспомогательный класс для сигнализации об отмене в выбранных API на основе `Promise`. API основан на веб-API [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 
@@ -65,17 +57,7 @@ console.log(ac.signal.aborted); // Выводит true
 
 ### `abortController.abort([reason])`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.17.0
-changes:
-  - version:
-      - v17.2.0
-      - v16.14.0
-    pr-url: https://github.com/nodejs/node/pull/40807
-    description: Added the new optional reason argument.
--->
+
 
 -   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
 
@@ -83,21 +65,13 @@ changes:
 
 ### `abortController.signal`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.17.0
--->
+
 
 -   Тип: [`<AbortSignal>`](globals.md#abortsignal)
 
 ## Класс: `AbortSignal`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.17.0
--->
+
 
 -   Расширяет: [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget)
 
@@ -105,17 +79,7 @@ added:
 
 ### Статический метод: `AbortSignal.abort([reason])`
 
-<!-- YAML
-added:
-  - v15.12.0
-  - v14.17.0
-changes:
-  - version:
-      - v17.2.0
-      - v16.14.0
-    pr-url: https://github.com/nodejs/node/pull/40807
-    description: Added the new optional reason argument.
--->
+
 
 -   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
@@ -124,11 +88,7 @@ changes:
 
 ### Статический метод: `AbortSignal.timeout(delay)`
 
-<!-- YAML
-added:
-  - v17.3.0
-  - v16.14.0
--->
+
 
 -   `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах до срабатывания `AbortSignal`.
 
@@ -136,11 +96,7 @@ added:
 
 ### Статический метод: `AbortSignal.any(signals)`
 
-<!-- YAML
-added:
-  - v20.3.0
-  - v18.17.0
--->
+
 
 -   `signals` [`<AbortSignal[]>`](globals.md#abortsignal) `AbortSignal`, из которых составляется новый `AbortSignal`.
 
@@ -148,11 +104,7 @@ added:
 
 ### Событие: `'abort'`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.17.0
--->
+
 
 Событие `'abort'` генерируется при вызове `abortController.abort()`. Колбэк получает один объект-аргумент с единственным свойством `type`, равным `'abort'`:
 
@@ -180,11 +132,7 @@ ac.abort();
 
 ### `abortSignal.aborted`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.17.0
--->
+
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -192,11 +140,7 @@ added:
 
 ### `abortSignal.onabort`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.17.0
--->
+
 
 -   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -204,11 +148,7 @@ added:
 
 ### `abortSignal.reason`
 
-<!-- YAML
-added:
-  - v17.2.0
-  - v16.14.0
--->
+
 
 -   Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -222,19 +162,13 @@ console.log(ac.signal.reason); // Error: boom!
 
 ### `abortSignal.throwIfAborted()`
 
-<!-- YAML
-added:
-  - v17.3.0
-  - v16.17.0
--->
+
 
 Если `abortSignal.aborted` равно `true`, выбрасывает `abortSignal.reason`.
 
 ## `atob(data)`
 
-<!-- YAML
-added: v16.0.0
--->
+
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -250,25 +184,19 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ## Класс: `Blob`
 
-<!-- YAML
-added: v18.0.0
--->
+
 
 См. [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
 
 ## Класс: `BroadcastChannel`
 
-<!-- YAML
-added: v18.0.0
--->
+
 
 См. [BroadcastChannel](worker_threads.md).
 
 ## `btoa(data)`
 
-<!-- YAML
-added: v16.0.0
--->
+
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -284,9 +212,7 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ## Класс: `Buffer`
 
-<!-- YAML
-added: v0.1.103
--->
+
 
 -   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -294,15 +220,7 @@ added: v0.1.103
 
 ## Класс: `ByteLengthQueuingStrategy`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -310,52 +228,31 @@ changes:
 
 ## `clearImmediate(immediateObject)`
 
-<!-- YAML
-added: v0.9.1
--->
+
 
 [`clearImmediate`](timers.md#clearimmediateimmediate) описан в разделе [таймеры](timers.md).
 
 ## `clearInterval(intervalObject)`
 
-<!-- YAML
-added: v0.0.1
--->
+
 
 [`clearInterval`](timers.md#clearintervaltimeout) описан в разделе [таймеры](timers.md).
 
 ## `clearTimeout(timeoutObject)`
 
-<!-- YAML
-added: v0.0.1
--->
+
 
 [`clearTimeout`](timers.md#cleartimeouttimeout) описан в разделе [таймеры](timers.md).
 
 ## Класс: `CloseEvent`
 
-<!-- YAML
-added: v23.0.0
--->
+
 
 Реализация [CloseEvent](globals.md), совместимая с браузером. Отключите это API флагом CLI [`--no-experimental-websocket`](cli.md#--no-experimental-websocket).
 
 ## Класс: `CompressionStream`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-   - v24.7.0
-   - v22.20.0
-   pr-url: https://github.com/nodejs/node/pull/59464
-   description: format now accepts `brotli` value.
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -363,9 +260,7 @@ changes:
 
 ## `console`
 
-<!-- YAML
-added: v0.1.100
--->
+
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -373,15 +268,7 @@ added: v0.1.100
 
 ## Класс: `CountQueuingStrategy`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -389,93 +276,31 @@ changes:
 
 ## Класс: `Crypto`
 
-<!-- YAML
-added:
-  - v17.6.0
-  - v16.15.0
-changes:
-  - version: v23.0.0
-    pr-url: https://github.com/nodejs/node/pull/52564
-    description: No longer experimental.
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/42083
-    description: No longer behind `--experimental-global-webcrypto` CLI flag.
--->
+
 
 Реализация [Crypto](crypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## `crypto`
 
-<!-- YAML
-added:
-  - v17.6.0
-  - v16.15.0
-changes:
-  - version: v23.0.0
-    pr-url: https://github.com/nodejs/node/pull/52564
-    description: No longer experimental.
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/42083
-    description: No longer behind `--experimental-global-webcrypto` CLI flag.
--->
+
 
 Реализация [Web Crypto API][web crypto api], совместимая с браузером.
 
 ## Класс: `CryptoKey`
 
-<!-- YAML
-added:
-  - v17.6.0
-  - v16.15.0
-changes:
-  - version: v23.0.0
-    pr-url: https://github.com/nodejs/node/pull/52564
-    description: No longer experimental.
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/42083
-    description: No longer behind `--experimental-global-webcrypto` CLI flag.
--->
+
 
 Реализация [CryptoKey](webcrypto.md#class-cryptokey), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## Класс: `CustomEvent`
 
-<!-- YAML
-added:
-  - v18.7.0
-  - v16.17.0
-changes:
-  - version: v23.0.0
-    pr-url: https://github.com/nodejs/node/pull/52723
-    description: No longer experimental.
-  - version:
-    - v22.1.0
-    - v20.13.0
-    pr-url: https://github.com/nodejs/node/pull/52618
-    description: CustomEvent is now stable.
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/44860
-    description: No longer behind `--experimental-global-customevent` CLI flag.
--->
+
 
 Реализация [CustomEvent](globals.md), совместимая с браузером.
 
 ## Класс: `DecompressionStream`
 
-<!-- YAML
-added: v18.0.0
-changes:
-  - version:
-    - v24.7.0
-    - v22.20.0
-    pr-url: https://github.com/nodejs/node/pull/59464
-    description: format now accepts `brotli` value.
-  - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -483,29 +308,19 @@ changes:
 
 ## Класс: `DOMException`
 
-<!-- YAML
-added: v17.0.0
--->
+
 
 Класс WHATWG [DOMException](https://developer.mozilla.org/en-US/docs/Web/API/DOMException).
 
 ## `ErrorEvent`
 
-<!-- YAML
-added: v25.0.0
--->
+
 
 Реализация [ErrorEvent](globals.md), совместимая с браузером.
 
 ## Класс: `Event`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v15.4.0
-    pr-url: https://github.com/nodejs/node/pull/35949
-    description: No longer experimental.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -513,11 +328,7 @@ changes:
 
 ## Класс: `EventSource`
 
-<!-- YAML
-added:
-  - v22.3.0
-  - v20.18.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -527,13 +338,7 @@ added:
 
 ## Класс: `EventTarget`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v15.4.0
-    pr-url: https://github.com/nodejs/node/pull/35949
-    description: No longer experimental.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -545,19 +350,7 @@ changes:
 
 ## `fetch`
 
-<!-- YAML
-added:
-  - v17.5.0
-  - v16.15.0
-changes:
-  - version:
-    - v21.0.0
-    pr-url: https://github.com/nodejs/node/pull/45684
-    description: No longer experimental.
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41811
-    description: No longer behind `--experimental-fetch` CLI flag.
--->
+
 
 Реализация функции [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch), совместимая с браузером.
 
@@ -601,35 +394,19 @@ fetch(url, { dispatcher: new MyAgent() });
 
 ## Класс: `File`
 
-<!-- YAML
-added: v20.0.0
--->
+
 
 См. [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
 
 ## Класс: `FormData`
 
-<!-- YAML
-added:
-  - v17.6.0
-  - v16.15.0
-changes:
-  - version:
-    - v21.0.0
-    pr-url: https://github.com/nodejs/node/pull/45684
-    description: No longer experimental.
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41811
-    description: No longer behind `--experimental-fetch` CLI flag.
--->
+
 
 Реализация [FormData](#class-formdata), совместимая с браузером.
 
 ## `global`
 
-<!-- YAML
-added: v0.1.27
--->
+
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -641,41 +418,13 @@ added: v0.1.27
 
 ## Класс: `Headers`
 
-<!-- YAML
-added:
-  - v17.5.0
-  - v16.15.0
-changes:
-  - version:
-    - v21.0.0
-    pr-url: https://github.com/nodejs/node/pull/45684
-    description: No longer experimental.
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41811
-    description: No longer behind `--experimental-fetch` CLI flag.
--->
+
 
 Реализация [Headers](globals.md#class-headers), совместимая с браузером.
 
 ## `localStorage`
 
-<!-- YAML
-added: v22.4.0
-changes:
-  - version: REPLACEME
-    pr-url: https://github.com/nodejs/node/pull/60351
-    description: Accessing the `localStorage` global without providing
-                 `--localstorage-file` now throws a `DOMException`, for
-                 compliance with the Web Storage specification.
-  - version: v25.0.0
-    pr-url: https://github.com/nodejs/node/pull/57666
-    description: When webstorage is enabled and `--localstorage-file` is not
-                 provided, accessing the `localStorage` global now returns an
-                 empty object.
-  - version: v25.0.0
-    pr-url: https://github.com/nodejs/node/pull/57666
-    description: This API is no longer behind `--experimental-webstorage` runtime flag.
--->
+
 
 Добавлено в: v22.4.0
 
@@ -687,25 +436,19 @@ changes:
 
 ## Класс: `MessageChannel`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 Класс `MessageChannel`. Подробнее — [`MessageChannel`](worker_threads.md#class-messagechannel).
 
 ## Класс: `MessageEvent`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 Реализация [MessageEvent](https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/MessageEvent), совместимая с браузером.
 
 ## Класс: `MessagePort`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 Класс `MessagePort`. Подробнее — [`MessagePort`](worker_threads.md#class-messageport).
 
@@ -715,9 +458,7 @@ added: v15.0.0
 
 ## Класс: `Navigator`
 
-<!-- YAML
-added: v21.0.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -727,9 +468,7 @@ added: v21.0.0
 
 ## `navigator`
 
-<!-- YAML
-added: v21.0.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -739,9 +478,7 @@ added: v21.0.0
 
 ### `navigator.hardwareConcurrency`
 
-<!-- YAML
-added: v21.0.0
--->
+
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -755,9 +492,7 @@ console.log(
 
 ### `navigator.language`
 
-<!-- YAML
-added: v21.2.0
--->
+
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -775,9 +510,7 @@ console.log(
 
 ### `navigator.languages`
 
-<!-- YAML
-added: v21.2.0
--->
+
 
 -   Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -793,9 +526,7 @@ console.log(
 
 ### `navigator.locks`
 
-<!-- YAML
-added: v24.5.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -835,9 +566,7 @@ added: v24.5.0
 
 ### `navigator.platform`
 
-<!-- YAML
-added: v21.2.0
--->
+
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -851,9 +580,7 @@ console.log(
 
 ### `navigator.userAgent`
 
-<!-- YAML
-added: v21.1.0
--->
+
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -865,65 +592,49 @@ console.log(`The user-agent is ${navigator.userAgent}`); // Выводит "Node
 
 ## `performance`
 
-<!-- YAML
-added: v16.0.0
--->
+
 
 Объект [`perf_hooks.performance`](perf_hooks.md#perf_hooksperformance).
 
 ## Класс: `PerformanceEntry`
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 Класс `PerformanceEntry`. См. [`PerformanceEntry`](perf_hooks.md#class-performanceentry).
 
 ## Класс: `PerformanceMark`
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 Класс `PerformanceMark`. См. [`PerformanceMark`](perf_hooks.md#class-performancemark).
 
 ## Класс: `PerformanceMeasure`
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 Класс `PerformanceMeasure`. См. [`PerformanceMeasure`](perf_hooks.md#class-performancemeasure).
 
 ## Класс: `PerformanceObserver`
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 Класс `PerformanceObserver`. См. [`PerformanceObserver`](perf_hooks.md#class-performanceobserver).
 
 ## Класс: `PerformanceObserverEntryList`
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 Класс `PerformanceObserverEntryList`. См. [`PerformanceObserverEntryList`](perf_hooks.md#class-performanceobserverentrylist).
 
 ## Класс: `PerformanceResourceTiming`
 
-<!-- YAML
-added: v19.0.0
--->
+
 
 Класс `PerformanceResourceTiming`. См. [`PerformanceResourceTiming`](perf_hooks.md#class-performanceresourcetiming).
 
 ## `process`
 
-<!-- YAML
-added: v0.1.7
--->
+
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -931,9 +642,7 @@ added: v0.1.7
 
 ## `queueMicrotask(callback)`
 
-<!-- YAML
-added: v11.0.0
--->
+
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
 
@@ -963,23 +672,13 @@ DataHandler.prototype.load = async function load(key) {
 
 ## Класс: `QuotaExceededError`
 
-<!-- YAML
-added: REPLACEME
--->
+
 
 Класс WHATWG [QuotaExceededError](globals.md). Наследует [DOMException](https://developer.mozilla.org/en-US/docs/Web/API/DOMException).
 
 ## Класс: `ReadableByteStreamController`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -987,15 +686,7 @@ changes:
 
 ## Класс: `ReadableStream`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1003,15 +694,7 @@ changes:
 
 ## Класс: `ReadableStreamBYOBReader`
 
-<!-- YAML
-added: v18.0.0
-changes:
-- version:
-  - v23.11.0
-  - v22.15.0
-  pr-url: https://github.com/nodejs/node/pull/57510
-  description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1019,15 +702,7 @@ changes:
 
 ## Класс: `ReadableStreamBYOBRequest`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1035,15 +710,7 @@ changes:
 
 ## Класс: `ReadableStreamDefaultController`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1051,15 +718,7 @@ changes:
 
 ## Класс: `ReadableStreamDefaultReader`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1067,19 +726,7 @@ changes:
 
 ## Класс: `Request`
 
-<!-- YAML
-added:
-  - v17.5.0
-  - v16.15.0
-changes:
-  - version:
-    - v21.0.0
-    pr-url: https://github.com/nodejs/node/pull/45684
-    description: No longer experimental.
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41811
-    description: No longer behind `--experimental-fetch` CLI flag.
--->
+
 
 Реализация [Request](#class-request), совместимая с браузером.
 
@@ -1089,31 +736,13 @@ changes:
 
 ## Класс: `Response`
 
-<!-- YAML
-added:
-  - v17.5.0
-  - v16.15.0
-changes:
-  - version:
-    - v21.0.0
-    pr-url: https://github.com/nodejs/node/pull/45684
-    description: No longer experimental.
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41811
-    description: No longer behind `--experimental-fetch` CLI flag.
--->
+
 
 Реализация [Response](#class-response), совместимая с браузером.
 
 ## `sessionStorage`
 
-<!-- YAML
-added: v22.4.0
-changes:
-  - version: v25.0.0
-    pr-url: https://github.com/nodejs/node/pull/57666
-    description: This API is no longer behind `--experimental-webstorage` runtime flag.
--->
+
 
 Добавлено в: v22.4.0
 
@@ -1125,33 +754,25 @@ changes:
 
 ## `setImmediate(callback[, ...args])`
 
-<!-- YAML
-added: v0.9.1
--->
+
 
 [`setImmediate`](timers.md#setimmediatecallback-args) описан в разделе [таймеры][timers].
 
 ## `setInterval(callback, delay[, ...args])`
 
-<!-- YAML
-added: v0.0.1
--->
+
 
 [`setInterval`](timers.md#setintervalcallback-delay-args) описан в разделе [таймеры][timers].
 
 ## `setTimeout(callback, delay[, ...args])`
 
-<!-- YAML
-added: v0.0.1
--->
+
 
 [`setTimeout`](timers.md#settimeoutcallback-delay-args) описан в разделе [таймеры][timers].
 
 ## Класс: `Storage`
 
-<!-- YAML
-added: v22.4.0
--->
+
 
 !!!warning "Кандидат в релиз"
 
@@ -1161,45 +782,25 @@ added: v22.4.0
 
 ## `structuredClone(value[, options])`
 
-<!-- YAML
-added: v17.0.0
--->
+
 
 Метод WHATWG [`structuredClone`](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone).
 
 ## Класс: `SubtleCrypto`
 
-<!-- YAML
-added:
-  - v17.6.0
-  - v16.15.0
-changes:
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/42083
-    description: No longer behind `--experimental-global-webcrypto` CLI flag.
--->
+
 
 Реализация [SubtleCrypto](webcrypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## Класс: `TextDecoder`
 
-<!-- YAML
-added: v11.0.0
--->
+
 
 Класс WHATWG `TextDecoder`. См. раздел [`TextDecoder`](util.md#class-utiltextdecoder).
 
 ## Класс: `TextDecoderStream`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1207,23 +808,13 @@ changes:
 
 ## Класс: `TextEncoder`
 
-<!-- YAML
-added: v11.0.0
--->
+
 
 Класс WHATWG `TextEncoder`. См. раздел [`TextEncoder`](util.md#class-utiltextencoder).
 
 ## Класс: `TextEncoderStream`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1231,15 +822,7 @@ changes:
 
 ## Класс: `TransformStream`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1247,15 +830,7 @@ changes:
 
 ## Класс: `TransformStreamDefaultController`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1263,17 +838,13 @@ changes:
 
 ## Класс: `URL`
 
-<!-- YAML
-added: v10.0.0
--->
+
 
 Класс WHATWG `URL`. См. раздел [`URL`](url.md#class-url).
 
 ## Класс: `URLPattern`
 
-<!-- YAML
-added: v24.0.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -1281,17 +852,13 @@ added: v24.0.0
 
 ## Класс: `URLSearchParams`
 
-<!-- YAML
-added: v10.0.0
--->
+
 
 Класс WHATWG `URLSearchParams`. См. раздел [`URLSearchParams`](url.md#class-urlsearchparams).
 
 ## Класс: `WebAssembly`
 
-<!-- YAML
-added: v8.0.0
--->
+
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -1299,32 +866,13 @@ added: v8.0.0
 
 ## Класс: `WebSocket`
 
-<!-- YAML
-added:
-  - v21.0.0
-  - v20.10.0
-changes:
-  - version: v22.4.0
-    pr-url: https://github.com/nodejs/node/pull/53352
-    description: No longer experimental.
-  - version: v22.0.0
-    pr-url: https://github.com/nodejs/node/pull/51594
-    description: No longer behind `--experimental-websocket` CLI flag.
--->
+
 
 Реализация [WebSocket](globals.md), совместимая с браузером. Отключите API флагом [`--no-experimental-websocket`](cli.md#--no-experimental-websocket).
 
 ## Класс: `WritableStream`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1332,15 +880,7 @@ changes:
 
 ## Класс: `WritableStreamDefaultController`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 
@@ -1348,15 +888,7 @@ changes:
 
 ## Класс: `WritableStreamDefaultWriter`
 
-<!-- YAML
-added: v18.0.0
-changes:
- - version:
-    - v23.11.0
-    - v22.15.0
-   pr-url: https://github.com/nodejs/node/pull/57510
-   description: Marking the API stable.
--->
+
 
 Добавлено в: v18.0.0
 

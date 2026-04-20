@@ -3,19 +3,19 @@ title: Итерируемое сжатие
 description: Модуль node:zlib/iter — преобразования сжатия и распаковки для итерируемых потоков node:stream/iter
 ---
 
-<!-- markdownlint-disable MD030 MD007 MD051 -->
+
 
 # Итерируемое сжатие
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/zlib_iter.html)
 
-<!--introduced_in=v25.9.0-->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Эта возможность не подпадает под правила [семантического версионирования](https://semver.org/lang/ru/). Несовместимые изменения или удаление могут произойти в любом будущем релизе. Использовать такую возможность в рабочем окружении не рекомендуется.
 
-<!-- source_link=lib/zlib/iter.js -->
+
 
 Модуль `node:zlib/iter` предоставляет преобразования сжатия и распаковки
 для API итерируемых потоков [`node:stream/iter`](stream_iter.md).
@@ -89,9 +89,7 @@ description: Модуль node:zlib/iter — преобразования сжа
 
 ## `compressBrotliSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -120,9 +118,7 @@ added: v25.9.0
 
 ## `compressDeflateSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -140,9 +136,7 @@ added: v25.9.0
 
 ## `compressGzipSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -160,9 +154,7 @@ added: v25.9.0
 
 ## `compressZstdSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -186,9 +178,7 @@ added: v25.9.0
 
 ## `decompressBrotliSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -208,9 +198,7 @@ added: v25.9.0
 
 ## `decompressDeflateSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -224,9 +212,7 @@ added: v25.9.0
 
 ## `decompressGzipSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -240,9 +226,7 @@ added: v25.9.0
 
 ## `decompressZstdSync([options])`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
   * `chunkSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер выходного буфера. **По умолчанию:** `65536` (64 КБ).
@@ -265,4 +249,4 @@ added: v25.9.0
 [параметры компрессора Zstd]: zlib.md#compressor-options-1
 [параметры декомпрессора Zstd]: zlib.md#decompressor-options-1
 
-<!-- markdownlint-enable MD030 MD007 MD051 -->
+

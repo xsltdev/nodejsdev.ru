@@ -7,25 +7,13 @@ description: JSON-диагностический отчёт о процессе 
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/report.html)
 
-<!--introduced_in=v11.8.0-->
 
-<!-- type=misc -->
 
-<!-- name=report -->
 
-<!-- YAML
-changes:
-  - version:
-    - v23.3.0
-    - v22.13.0
-    pr-url: https://github.com/nodejs/node/pull/55697
-    description: Added `--report-exclude-env` option for excluding environment variables from report generation.
-  - version:
-    - v22.0.0
-    - v20.13.0
-    pr-url: https://github.com/nodejs/node/pull/51645
-    description: Added `--report-exclude-network` option for excluding networking operations that can slow down report generation in some cases.
--->
+
+
+
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -549,14 +537,7 @@ Node.js report completed
 
 #### Версия 5
 
-<!-- YAML
-changes:
-  - version:
-    - v23.5.0
-    - v22.13.0
-    pr-url: https://github.com/nodejs/node/pull/56068
-    description: Fix typos in the memory limit units.
--->
+
 
 Ключи `data_seg_size_kbytes`, `max_memory_size_kbytes` и `virtual_memory_kbytes` в разделе `userLimits` заменены на `data_seg_size_bytes`, `max_memory_size_bytes` и `virtual_memory_bytes` — значения задаются в байтах.
 
@@ -584,14 +565,7 @@ changes:
 
 #### Версия 4
 
-<!-- YAML
-changes:
-  - version:
-    - v23.3.0
-    - v22.13.0
-    pr-url: https://github.com/nodejs/node/pull/55697
-    description: Added `--report-exclude-env` option for excluding environment variables from report generation.
--->
+
 
 В конечные точки дескрипторов `tcp` и `udp` libuv добавлены поля `ipv4` и `ipv6`. Примеры:
 
@@ -648,14 +622,7 @@ changes:
 
 #### Версия 3
 
-<!-- YAML
-changes:
-  - version:
-    - v19.1.0
-    - v18.13.0
-    pr-url: https://github.com/nodejs/node/pull/45254
-    description: Add more memory info.
--->
+
 
 В раздел `resourceUsage` добавлены следующие поля, связанные с памятью.
 
@@ -673,14 +640,7 @@ changes:
 
 #### Версия 2
 
-<!-- YAML
-changes:
-  - version:
-      - v13.9.0
-      - v12.16.2
-    pr-url: https://github.com/nodejs/node/pull/31386
-    description: Workers are now included in the report.
--->
+
 
 Добавлена поддержка [`Worker`](worker_threads.md). Подробнее — в разделе «Взаимодействие с worker» ниже на этой странице.
 
@@ -740,14 +700,7 @@ NODE_OPTIONS="--report-uncaught-exception \
 
 ## Взаимодействие с worker {#interaction-with-workers}
 
-<!-- YAML
-changes:
-  - version:
-      - v13.9.0
-      - v12.16.2
-    pr-url: https://github.com/nodejs/node/pull/31386
-    description: Workers are now included in the report.
--->
+
 
 Потоки [`Worker`](worker_threads.md) могут формировать отчёты так же, как основной поток.
 

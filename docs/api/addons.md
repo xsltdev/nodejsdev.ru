@@ -66,7 +66,7 @@ NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
 
 На большинстве платформ можно начать со следующего `Makefile`:
 
-<!--lint disable no-tabs remark-lint-->
+
 
 ```bash
 NODEJS_DEV_ROOT ?= $(shell dirname "$$(command -v node)")/..

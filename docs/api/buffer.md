@@ -1252,9 +1252,7 @@ console.log(buf[1]); // 255
 
 ### `Buffer.poolSize`
 
-<!-- YAML
-added: v0.11.3
--->
+
 
 -   Тип: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `8192`
 

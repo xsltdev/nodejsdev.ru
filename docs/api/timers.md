@@ -7,13 +7,13 @@ description: Глобальный API для отложенного вызова
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/timers.html)
 
-<!--introduced_in=v0.10.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
 
-<!-- source_link=lib/timers.js -->
+
 
 Модуль таймеров предоставляет глобальный API для планирования вызова функций в будущем. Поскольку функции таймеров являются глобальными, для использования API не нужно вызывать `require('node:timers')`.
 
@@ -27,9 +27,7 @@ description: Глобальный API для отложенного вызова
 
 ### `immediate.hasRef()`
 
-<!-- YAML
-added: v11.0.0
--->
+
 
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -37,9 +35,7 @@ added: v11.0.0
 
 ### `immediate.ref()`
 
-<!-- YAML
-added: v9.7.0
--->
+
 
 * Возвращает: [`<Immediate>`](timers.md) ссылку на `immediate`
 
@@ -49,9 +45,7 @@ added: v9.7.0
 
 ### `immediate.unref()`
 
-<!-- YAML
-added: v9.7.0
--->
+
 
 * Возвращает: [`<Immediate>`](timers.md) ссылку на `immediate`
 
@@ -59,15 +53,7 @@ added: v9.7.0
 
 ### `immediate[Symbol.dispose]()`
 
-<!-- YAML
-added:
- - v20.5.0
- - v18.18.0
-changes:
- - version: v24.2.0
-   pr-url: https://github.com/nodejs/node/pull/58467
-   description: No longer experimental.
--->
+
 
 Отменяет объект `Immediate`. Аналогично вызову `clearImmediate()`.
 
@@ -82,9 +68,7 @@ changes:
 
 ### `timeout.close()`
 
-<!-- YAML
-added: v0.9.1
--->
+
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -98,9 +82,7 @@ added: v0.9.1
 
 ### `timeout.hasRef()`
 
-<!-- YAML
-added: v11.0.0
--->
+
 
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -108,9 +90,7 @@ added: v11.0.0
 
 ### `timeout.ref()`
 
-<!-- YAML
-added: v0.9.1
--->
+
 
 * Возвращает: [`<Timeout>`](timers.md) ссылку на `timeout`
 
@@ -120,9 +100,7 @@ added: v0.9.1
 
 ### `timeout.refresh()`
 
-<!-- YAML
-added: v10.2.0
--->
+
 
 * Возвращает: [`<Timeout>`](timers.md) ссылку на `timeout`
 
@@ -132,9 +110,7 @@ added: v10.2.0
 
 ### `timeout.unref()`
 
-<!-- YAML
-added: v0.9.1
--->
+
 
 * Возвращает: [`<Timeout>`](timers.md) ссылку на `timeout`
 
@@ -142,11 +118,7 @@ added: v0.9.1
 
 ### `timeout[Symbol.toPrimitive]()`
 
-<!-- YAML
-added:
-  - v14.9.0
-  - v12.19.0
--->
+
 
 * Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) число, по которому можно ссылаться на этот `timeout`
 
@@ -159,15 +131,7 @@ added:
 
 ### `timeout[Symbol.dispose]()`
 
-<!-- YAML
-added:
- - v20.5.0
- - v18.18.0
-changes:
- - version: v24.2.0
-   pr-url: https://github.com/nodejs/node/pull/58467
-   description: No longer experimental.
--->
+
 
 Отменяет таймаут.
 
@@ -177,15 +141,7 @@ changes:
 
 ### `setImmediate(callback[, ...args])`
 
-<!-- YAML
-added: v0.9.1
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v0.9.1
 
@@ -203,15 +159,7 @@ changes:
 
 ### `setInterval(callback[, delay[, ...args]])`
 
-<!-- YAML
-added: v0.0.1
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v0.0.1
 
@@ -232,15 +180,7 @@ changes:
 
 ### `setTimeout(callback[, delay[, ...args]])`
 
-<!-- YAML
-added: v0.0.1
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v0.0.1
 
@@ -351,9 +291,7 @@ Node.js не гарантирует точное время и порядок с
 
 ### `clearImmediate(immediate)`
 
-<!-- YAML
-added: v0.9.1
--->
+
 
 * `immediate` [`<Immediate>`](timers.md) Объект `Immediate`, возвращённый
   [`setImmediate()`](#setimmediatecallback-args).
@@ -362,9 +300,7 @@ added: v0.9.1
 
 ### `clearInterval(timeout)`
 
-<!-- YAML
-added: v0.0.1
--->
+
 
 * `timeout` [`<Timeout>`](timers.md) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Объект `Timeout`, возвращённый [`setInterval()`](#setintervalcallback-delay-args),
   или [примитив][primitive] объекта `Timeout` в виде строки или числа.
@@ -373,9 +309,7 @@ added: v0.0.1
 
 ### `clearTimeout(timeout)`
 
-<!-- YAML
-added: v0.0.1
--->
+
 
 * `timeout` [`<Timeout>`](timers.md) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Объект `Timeout`, возвращённый [`setTimeout()`](#settimeoutcallback-delay-args),
   или [примитив][primitive] объекта `Timeout` в виде строки или числа.
@@ -384,13 +318,7 @@ added: v0.0.1
 
 ## API таймеров на промисах
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v16.0.0
-    pr-url: https://github.com/nodejs/node/pull/38112
-    description: Graduated from experimental.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -420,9 +348,7 @@ API `timers/promises` предоставляет альтернативный н
 
 ### `timersPromises.setTimeout([delay[, value[, options]]])`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах перед выполнением промиса. **По умолчанию:** `1`.
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым выполняется промис.
@@ -458,9 +384,7 @@ added: v15.0.0
 
 ### `timersPromises.setImmediate([value[, options]])`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * `value` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Значение, с которым выполняется промис.
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -495,9 +419,7 @@ added: v15.0.0
 
 ### `timersPromises.setInterval([delay[, value[, options]]])`
 
-<!-- YAML
-added: v15.9.0
--->
+
 
 Возвращает асинхронный итератор, выдающий значения с интервалом `delay` мс.
 Если `ref` равен `true`, нужно явно или неявно вызывать `next()` у асинхронного итератора, чтобы цикл событий оставался активным.
@@ -550,11 +472,7 @@ added: v15.9.0
 
 ### `timersPromises.scheduler.wait(delay[, options])`
 
-<!-- YAML
-added:
-  - v17.3.0
-  - v16.14.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -583,11 +501,7 @@ added:
 
 ### `timersPromises.scheduler.yield()`
 
-<!-- YAML
-added:
-  - v17.3.0
-  - v16.14.0
--->
+
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 

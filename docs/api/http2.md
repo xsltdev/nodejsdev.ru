@@ -7,32 +7,17 @@ description: Модуль node:http2 — протокол HTTP/2, Core API и AP
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/http2.html)
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-      - v15.3.0
-      - v14.17.0
-    pr-url: https://github.com/nodejs/node/pull/36070
-    description: It is possible to abort a request with an AbortSignal.
-  - version: v15.0.0
-    pr-url: https://github.com/nodejs/node/pull/34664
-    description: Requests with the `host` header (with or without
-                 `:authority`) can now be sent/received.
-  - version: v10.10.0
-    pr-url: https://github.com/nodejs/node/pull/22466
-    description: HTTP/2 is now Stable. Previously, it had been Experimental.
--->
+
 
 Добавлено в: v8.4.0
 
-<!--introduced_in=v8.4.0-->
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-<!-- source_link=lib/http2.js -->
+
 
 Модуль `node:http2` реализует протокол [HTTP/2][HTTP/2]. Подключение:
 
@@ -210,9 +195,7 @@ openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' \
 
 ### Класс: `Http2Session` {#class-http2session}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<EventEmitter>`](events.md#class-eventemitter)
 
@@ -245,18 +228,14 @@ added: v8.4.0
 
 #### Событие: `'close'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Событие `'close'` генерируется после уничтожения `Http2Session`. У обработчика нет
 аргументов.
 
 #### Событие: `'connect'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `session` [`<Http2Session>`](http2.md)
 * `socket` [`<net.Socket>`](net.md#class-netsocket)
@@ -268,9 +247,7 @@ added: v8.4.0
 
 #### Событие: `'error'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -278,9 +255,7 @@ added: v8.4.0
 
 #### Событие: `'frameError'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `type` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тип кадра.
 * `code` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код ошибки.
@@ -296,9 +271,7 @@ added: v8.4.0
 
 #### Событие: `'goaway'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `errorCode` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код ошибки HTTP/2 из кадра `GOAWAY`.
 * `lastStreamID` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор последнего потока, успешно обработанного
@@ -312,9 +285,7 @@ added: v8.4.0
 
 #### Событие: `'localSettings'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `settings` [`<HTTP/2 Settings Object>`](#settings-object) Копия полученного кадра `SETTINGS`.
 
@@ -334,9 +305,7 @@ session.on('localSettings', (settings) => {
 
 #### Событие: `'ping'`
 
-<!-- YAML
-added: v10.12.0
--->
+
 
 * `payload` [`<Buffer>`](buffer.md#buffer) 8-байтовая полезная нагрузка кадра `PING`
 
@@ -344,9 +313,7 @@ added: v10.12.0
 
 #### Событие: `'remoteSettings'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `settings` [`<HTTP/2 Settings Object>`](#settings-object) Копия полученного кадра `SETTINGS`.
 
@@ -360,9 +327,7 @@ session.on('remoteSettings', (settings) => {
 
 #### Событие: `'stream'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `stream` [`<Http2Stream>`](#class-http2stream) Ссылка на поток
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object) Объект заголовков
@@ -434,9 +399,7 @@ session.on('stream', (stream, headers, flags) => {
 
 #### Событие: `'timeout'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 После `http2session.setTimeout()` событие `'timeout'` генерируется при отсутствии
 активности на `Http2Session` в течение заданных миллисекунд. У обработчика нет
@@ -449,9 +412,7 @@ session.on('timeout', () => { /* .. */ });
 
 #### `http2session.alpnProtocol`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
 
@@ -460,9 +421,7 @@ added: v9.4.0
 
 #### `http2session.close([callback])`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -474,9 +433,7 @@ added: v9.4.0
 
 #### `http2session.closed`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -484,9 +441,7 @@ added: v9.4.0
 
 #### `http2session.connecting`
 
-<!-- YAML
-added: v10.0.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -495,9 +450,7 @@ added: v10.0.0
 
 #### `http2session.destroy([error][, code])`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ошибка, если уничтожение из-за ошибки.
 * `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код ошибки HTTP/2 для финального кадра `GOAWAY`. Если не задан
@@ -512,9 +465,7 @@ added: v8.4.0
 
 #### `http2session.destroyed`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -522,9 +473,7 @@ added: v8.4.0
 
 #### `http2session.encrypted`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | undefined
 
@@ -533,9 +482,7 @@ added: v9.4.0
 
 #### `http2session.goaway([code[, lastStreamID[, opaqueData]]])`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * `code` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код ошибки HTTP/2
 * `lastStreamID` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Числовой ID последнего обработанного `Http2Stream`
@@ -545,9 +492,7 @@ added: v9.4.0
 
 #### `http2session.localSettings`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<HTTP/2 Settings Object>`](#settings-object)
 
@@ -555,9 +500,7 @@ added: v8.4.0
 
 #### `http2session.originSet`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | undefined
 
@@ -566,9 +509,7 @@ added: v9.4.0
 
 #### `http2session.pendingSettingsAck`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -577,15 +518,7 @@ added: v8.4.0
 
 #### `http2session.ping([payload, ]callback)`
 
-<!-- YAML
-added: v8.9.3
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.9.3
 
@@ -617,17 +550,13 @@ session.ping(Buffer.from('abcdefgh'), (err, duration, payload) => {
 
 #### `http2session.ref()`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 Вызывает [`ref()`](net.md#socketref) для базового [`net.Socket`](net.md#class-netsocket).
 
 #### `http2session.remoteSettings`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<HTTP/2 Settings Object>`](#settings-object)
 
@@ -635,11 +564,7 @@ added: v8.4.0
 
 #### `http2session.setLocalWindowSize(windowSize)`
 
-<!-- YAML
-added:
-  - v15.3.0
-  - v14.18.0
--->
+
 
 * `windowSize` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -677,15 +602,7 @@ added:
 
 #### `http2session.setTimeout(msecs, callback)`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -697,9 +614,7 @@ changes:
 
 #### `http2session.socket`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
 
@@ -715,9 +630,7 @@ added: v8.4.0
 
 #### `http2session.state`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Разная информация о состоянии `Http2Session`.
 
@@ -736,15 +649,7 @@ added: v8.4.0
 
 #### `http2session.settings([settings][, callback])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -763,9 +668,7 @@ changes:
 
 #### `http2session.type`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -774,25 +677,19 @@ added: v8.4.0
 
 #### `http2session.unref()`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 Вызывает [`unref()`](net.md#socketunref) для базового [`net.Socket`](net.md#class-netsocket).
 
 ### Класс: `ServerHttp2Session` {#class-serverhttp2session}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<Http2Session>`](http2.md)
 
 #### `serverhttp2session.altsvc(alt, originOrStream)`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * `alt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Описание альтернативной службы по [RFC 7838][RFC 7838].
 * `originOrStream` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) origin URL (или объект с `origin`)
@@ -869,9 +766,7 @@ h2=":82"'`.
 
 #### `serverhttp2session.origin(...origins)`
 
-<!-- YAML
-added: v10.12.0
--->
+
 
 * `origins` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Одна или несколько строк URL, переданных отдельными
   аргументами.
@@ -949,17 +844,13 @@ _должно_ быть корректно сериализованным ASCII 
 
 ### Класс: `ClientHttp2Session` {#class-clienthttp2session}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<Http2Session>`](http2.md)
 
 #### Событие: `'altsvc'`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * `alt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -997,9 +888,7 @@ added: v9.4.0
 
 #### Событие: `'origin'`
 
-<!-- YAML
-added: v10.12.0
--->
+
 
 * `origins` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -1035,26 +924,7 @@ added: v10.12.0
 
 #### `clienthttp2session.request(headers[, options])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v24.2.0
-    pr-url: https://github.com/nodejs/node/pull/58293
-    description: The `weight` option is now ignored, setting it will trigger a
-                 runtime warning.
-  - version:
-      - v24.2.0
-      - v22.17.0
-      - v20.19.6
-    pr-url: https://github.com/nodejs/node/pull/58313
-    description: Following the deprecation of priority signaling as of RFC 9113,
-                 `weight` option is deprecated.
-  - version:
-      - v24.0.0
-      - v22.17.0
-    pr-url: https://github.com/nodejs/node/pull/57917
-    description: Allow passing headers in raw array format.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -1140,9 +1010,7 @@ changes:
 
 ### Класс: `Http2Stream` {#class-http2stream}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<stream.Duplex>`](stream.md#class-streamduplex)
 
@@ -1210,9 +1078,7 @@ stream.respond({
 
 #### Событие: `'aborted'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Событие `'aborted'` генерируется при аварийном прерывании `Http2Stream` в процессе обмена.
 У обработчика нет аргументов.
@@ -1221,9 +1087,7 @@ added: v8.4.0
 
 #### Событие: `'close'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Событие `'close'` генерируется при уничтожении `Http2Stream`. После него экземпляр
 использовать нельзя.
@@ -1233,9 +1097,7 @@ added: v8.4.0
 
 #### Событие: `'error'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -1243,9 +1105,7 @@ added: v8.4.0
 
 #### Событие: `'frameError'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `type` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тип кадра.
 * `code` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код ошибки.
@@ -1257,18 +1117,14 @@ added: v8.4.0
 
 #### Событие: `'ready'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Событие `'ready'` генерируется, когда `Http2Stream` открыт, ему назначен `id`, и им можно
 пользоваться. У обработчика нет аргументов.
 
 #### Событие: `'timeout'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Событие `'timeout'` генерируется при отсутствии активности на `Http2Stream` в течение
 числа миллисекунд, заданного `http2stream.setTimeout()`.
@@ -1276,9 +1132,7 @@ added: v8.4.0
 
 #### Событие: `'trailers'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object) Объект с заголовками
 * `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Связанные числовые флаги
@@ -1297,9 +1151,7 @@ stream.on('trailers', (headers, flags) => {
 
 #### Событие: `'wantTrailers'`
 
-<!-- YAML
-added: v10.0.0
--->
+
 
 Событие `'wantTrailers'` генерируется, когда в очередь поставлен последний кадр `DATA` для
 отправки и `Http2Stream` готов отправить завершающие заголовки. Чтобы оно возникло, при
@@ -1307,9 +1159,7 @@ added: v10.0.0
 
 #### `http2stream.aborted`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1318,11 +1168,7 @@ added: v8.4.0
 
 #### `http2stream.bufferSize`
 
-<!-- YAML
-added:
- - v11.2.0
- - v10.16.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1330,15 +1176,7 @@ added:
 
 #### `http2stream.close(code[, callback])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -1351,9 +1189,7 @@ changes:
 
 #### `http2stream.closed`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1361,9 +1197,7 @@ added: v9.4.0
 
 #### `http2stream.destroyed`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1371,9 +1205,7 @@ added: v8.4.0
 
 #### `http2stream.endAfterHeaders`
 
-<!-- YAML
-added: v10.11.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1382,9 +1214,7 @@ added: v10.11.0
 
 #### `http2stream.id`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
@@ -1393,9 +1223,7 @@ added: v8.4.0
 
 #### `http2stream.pending`
 
-<!-- YAML
-added: v9.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1403,18 +1231,7 @@ added: v9.4.0
 
 #### `http2stream.priority(options)`
 
-<!-- YAML
-added: v8.4.0
-deprecated:
- - v24.2.0
- - v22.17.0
- - v20.19.6
-changes:
-  - version: v24.2.0
-    pr-url: https://github.com/nodejs/node/pull/58293
-    description: This method no longer sets the priority of the stream. Using it
-                 now triggers a runtime warning.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -1427,9 +1244,7 @@ changes:
 
 #### `http2stream.rstCode`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1439,9 +1254,7 @@ added: v8.4.0
 
 #### `http2stream.sentHeaders`
 
-<!-- YAML
-added: v9.5.0
--->
+
 
 * Тип: [`<HTTP/2 Headers Object>`](#headers-object)
 
@@ -1449,9 +1262,7 @@ added: v9.5.0
 
 #### `http2stream.sentInfoHeaders`
 
-<!-- YAML
-added: v9.5.0
--->
+
 
 * Тип: [`<HTTP/2 Headers Object[]>`](#headers-object)
 
@@ -1460,9 +1271,7 @@ added: v9.5.0
 
 #### `http2stream.sentTrailers`
 
-<!-- YAML
-added: v9.5.0
--->
+
 
 * Тип: [`<HTTP/2 Headers Object>`](#headers-object)
 
@@ -1470,9 +1279,7 @@ added: v9.5.0
 
 #### `http2stream.session`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<Http2Session>`](http2.md)
 
@@ -1481,15 +1288,7 @@ added: v8.4.0
 
 #### `http2stream.setTimeout(msecs, callback)`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -1522,21 +1321,7 @@ changes:
 
 #### `http2stream.state`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v24.2.0
-    pr-url: https://github.com/nodejs/node/pull/58293
-    description: The `state.weight` property is now always set to 16 and
-                 `sumDependencyWeight` is always set to 0.
-  - version:
-      - v24.2.0
-      - v22.17.0
-      - v20.19.6
-    pr-url: https://github.com/nodejs/node/pull/58313
-    description: Following the deprecation of priority signaling as of RFC 9113,
-                 `weight` and `sumDependencyWeight` options are deprecated.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -1556,9 +1341,7 @@ changes:
 
 #### `http2stream.sendTrailers(headers)`
 
-<!-- YAML
-added: v10.0.0
--->
+
 
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 
@@ -1600,9 +1383,7 @@ added: v10.0.0
 
 ### Класс: `ClientHttp2Stream` {#class-clienthttp2stream}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует [`<Http2Stream>`](#class-http2stream)
 
@@ -1612,18 +1393,14 @@ added: v8.4.0
 
 #### Событие: `'continue'`
 
-<!-- YAML
-added: v8.5.0
--->
+
 
 Генерируется, когда сервер отправляет статус `100 Continue`, обычно из-за заголовка
 `Expect: 100-continue` в запросе — сигнал клиенту отправить тело запроса.
 
 #### Событие: `'headers'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 * `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1641,9 +1418,7 @@ stream.on('headers', (headers, flags) => {
 
 #### Событие: `'push'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 * `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1659,9 +1434,7 @@ stream.on('push', (headers, flags) => {
 
 #### Событие: `'response'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 * `flags` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1695,9 +1468,7 @@ added: v8.4.0
 
 ### Класс: `ServerHttp2Stream` {#class-serverhttp2stream}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<Http2Stream>`](#class-http2stream)
 
@@ -1707,9 +1478,7 @@ added: v8.4.0
 
 #### `http2stream.additionalHeaders(headers)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 
@@ -1717,9 +1486,7 @@ added: v8.4.0
 
 #### `http2stream.headersSent`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1727,9 +1494,7 @@ added: v8.4.0
 
 #### `http2stream.pushAllowed`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -1740,15 +1505,7 @@ added: v8.4.0
 
 #### `http2stream.pushStream(headers[, options], callback)`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -1807,20 +1564,7 @@ changes:
 
 #### `http2stream.respond([headers[, options]])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-    - v24.7.0
-    - v22.20.0
-    pr-url: https://github.com/nodejs/node/pull/59455
-    description: Allow passing headers in raw array format.
-  - version:
-    - v14.5.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/33160
-    description: Allow explicitly setting date headers.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -1890,22 +1634,7 @@ changes:
 
 #### `http2stream.respondWithFD(fd[, headers[, options]])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-    - v14.5.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/33160
-    description: Allow explicitly setting date headers.
-  - version: v12.12.0
-    pr-url: https://github.com/nodejs/node/pull/29876
-    description: The `fd` option may now be a `FileHandle`.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18936
-    description: Any readable file descriptor, not necessarily for a
-                 regular file, is supported now.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2037,19 +1766,7 @@ changes:
 
 #### `http2stream.respondWithFile(path[, headers[, options]])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-    - v14.5.0
-    - v12.19.0
-    pr-url: https://github.com/nodejs/node/pull/33160
-    description: Allow explicitly setting date headers.
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18936
-    description: Any readable file, not necessarily a
-                 regular file, is supported now.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2223,9 +1940,7 @@ changes:
 
 ### Класс: `Http2Server` {#class-http2server}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<net.Server>`](net.md#class-netserver)
 
@@ -2234,9 +1949,7 @@ added: v8.4.0
 
 #### Событие: `'checkContinue'`
 
-<!-- YAML
-added: v8.5.0
--->
+
 
 * `request` [`<http2.Http2ServerRequest>`](http2.md)
 * `response` [`<http2.Http2ServerResponse>`](http2.md)
@@ -2253,9 +1966,7 @@ added: v8.5.0
 
 #### Событие: `'connection'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `socket` [`<stream.Duplex>`](stream.md#class-streamduplex)
 
@@ -2267,9 +1978,7 @@ added: v8.4.0
 
 #### Событие: `'request'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `request` [`<http2.Http2ServerRequest>`](http2.md)
 * `response` [`<http2.Http2ServerResponse>`](http2.md)
@@ -2278,9 +1987,7 @@ added: v8.4.0
 
 #### Событие: `'session'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `session` [`<ServerHttp2Session>`](http2.md)
 
@@ -2288,9 +1995,7 @@ added: v8.4.0
 
 #### Событие: `'sessionError'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 * `session` [`<ServerHttp2Session>`](http2.md)
@@ -2299,9 +2004,7 @@ added: v8.4.0
 
 #### Событие: `'stream'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `stream` [`<Http2Stream>`](#class-http2stream) Ссылка на поток
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object) Объект заголовков
@@ -2364,13 +2067,7 @@ added: v8.4.0
 
 #### Событие: `'timeout'`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2380,9 +2077,7 @@ changes:
 
 #### `server.close([callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -2395,13 +2090,7 @@ added: v8.4.0
 
 #### `server[Symbol.asyncDispose]()`
 
-<!-- YAML
-added: v20.4.0
-changes:
- - version: v24.2.0
-   pr-url: https://github.com/nodejs/node/pull/58467
-   description: No longer experimental.
--->
+
 
 Добавлено в: v20.4.0
 
@@ -2409,18 +2098,7 @@ changes:
 
 #### `server.setTimeout([msecs][, callback])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2437,13 +2115,7 @@ changes:
 
 #### `server.timeout`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2458,11 +2130,7 @@ changes:
 
 #### `server.updateSettings([settings])`
 
-<!-- YAML
-added:
-  - v15.1.0
-  - v14.17.0
--->
+
 
 * `settings` [`<HTTP/2 Settings Object>`](#settings-object)
 
@@ -2474,9 +2142,7 @@ added:
 
 ### Класс: `Http2SecureServer` {#class-http2secureserver}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<tls.Server>`](#class-tlsserver)
 
@@ -2485,9 +2151,7 @@ added: v8.4.0
 
 #### Событие: `'checkContinue'`
 
-<!-- YAML
-added: v8.5.0
--->
+
 
 * `request` [`<http2.Http2ServerRequest>`](http2.md)
 * `response` [`<http2.Http2ServerResponse>`](http2.md)
@@ -2502,9 +2166,7 @@ added: v8.5.0
 
 #### Событие: `'connection'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `socket` [`<stream.Duplex>`](stream.md#class-streamduplex)
 
@@ -2515,9 +2177,7 @@ added: v8.4.0
 
 #### Событие: `'request'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `request` [`<http2.Http2ServerRequest>`](http2.md)
 * `response` [`<http2.Http2ServerResponse>`](http2.md)
@@ -2526,9 +2186,7 @@ added: v8.4.0
 
 #### Событие: `'session'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `session` [`<ServerHttp2Session>`](http2.md)
 
@@ -2536,9 +2194,7 @@ added: v8.4.0
 
 #### Событие: `'sessionError'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 * `session` [`<ServerHttp2Session>`](http2.md)
@@ -2547,9 +2203,7 @@ added: v8.4.0
 
 #### Событие: `'stream'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `stream` [`<Http2Stream>`](#class-http2stream) Ссылка на поток
 * `headers` [`<HTTP/2 Headers Object>`](#headers-object) Объект заголовков
@@ -2616,9 +2270,7 @@ added: v8.4.0
 
 #### Событие: `'timeout'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Событие `'timeout'` генерируется при отсутствии активности на сервере в течение числа
 миллисекунд, заданного `http2secureServer.setTimeout()`.
@@ -2626,14 +2278,7 @@ added: v8.4.0
 
 #### Событие: `'unknownProtocol'`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/44031
-    description: This event will only be emitted if the client did not transmit
-                 an ALPN extension during the TLS handshake.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2653,9 +2298,7 @@ handshake завершается ошибкой, защищённое соеди
 
 #### `server.close([callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
@@ -2667,15 +2310,7 @@ added: v8.4.0
 
 #### `server.setTimeout([msecs][, callback])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2692,13 +2327,7 @@ changes:
 
 #### `server.timeout`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/27558
-    description: The default timeout changed from 120s to 0 (no timeout).
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2712,11 +2341,7 @@ changes:
 
 #### `server.updateSettings([settings])`
 
-<!-- YAML
-added:
-  - v15.1.0
-  - v14.17.0
--->
+
 
 * `settings` [`<HTTP/2 Settings Object>`](#settings-object)
 
@@ -2728,67 +2353,7 @@ added:
 
 ### `http2.createServer([options][, onRequestHandler])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v25.7.0
-    pr-url: https://github.com/nodejs/node/pull/59917
-    description: Added the `strictSingleValueFields` option.
-  - version: v25.7.0
-    pr-url: https://github.com/nodejs/node/pull/61713
-    description: Added `http1Options` option. The `Http1IncomingMessage`
-                 and `Http1ServerResponse` options are now deprecated.
-  - version:
-      - v23.0.0
-      - v22.10.0
-    pr-url: https://github.com/nodejs/node/pull/54875
-    description: Added `streamResetBurst` and `streamResetRate`.
-  - version:
-      - v15.10.0
-      - v14.16.0
-      - v12.21.0
-      - v10.24.0
-    pr-url: https://github.com/nodejs-private/node-private/pull/246
-    description: Added `unknownProtocolTimeout` option with a default of 10000.
-  - version:
-     - v14.4.0
-     - v12.18.0
-     - v10.21.0
-    commit: 3948830ce6408be620b09a70bf66158623022af0
-    pr-url: https://github.com/nodejs-private/node-private/pull/204
-    description: Added `maxSettings` option with a default of 32.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionRejectedStreams` option with a default of 100.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionInvalidFrames` option with a default of 1000.
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29144
-    description: The `PADDING_STRATEGY_CALLBACK` has been made equivalent to
-                 providing `PADDING_STRATEGY_ALIGNED` and `selectPadding`
-                 has been removed.
-  - version: v12.4.0
-    pr-url: https://github.com/nodejs/node/pull/27782
-    description: The `options` parameter now supports `net.createServer()`
-                 options.
-  - version: v9.6.0
-    pr-url: https://github.com/nodejs/node/pull/15752
-    description: Added the `Http1IncomingMessage` and `Http1ServerResponse`
-                 option.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/17105
-    description: Added the `maxOutstandingPings` option with a default limit of
-                 10.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: Added the `maxHeaderListPairs` option with a default limit of
-                 128 header pairs.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -2909,57 +2474,7 @@ changes:
 
 ### `http2.createSecureServer(options[, onRequestHandler])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v25.7.0
-    pr-url: https://github.com/nodejs/node/pull/59917
-    description: Added the `strictSingleValueFields` option.
-  - version: v25.7.0
-    pr-url: https://github.com/nodejs/node/pull/61713
-    description: Added `http1Options` option.
-  - version:
-      - v15.10.0
-      - v14.16.0
-      - v12.21.0
-      - v10.24.0
-    pr-url: https://github.com/nodejs-private/node-private/pull/246
-    description: Added `unknownProtocolTimeout` option with a default of 10000.
-  - version:
-     - v14.4.0
-     - v12.18.0
-     - v10.21.0
-    commit: 3948830ce6408be620b09a70bf66158623022af0
-    pr-url: https://github.com/nodejs-private/node-private/pull/204
-    description: Added `maxSettings` option with a default of 32.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionRejectedStreams` option with a default of 100.
-  - version:
-     - v13.3.0
-     - v12.16.0
-    pr-url: https://github.com/nodejs/node/pull/30534
-    description: Added `maxSessionInvalidFrames` option with a default of 1000.
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29144
-    description: The `PADDING_STRATEGY_CALLBACK` has been made equivalent to
-                 providing `PADDING_STRATEGY_ALIGNED` and `selectPadding`
-                 has been removed.
-  - version: v10.12.0
-    pr-url: https://github.com/nodejs/node/pull/22956
-    description: Added the `origins` option to automatically send an `ORIGIN`
-                 frame on `Http2Session` startup.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/17105
-    description: Added the `maxOutstandingPings` option with a default limit of
-                 10.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: Added the `maxHeaderListPairs` option with a default limit of
-                 128 header pairs.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -3058,37 +2573,7 @@ changes:
 
 ### `http2.connect(authority[, options][, listener])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-      - v15.10.0
-      - v14.16.0
-      - v12.21.0
-      - v10.24.0
-    pr-url: https://github.com/nodejs-private/node-private/pull/246
-    description: Added `unknownProtocolTimeout` option with a default of 10000.
-  - version:
-     - v14.4.0
-     - v12.18.0
-     - v10.21.0
-    commit: 3948830ce6408be620b09a70bf66158623022af0
-    pr-url: https://github.com/nodejs-private/node-private/pull/204
-    description: Added `maxSettings` option with a default of 32.
-  - version: v13.0.0
-    pr-url: https://github.com/nodejs/node/pull/29144
-    description: The `PADDING_STRATEGY_CALLBACK` has been made equivalent to
-                 providing `PADDING_STRATEGY_ALIGNED` and `selectPadding`
-                 has been removed.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/17105
-    description: Added the `maxOutstandingPings` option with a default limit of
-                 10.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: Added the `maxHeaderListPairs` option with a default limit of
-                 128 header pairs.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -3151,9 +2636,7 @@ changes:
 
 ### `http2.constants`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 #### Коды ошибок для `RST_STREAM` и `GOAWAY`
 
@@ -3176,9 +2659,7 @@ added: v8.4.0
 
 ### `http2.getDefaultSettings()`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Возвращает: [`<HTTP/2 Settings Object>`](#settings-object)
 
@@ -3187,9 +2668,7 @@ added: v8.4.0
 
 ### `http2.getPackedSettings([settings])`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `settings` [`<HTTP/2 Settings Object>`](#settings-object)
 * Возвращает: [`<Buffer>`](buffer.md#buffer)
@@ -3221,9 +2700,7 @@ added: v8.4.0
 
 ### `http2.getUnpackedSettings(buf)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `buf` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) Упакованные настройки.
 * Возвращает: [`<HTTP/2 Settings Object>`](#settings-object)
@@ -3233,11 +2710,7 @@ added: v8.4.0
 
 ### `http2.performServerHandshake(socket[, options])`
 
-<!-- YAML
-added:
-  - v21.7.0
-  - v20.12.0
--->
+
 
 * `socket` [`<stream.Duplex>`](stream.md#class-streamduplex)
 * `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Любые опции [`http2.createServer()`](#http2createserveroptions-onrequesthandler).
@@ -3247,11 +2720,7 @@ added:
 
 ### `http2.sensitiveHeaders`
 
-<!-- YAML
-added:
-  - v15.0.0
-  - v14.18.0
--->
+
 
 * Тип: [`<symbol>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Symbol_type)
 
@@ -3368,16 +2837,7 @@ stream.respond(headers);
 
 ### Объект настроек {#settings-object}
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v12.12.0
-    pr-url: https://github.com/nodejs/node/pull/29833
-    description: The `maxConcurrentStreams` setting is stricter.
-  - version: v8.9.3
-    pr-url: https://github.com/nodejs/node/pull/16676
-    description: The `maxHeaderListSize` setting is now strictly enforced.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -3799,9 +3259,7 @@ ALPN позволяет обслуживать и [HTTPS][HTTPS], и HTTP/2 на
 
 ### Класс: `http2.Http2ServerRequest` {#class-http2http2serverrequest}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<stream.Readable>`](stream.md#streamreadable)
 
@@ -3811,9 +3269,7 @@ added: v8.4.0
 
 #### Событие: `'aborted'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Событие `'aborted'` при аварийном прерывании `Http2ServerRequest` в процессе обмена.
 
@@ -3821,18 +3277,14 @@ added: v8.4.0
 
 #### Событие: `'close'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Указывает, что базовый [`Http2Stream`](#class-http2stream) закрыт.
 Как и `'end'`, не более одного раза на ответ.
 
 #### `request.aborted`
 
-<!-- YAML
-added: v10.1.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -3840,9 +3292,7 @@ added: v10.1.0
 
 #### `request.authority`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -3851,9 +3301,7 @@ added: v8.4.0
 
 #### `request.complete`
 
-<!-- YAML
-added: v12.10.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -3861,10 +3309,7 @@ added: v12.10.0
 
 #### `request.connection`
 
-<!-- YAML
-added: v8.4.0
-deprecated: v13.0.0
--->
+
 
 !!!warning "Стабильность: 0 - Устарело"
 
@@ -3876,9 +3321,7 @@ deprecated: v13.0.0
 
 #### `request.destroy([error])`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `error` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -3890,9 +3333,7 @@ added: v8.4.0
 
 #### `request.headers`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -3922,9 +3363,7 @@ assert(request.url);   // Fails because the :path header has been removed
 
 #### `request.httpVersion`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -3935,9 +3374,7 @@ added: v8.4.0
 
 #### `request.method`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -3945,9 +3382,7 @@ added: v8.4.0
 
 #### `request.rawHeaders`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<HTTP/2 Raw Headers>`](#raw-headers)
 
@@ -3969,9 +3404,7 @@ console.log(request.rawHeaders);
 
 #### `request.rawTrailers`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -3979,9 +3412,7 @@ added: v8.4.0
 
 #### `request.scheme`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -3989,9 +3420,7 @@ added: v8.4.0
 
 #### `request.setTimeout(msecs, callback)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -4006,9 +3435,7 @@ added: v8.4.0
 
 #### `request.socket`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
 
@@ -4029,9 +3456,7 @@ added: v8.4.0
 
 #### `request.stream`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<Http2Stream>`](#class-http2stream)
 
@@ -4039,9 +3464,7 @@ added: v8.4.0
 
 #### `request.trailers`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -4049,9 +3472,7 @@ added: v8.4.0
 
 #### `request.url`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -4064,7 +3485,7 @@ Accept: text/plain
 
 Тогда `request.url` будет таким:
 
-<!-- eslint-disable @stylistic/js/semi -->
+
 
 ```js
 '/status?name=ryan'
@@ -4093,9 +3514,7 @@ URL {
 
 ### Класс: `http2.Http2ServerResponse` {#class-http2http2serverresponse}
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Наследует: [`<Stream>`](stream.md#stream)
 
@@ -4104,17 +3523,13 @@ added: v8.4.0
 
 #### Событие: `'close'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Базовый [`Http2Stream`](#class-http2stream) завершён до вызова [`response.end()`](#responseenddata-encoding-callback) или до сброса буфера.
 
 #### Событие: `'finish'`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Генерируется, когда ответ отправлен: последний фрагмент заголовков и тела передан мультиплексору
 HTTP/2 для передачи по сети. Не означает, что клиент уже что-то получил.
@@ -4123,9 +3538,7 @@ HTTP/2 для передачи по сети. Не означает, что кл
 
 #### `response.addTrailers(headers)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -4135,11 +3548,7 @@ added: v8.4.0
 
 #### `response.appendHeader(name, value)`
 
-<!-- YAML
-added:
-  - v21.7.0
-  - v20.12.0
--->
+
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -4164,10 +3573,7 @@ const server = http2.createServer((req, res) => {
 
 #### `response.connection`
 
-<!-- YAML
-added: v8.4.0
-deprecated: v13.0.0
--->
+
 
 !!!warning "Стабильность: 0 - Устарело"
 
@@ -4179,15 +3585,7 @@ deprecated: v13.0.0
 
 #### `response.createPushResponse(headers, callback)`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v18.0.0
-    pr-url: https://github.com/nodejs/node/pull/41678
-    description: Passing an invalid callback to the `callback` argument
-                 now throws `ERR_INVALID_ARG_TYPE` instead of
-                 `ERR_INVALID_CALLBACK`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -4204,13 +3602,7 @@ changes:
 
 #### `response.end([data[, encoding]][, callback])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version: v10.0.0
-    pr-url: https://github.com/nodejs/node/pull/18780
-    description: This method now returns a reference to `ServerResponse`.
--->
+
 
 Добавлено в: v8.4.0
 
@@ -4229,12 +3621,7 @@ changes:
 
 #### `response.finished`
 
-<!-- YAML
-added: v8.4.0
-deprecated:
- - v13.4.0
- - v12.16.0
--->
+
 
 !!!warning "Стабильность: 0 - Устарело"
 
@@ -4246,9 +3633,7 @@ deprecated:
 
 #### `response.getHeader(name)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -4261,9 +3646,7 @@ const contentType = response.getHeader('content-type');
 
 #### `response.getHeaderNames()`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -4279,9 +3662,7 @@ const headerNames = response.getHeaderNames();
 
 #### `response.getHeaders()`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -4301,9 +3682,7 @@ const headers = response.getHeaders();
 
 #### `response.hasHeader(name)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
@@ -4316,9 +3695,7 @@ const hasContentType = response.hasHeader('content-type');
 
 #### `response.headersSent`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -4326,9 +3703,7 @@ added: v8.4.0
 
 #### `response.removeHeader(name)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -4340,9 +3715,7 @@ response.removeHeader('Content-Encoding');
 
 #### `response.req`
 
-<!-- YAML
-added: v15.7.0
--->
+
 
 * Тип: [`<http2.Http2ServerRequest>`](http2.md)
 
@@ -4350,9 +3723,7 @@ added: v15.7.0
 
 #### `response.sendDate`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -4363,9 +3734,7 @@ added: v8.4.0
 
 #### `response.setHeader(name, value)`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 * `value` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -4400,9 +3769,7 @@ const server = http2.createServer((req, res) => {
 
 #### `response.setTimeout(msecs[, callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 * `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -4416,9 +3783,7 @@ added: v8.4.0
 
 #### `response.socket`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<net.Socket>`](net.md#class-netsocket) | [`<tls.TLSSocket>`](tls.md#class-tlstlssocket)
 
@@ -4459,9 +3824,7 @@ added: v8.4.0
 
 #### `response.statusCode`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -4476,9 +3839,7 @@ response.statusCode = 404;
 
 #### `response.statusMessage`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -4487,9 +3848,7 @@ added: v8.4.0
 
 #### `response.stream`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * Тип: [`<Http2Stream>`](#class-http2stream)
 
@@ -4497,9 +3856,7 @@ added: v8.4.0
 
 #### `response.writableEnded`
 
-<!-- YAML
-added: v12.9.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -4508,9 +3865,7 @@ added: v12.9.0
 
 #### `response.write(chunk[, encoding][, callback])`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 * `chunk` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -4538,18 +3893,14 @@ _не должно_ быть.
 
 #### `response.writeContinue()`
 
-<!-- YAML
-added: v8.4.0
--->
+
 
 Отправляет статус `100 Continue` — клиенту можно отправлять тело запроса. См. [`'checkContinue'`](#event-checkcontinue)
 у `Http2Server` и `Http2SecureServer`.
 
 #### `response.writeEarlyHints(hints)`
 
-<!-- YAML
-added: v18.11.0
--->
+
 
 * `hints` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -4575,16 +3926,7 @@ response.writeEarlyHints({
 
 #### `response.writeHead(statusCode[, statusMessage][, headers])`
 
-<!-- YAML
-added: v8.4.0
-changes:
-  - version:
-     - v11.10.0
-     - v10.17.0
-    pr-url: https://github.com/nodejs/node/pull/25974
-    description: Return `this` from `writeHead()` to allow chaining with
-                 `end()`.
--->
+
 
 Добавлено в: v8.4.0
 

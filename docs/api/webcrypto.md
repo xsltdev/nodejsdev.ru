@@ -7,82 +7,9 @@ description: Реализация стандарта Web Crypto в Node.js — S
 
 [:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/webcrypto.html)
 
-<!-- YAML
-changes:
-  - version: v25.9.0
-    pr-url: https://github.com/nodejs/node/pull/62183
-    description: Алгоритмы TurboSHAKE и KangarooTwelve
-      теперь поддерживаются.
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59647
-    description: Алгоритмы KMAC теперь поддерживаются.
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59544
-    description: Алгоритмы Argon2 теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59539
-    description: Алгоритм AES-OCB теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59569
-    description: Алгоритмы ML-KEM теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHAKE теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы ML-DSA теперь поддерживаются.
-  - version:
-    - v23.5.0
-    - v22.13.0
-    - v20.19.3
-    pr-url: https://github.com/nodejs/node/pull/56142
-    description: Алгоритмы `Ed25519` и `X25519` теперь стабильны.
-  - version:
-    - v20.0.0
-    - v18.17.0
-    pr-url: https://github.com/nodejs/node/pull/46067
-    description: Аргументы приводятся и проверяются по WebIDL,
-      как в других реализациях Web Crypto API.
-  - version: v19.0.0
-    pr-url: https://github.com/nodejs/node/pull/44897
-    description: Больше не экспериментально, кроме алгоритмов `Ed25519`, `Ed448`,
-      `X25519` и `X448`.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/43310
-    description: Удалён проприетарный формат импорта/экспорта `'node.keyObject'`.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/43310
-    description: Удалены проприетарные алгоритмы `'NODE-DSA'`, `'NODE-DH'`
-      и `'NODE-SCRYPT'`.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Удалены проприетарные алгоритмы `'NODE-ED25519'` и `'NODE-ED448'`.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Удалены проприетарные кривые `'NODE-X25519'` и `'NODE-X448'`
-      из алгоритма `'ECDH'`.
--->
 
-<!-- introduced_in=v15.0.0 -->
+
+
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -617,9 +544,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 ## Класс: `Crypto`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 `globalThis.crypto` — это экземпляр класса `Crypto`.
 Класс `Crypto` — синглтон, открывающий доступ к остальной части
@@ -627,9 +552,7 @@ added: v15.0.0
 
 ### `crypto.subtle`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<SubtleCrypto>`](webcrypto.md)
 
@@ -637,9 +560,7 @@ added: v15.0.0
 
 ### `crypto.getRandomValues(typedArray)`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * `typedArray` [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
 * Возвращает: [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
@@ -654,9 +575,7 @@ added: v15.0.0
 
 ### `crypto.randomUUID()`
 
-<!-- YAML
-added: v16.7.0
--->
+
 
 * Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -665,21 +584,17 @@ added: v16.7.0
 
 ## Класс: `CryptoKey`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 ### `cryptoKey.algorithm`
 
-<!-- YAML
-added: v15.0.0
--->
 
-<!--lint disable maximum-line-length remark-lint-->
+
+
 
 * Тип: [`<KeyAlgorithm>`](webcrypto.md) | [`<RsaHashedKeyAlgorithm>`](webcrypto.md) | [`<EcKeyAlgorithm>`](webcrypto.md) | [`<AesKeyAlgorithm>`](webcrypto.md) | [`<HmacKeyAlgorithm>`](webcrypto.md) | [`<KmacKeyAlgorithm>`](webcrypto.md)
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 Объект с описанием алгоритма, для которого предназначен ключ, вместе с
 дополнительными параметрами, зависящими от алгоритма.
@@ -688,9 +603,7 @@ added: v15.0.0
 
 ### `cryptoKey.extractable`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
@@ -701,9 +614,7 @@ added: v15.0.0
 
 ### `cryptoKey.type`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Одно из `'secret'`, `'private'` или `'public'`.
 
@@ -712,9 +623,7 @@ added: v15.0.0
 
 ### `cryptoKey.usages`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -780,51 +689,41 @@ added: v15.0.0
 
 ## Класс: `CryptoKeyPair`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 `CryptoKeyPair` — простой объект-словарь со свойствами `publicKey` и
 `privateKey`, представляющий асимметричную пару ключей.
 
 ### `cryptoKeyPair.privateKey`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey) — [CryptoKey](webcrypto.md#class-cryptokey), у которого `type` будет `'private'`.
 
 ### `cryptoKeyPair.publicKey`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey) — [CryptoKey](webcrypto.md#class-cryptokey), у которого `type` будет `'public'`.
 
 ## Класс: `SubtleCrypto`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 ### Статический метод: `SubtleCrypto.supports(operation, algorithm[, lengthOrAdditionalAlgorithm])`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 > Стабильность: 1.1 – Активная разработка
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `operation` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `"encrypt"`, `"decrypt"`, `"sign"`, `"verify"`, `"digest"`, `"generateKey"`, `"deriveKey"`, `"deriveBits"`, `"importKey"`, `"exportKey"`, `"getPublicKey"`, `"wrapKey"`, `"unwrapKey"`, `"encapsulateBits"`, `"encapsulateKey"`, `"decapsulateBits"` или `"decapsulateKey"`
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md)
 * `lengthOrAdditionalAlgorithm` null | [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | undefined В зависимости от операции: игнорируется; либо значение аргумента длины, если операция — `"deriveBits"`; либо алгоритм выводимого ключа при `"deriveKey"`; либо алгоритм ключа, экспортируемого перед упаковкой при `"wrapKey"`; либо алгоритм ключа, импортируемого после распаковки при `"unwrapKey"`; либо алгоритм ключа, импортируемого после инкапсуляции/декапсуляции при `"encapsulateKey"` или `"decapsulateKey"`. **По умолчанию:** `null`, если операция — `"deriveBits"`, иначе `undefined`.
 * Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) указывает, поддерживает ли реализация заданную операцию
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 Позволяет определять возможности в Web Crypto API
 и выяснять, поддерживается ли заданный идентификатор алгоритма
@@ -834,9 +733,7 @@ added: v24.7.0
 
 ### `subtle.decapsulateBits(decapsulationAlgorithm, decapsulationKey, ciphertext)`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 > Стабильность: 1.1 – Активная разработка
 
@@ -857,9 +754,7 @@ added: v24.7.0
 
 ### `subtle.decapsulateKey(decapsulationAlgorithm, decapsulationKey, ciphertext, sharedKeyAlgorithm, extractable, usages)`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 > Стабильность: 1.1 – Активная разработка
 
@@ -883,16 +778,7 @@ added: v24.7.0
 
 ### `subtle.decrypt(algorithm, key, data)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59539
-    description: Алгоритм AES-OCB теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -916,36 +802,18 @@ changes:
 
 ### `subtle.deriveBits(algorithm, baseKey[, length])`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59544
-    description: Алгоритмы Argon2 теперь поддерживаются.
-  - version:
-    - v22.5.0
-    - v20.17.0
-    - v18.20.5
-    pr-url: https://github.com/nodejs/node/pull/53601
-    description: Параметр length теперь необязателен для `'ECDH'`, `'X25519'`
-                 и `'X448'`.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Добавлены алгоритмы `'X25519'` и `'X448'`.
--->
+
 
 Добавлено в: v15.0.0
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `algorithm` [`<EcdhKeyDeriveParams>`](webcrypto.md) | [`<HkdfParams>`](webcrypto.md) | [`<Pbkdf2Params>`](webcrypto.md) | [`<Argon2Params>`](webcrypto.md)
 * `baseKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `length` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | null **По умолчанию:** `null`
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 По методу и параметрам из `algorithm` и ключевому материалу из `baseKey`
 метод пытается сгенерировать `length` бит.
@@ -970,22 +838,11 @@ changes:
 
 ### `subtle.deriveKey(algorithm, baseKey, derivedKeyAlgorithm, extractable, keyUsages)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59544
-    description: Алгоритмы Argon2 теперь поддерживаются.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Добавлены алгоритмы `'X25519'` и `'X448'`.
--->
+
 
 Добавлено в: v15.0.0
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `algorithm` [`<EcdhKeyDeriveParams>`](webcrypto.md) | [`<HkdfParams>`](webcrypto.md) | [`<Pbkdf2Params>`](webcrypto.md) | [`<Argon2Params>`](webcrypto.md)
 * `baseKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
@@ -994,7 +851,7 @@ changes:
 * `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [CryptoKey](webcrypto.md#class-cryptokey).
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 По методу и параметрам из `algorithm` и ключевому материалу из `baseKey`
 метод пытается сгенерировать новый [CryptoKey](webcrypto.md#class-cryptokey) по методу и параметрам в `derivedKeyAlgorithm`.
@@ -1017,20 +874,7 @@ changes:
 
 ### `subtle.digest(algorithm, data)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v25.9.0
-    pr-url: https://github.com/nodejs/node/pull/62183
-    description: Алгоритмы TurboSHAKE и KangarooTwelve
-      теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHAKE теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -1062,9 +906,7 @@ changes:
 
 ### `subtle.encapsulateBits(encapsulationAlgorithm, encapsulationKey)`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 > Стабильность: 1.1 – Активная разработка
 
@@ -1083,9 +925,7 @@ added: v24.7.0
 
 ### `subtle.encapsulateKey(encapsulationAlgorithm, encapsulationKey, sharedKeyAlgorithm, extractable, usages)`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 > Стабильность: 1.1 – Активная разработка
 
@@ -1107,16 +947,7 @@ added: v24.7.0
 
 ### `subtle.encrypt(algorithm, key, data)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59539
-    description: Алгоритм AES-OCB теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -1141,30 +972,7 @@ changes:
 
 ### `subtle.exportKey(format, key)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59647
-    description: Алгоритмы KMAC теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59569
-    description: Алгоритмы ML-KEM теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы ML-DSA теперь поддерживаются.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`.
-  - version: v15.9.0
-    pr-url: https://github.com/nodejs/node/pull/37203
-    description: Удалён экспорт JWK `'NODE-DSA'`.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -1210,9 +1018,7 @@ changes:
 
 ### `subtle.getPublicKey(key, keyUsages)`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 > Стабильность: 1.1 – Активная разработка
 
@@ -1224,30 +1030,15 @@ added: v24.7.0
 
 ### `subtle.generateKey(algorithm, extractable, keyUsages)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59647
-    description: Алгоритмы KMAC теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59569
-    description: Алгоритмы ML-KEM теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы ML-DSA теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaHashedKeyGenParams>`](webcrypto.md) | [`<EcKeyGenParams>`](webcrypto.md) | [`<HmacKeyGenParams>`](webcrypto.md) | [`<AesKeyGenParams>`](webcrypto.md) | [`<KmacKeyGenParams>`](webcrypto.md)
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
@@ -1289,34 +1080,7 @@ changes:
 
 ### `subtle.importKey(format, keyData, algorithm, extractable, keyUsages)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v25.9.0
-    pr-url: https://github.com/nodejs/node/pull/62218
-    description: Импорт ключей ML-DSA и ML-KEM в PKCS#8
-      без seed больше не поддерживается.
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59647
-    description: Алгоритмы KMAC теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59569
-    description: Алгоритмы ML-KEM теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы ML-DSA теперь поддерживаются.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Добавлены алгоритмы `'Ed25519'`, `'Ed448'`, `'X25519'` и `'X448'`.
-  - version: v15.9.0
-    pr-url: https://github.com/nodejs/node/pull/37203
-    description: Удалён импорт JWK `'NODE-DSA'`.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -1324,11 +1088,11 @@ changes:
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
 * `keyData` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaHashedImportParams>`](webcrypto.md) | [`<EcKeyImportParams>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
@@ -1377,32 +1141,18 @@ changes:
 
 ### `subtle.sign(algorithm, key, data)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59647
-    description: Алгоритмы KMAC теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы ML-DSA теперь поддерживаются.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Добавлены алгоритмы `'Ed25519'` и `'Ed448'`.
--->
+
 
 Добавлено в: v15.0.0
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaPssParams>`](webcrypto.md) | [`<EcdsaParams>`](webcrypto.md) | [`<ContextParams>`](webcrypto.md) | [`<KmacParams>`](webcrypto.md)
 * `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 * `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 По методу и параметрам из `algorithm` и ключевому материалу из `key`
 метод пытается сформировать криптографическую
@@ -1425,16 +1175,7 @@ changes:
 
 ### `subtle.unwrapKey(format, wrappedKey, unwrappingKey, unwrapAlgo, unwrappedKeyAlgo, extractable, keyUsages)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59539
-    description: Алгоритм AES-OCB теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -1443,12 +1184,12 @@ changes:
 * `wrappedKey` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 * `unwrappingKey` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `unwrapAlgo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
 * `unwrappedKeyAlgo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaHashedImportParams>`](webcrypto.md) | [`<EcKeyImportParams>`](webcrypto.md) | [`<HmacImportParams>`](webcrypto.md) | [`<KmacImportParams>`](webcrypto.md)
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 * `extractable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 * `keyUsages` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) См. [Key usages][Key usages].
@@ -1501,25 +1242,11 @@ changes:
 
 ### `subtle.verify(algorithm, key, signature, data)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59647
-    description: Алгоритмы KMAC теперь поддерживаются.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы ML-DSA теперь поддерживаются.
-  - version:
-    - v18.4.0
-    - v16.17.0
-    pr-url: https://github.com/nodejs/node/pull/42507
-    description: Добавлены алгоритмы `'Ed25519'` и `'Ed448'`.
--->
+
 
 Добавлено в: v15.0.0
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaPssParams>`](webcrypto.md) | [`<EcdsaParams>`](webcrypto.md) | [`<ContextParams>`](webcrypto.md) | [`<KmacParams>`](webcrypto.md)
 * `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
@@ -1527,7 +1254,7 @@ changes:
 * `data` [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type).
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 По методу и параметрам из `algorithm` и ключевому материалу из `key`
 метод пытается проверить, что `signature` является
@@ -1550,20 +1277,11 @@ changes:
 
 ### `subtle.wrapKey(format, key, wrappingKey, wrapAlgo)`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59539
-    description: Алгоритм AES-OCB теперь поддерживается.
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритм ChaCha20-Poly1305 теперь поддерживается.
--->
+
 
 Добавлено в: v15.0.0
 
-<!--lint disable maximum-line-length remark-lint-->
+
 
 * `format` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должен быть одним из `'raw'`, `'pkcs8'`, `'spki'`, `'jwk'`, `'raw-secret'`[^modern-algos],
   `'raw-public'`[^modern-algos] или `'raw-seed'`[^modern-algos].
@@ -1572,7 +1290,7 @@ changes:
 * `wrapAlgo` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Algorithm>`](webcrypto.md) | [`<RsaOaepParams>`](webcrypto.md) | [`<AesCtrParams>`](webcrypto.md) | [`<AesCbcParams>`](webcrypto.md) | [`<AeadParams>`](webcrypto.md)
 * Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) при успехе выполняется с [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
-<!--lint enable maximum-line-length remark-lint-->
+
 
 В криптографии «упаковка ключа» означает экспорт и последующее шифрование
 ключевого материала. Метод экспортирует ключевой материал в
@@ -1601,29 +1319,21 @@ changes:
 
 ### Класс: `Algorithm`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `Algorithm.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `AeadParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `aeadParams.additionalData`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
@@ -1632,9 +1342,7 @@ added: v15.0.0
 
 #### `aeadParams.iv`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -1643,39 +1351,29 @@ added: v15.0.0
 
 #### `aeadParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-GCM'`, `'AES-OCB'`, или `'ChaCha20-Poly1305'`.
 
 #### `aeadParams.tagLength`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер в битах сгенерированного тега аутентификации.
 
 ### Класс: `AesDerivedKeyParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `aesDerivedKeyParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'`, `'AES-OCB'`, или `'AES-KW'`
 
 #### `aesDerivedKeyParams.length`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1684,15 +1382,11 @@ added: v15.0.0
 
 ### Класс: `AesCbcParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `aesCbcParams.iv`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -1701,23 +1395,17 @@ added: v15.0.0
 
 #### `aesCbcParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-CBC'`.
 
 ### Класс: `AesCtrParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `aesCtrParams.counter`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -1728,32 +1416,24 @@ added: v15.0.0
 
 #### `aesCtrParams.length`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Число бит в `aesCtrParams.counter`, используемых
   в качестве счётчика.
 
 #### `aesCtrParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'AES-CTR'`.
 
 ### Класс: `AesKeyAlgorithm`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `aesKeyAlgorithm.length`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1761,23 +1441,17 @@ added: v15.0.0
 
 #### `aesKeyAlgorithm.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `AesKeyGenParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `aesKeyGenParams.length`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1786,24 +1460,18 @@ added: v15.0.0
 
 #### `aesKeyGenParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'AES-CBC'`, `'AES-CTR'`, `'AES-GCM'`, или
   `'AES-KW'`
 
 ### Класс: `Argon2Params`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 #### `argon2Params.associatedData`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -1811,9 +1479,7 @@ added: v24.8.0
 
 #### `argon2Params.memory`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1821,17 +1487,13 @@ added: v24.8.0
 
 #### `argon2Params.name`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'Argon2d'`, `'Argon2i'`, или `'Argon2id'`.
 
 #### `argon2Params.nonce`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -1839,9 +1501,7 @@ added: v24.8.0
 
 #### `argon2Params.parallelism`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1849,9 +1509,7 @@ added: v24.8.0
 
 #### `argon2Params.passes`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1859,9 +1517,7 @@ added: v24.8.0
 
 #### `argon2Params.secretValue`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -1869,9 +1525,7 @@ added: v24.8.0
 
 #### `argon2Params.version`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -1879,28 +1533,18 @@ added: v24.8.0
 
 ### Класс: `ContextParams`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 #### `contextParams.name`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `Ed448`[^secure-curves], `'ML-DSA-44'`[^modern-algos],
   `'ML-DSA-65'`[^modern-algos], или `'ML-DSA-87'`[^modern-algos].
 
 #### `contextParams.context`
 
-<!-- YAML
-added: v24.7.0
-changes:
-  - version: v24.8.0
-    pr-url: https://github.com/nodejs/node/pull/59570
-    description: Поддерживается непустой контекст.
--->
+
 
 Добавлено в: v24.7.0
 
@@ -1911,37 +1555,25 @@ changes:
 
 ### Класс: `CShakeParams`
 
-<!-- YAML
-added: v24.7.0
-changes:
-  - version: v25.9.0
-    pr-url: https://github.com/nodejs/node/pull/61875
-    description: `cShakeParams.length` переименовано в `cShakeParams.outputLength`.
--->
+
 
 Добавлено в: v24.7.0
 
 #### `cShakeParams.name`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'cSHAKE128'`[^modern-algos] или `'cSHAKE256'`[^modern-algos]
 
 #### `cShakeParams.outputLength`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
 
 #### `cShakeParams.functionName`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
@@ -1952,9 +1584,7 @@ added: v24.7.0
 
 #### `cShakeParams.customization`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
@@ -1964,23 +1594,17 @@ added: v24.7.0
 
 ### Класс: `EcdhKeyDeriveParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `ecdhKeyDeriveParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'ECDH'`, `'X25519'`, или `'X448'`[^secure-curves].
 
 #### `ecdhKeyDeriveParams.public`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 
@@ -1990,19 +1614,11 @@ added: v15.0.0
 
 ### Класс: `EcdsaParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `ecdsaParams.hash`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -2023,83 +1639,61 @@ changes:
 
 #### `ecdsaParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'ECDSA'`.
 
 ### Класс: `EcKeyAlgorithm`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `ecKeyAlgorithm.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 #### `ecKeyAlgorithm.namedCurve`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `EcKeyGenParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `ecKeyGenParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyGenParams.namedCurve`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `EcKeyImportParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `ecKeyImportParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'ECDSA'` или `'ECDH'`.
 
 #### `ecKeyImportParams.namedCurve`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'P-256'`, `'P-384'`, `'P-521'`.
 
 ### Класс: `EncapsulatedBits`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 Временный симметричный секретный ключ (в виде [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)) для шифрования сообщения
 и шифротекст (его можно передать получателю вместе с сообщением),
@@ -2108,25 +1702,19 @@ added: v24.7.0
 
 #### `encapsulatedBits.ciphertext`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 #### `encapsulatedBits.sharedKey`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 ### Класс: `EncapsulatedKey`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 Временный симметричный секретный ключ (в виде [CryptoKey](webcrypto.md#class-cryptokey)) для шифрования сообщения
 и шифротекст (его можно передать получателю вместе с сообщением),
@@ -2135,35 +1723,23 @@ added: v24.7.0
 
 #### `encapsulatedKey.ciphertext`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
 
 #### `encapsulatedKey.sharedKey`
 
-<!-- YAML
-added: v24.7.0
--->
+
 
 * Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 
 ### Класс: `HkdfParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `hkdfParams.hash`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -2184,9 +1760,7 @@ changes:
 
 #### `hkdfParams.info`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -2195,17 +1769,13 @@ added: v15.0.0
 
 #### `hkdfParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HKDF'`.
 
 #### `hkdfParams.salt`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -2215,19 +1785,11 @@ added: v15.0.0
 
 ### Класс: `HmacImportParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `hmacImportParams.hash`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -2248,9 +1810,7 @@ changes:
 
 #### `hmacImportParams.length`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2258,31 +1818,23 @@ added: v15.0.0
 
 #### `hmacImportParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HMAC'`.
 
 ### Класс: `HmacKeyAlgorithm`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `hmacKeyAlgorithm.hash`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<Algorithm>`](webcrypto.md)
 
 #### `hmacKeyAlgorithm.length`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2290,27 +1842,17 @@ added: v15.0.0
 
 #### `hmacKeyAlgorithm.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `HmacKeyGenParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `hmacKeyGenParams.hash`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -2331,9 +1873,7 @@ changes:
 
 #### `hmacKeyGenParams.length`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2343,37 +1883,27 @@ added: v15.0.0
 
 #### `hmacKeyGenParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'HMAC'`.
 
 ### Класс: `KeyAlgorithm`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `keyAlgorithm.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `KangarooTwelveParams`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 #### `kangarooTwelveParams.customization`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
@@ -2381,31 +1911,23 @@ added: v25.9.0
 
 #### `kangarooTwelveParams.name`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KT128'`[^modern-algos] или `'KT256'`[^modern-algos]
 
 #### `kangarooTwelveParams.outputLength`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
 
 ### Класс: `KmacImportParams`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 #### `kmacImportParams.length`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2413,23 +1935,17 @@ added: v24.8.0
 
 #### `kmacImportParams.name`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
 
 ### Класс: `KmacKeyAlgorithm`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 #### `kmacKeyAlgorithm.length`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2437,23 +1953,17 @@ added: v24.8.0
 
 #### `kmacKeyAlgorithm.name`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 ### Класс: `KmacKeyGenParams`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 #### `kmacKeyGenParams.length`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2463,37 +1973,25 @@ added: v24.8.0
 
 #### `kmacKeyGenParams.name`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
 
 ### Класс: `KmacParams`
 
-<!-- YAML
-added: v24.8.0
-changes:
-  - version: v25.9.0
-    pr-url: https://github.com/nodejs/node/pull/61875
-    description: `kmacParams.length` переименовано в `kmacParams.outputLength`.
--->
+
 
 Добавлено в: v24.8.0
 
 #### `kmacParams.algorithm`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'KMAC128'` или `'KMAC256'`.
 
 #### `kmacParams.outputLength`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2501,9 +1999,7 @@ added: v25.9.0
 
 #### `kmacParams.customization`
 
-<!-- YAML
-added: v24.8.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer) | undefined
 
@@ -2511,19 +2007,11 @@ added: v24.8.0
 
 ### Класс: `Pbkdf2Params`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `pbkdf2Params.hash`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -2544,9 +2032,7 @@ changes:
 
 #### `pbkdf2Params.iterations`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2554,17 +2040,13 @@ added: v15.0.0
 
 #### `pbkdf2Params.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'PBKDF2'`.
 
 #### `pbkdf2Params.salt`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -2572,19 +2054,11 @@ added: v15.0.0
 
 ### Класс: `RsaHashedImportParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `rsaHashedImportParams.hash`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -2605,32 +2079,24 @@ changes:
 
 #### `rsaHashedImportParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или
   `'RSA-OAEP'`.
 
 ### Класс: `RsaHashedKeyAlgorithm`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `rsaHashedKeyAlgorithm.hash`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<Algorithm>`](webcrypto.md)
 
 #### `rsaHashedKeyAlgorithm.modulusLength`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2638,17 +2104,13 @@ added: v15.0.0
 
 #### `rsaHashedKeyAlgorithm.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 #### `rsaHashedKeyAlgorithm.publicExponent`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
@@ -2656,19 +2118,11 @@ added: v15.0.0
 
 ### Класс: `RsaHashedKeyGenParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `rsaHashedKeyGenParams.hash`
 
-<!-- YAML
-added: v15.0.0
-changes:
-  - version: v24.7.0
-    pr-url: https://github.com/nodejs/node/pull/59365
-    description: Алгоритмы SHA-3 теперь поддерживаются.
--->
+
 
 Добавлено в: v15.0.0
 
@@ -2689,9 +2143,7 @@ changes:
 
 #### `rsaHashedKeyGenParams.modulusLength`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2699,18 +2151,14 @@ added: v15.0.0
 
 #### `rsaHashedKeyGenParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть одним из `'RSASSA-PKCS1-v1_5'`, `'RSA-PSS'` или
   `'RSA-OAEP'`.
 
 #### `rsaHashedKeyGenParams.publicExponent`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<Uint8Array>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
 
@@ -2720,15 +2168,11 @@ added: v15.0.0
 
 ### Класс: `RsaOaepParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `rsaOaepParams.label`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<Buffer>`](buffer.md#buffer)
 
@@ -2739,31 +2183,23 @@ added: v15.0.0
 
 #### `rsaOaepParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'RSA-OAEP'`.
 
 ### Класс: `RsaPssParams`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 #### `rsaPssParams.name`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'RSA-PSS'`.
 
 #### `rsaPssParams.saltLength`
 
-<!-- YAML
-added: v15.0.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -2771,15 +2207,11 @@ added: v15.0.0
 
 ### Класс: `TurboShakeParams`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 #### `turboShakeParams.domainSeparation`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | undefined
 
@@ -2787,17 +2219,13 @@ added: v25.9.0
 
 #### `turboShakeParams.name`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Должно быть `'TurboSHAKE128'`[^modern-algos] или `'TurboSHAKE256'`[^modern-algos]
 
 #### `turboShakeParams.outputLength`
 
-<!-- YAML
-added: v25.9.0
--->
+
 
 * Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) запрашиваемая длина вывода в битах.
 
