@@ -5,15 +5,9 @@ description: HTTPS — протокол HTTP поверх TLS/SSL; в Node.js р
 
 # HTTPS
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/https.html)
-
-
-
 !!!success "Стабильность: 2 – Стабильная"
 
     API является удовлетворительным. Совместимость с npm имеет высший приоритет и не будет нарушена, кроме случаев явной необходимости.
-
-
 
 **HTTPS** — это протокол HTTP поверх TLS/SSL. В Node.js он реализован отдельным модулем.
 
@@ -49,9 +43,7 @@ Node.js может быть собран без поддержки модуля 
     }
     ```
 
-## Класс: `https.Agent`
-
-
+## Класс: `https.Agent` {#class-httpsagent}
 
 Добавлено в: v0.4.5
 
@@ -63,26 +55,17 @@ Node.js может быть собран без поддержки модуля 
 
 ### `new Agent([options])`
 
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента. Может содержать те же поля, что и [`http.Agent(options)`](http.md#new-agentoptions), а также
 
+    -   `maxCachedSessions` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальное число кэшированных TLS-сессий. Укажите `0`, чтобы отключить кэширование сессий TLS. **По умолчанию:** `100`.
+    -   `servername` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) значение расширения [Server Name Indication](https://en.wikipedia.org/wiki/Server_Name_Indication), отправляемое серверу. Пустая строка `''` отключает отправку расширения. **По умолчанию:** имя хоста целевого сервера, если только целевой сервер не задан IP-адресом — тогда по умолчанию `''` (без расширения).
 
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Набор настраиваемых опций агента.
-  Может содержать те же поля, что и [`http.Agent(options)`](http.md#new-agentoptions), а также
-  * `maxCachedSessions` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальное число кэшированных TLS-сессий.
-    Укажите `0`, чтобы отключить кэширование сессий TLS. **По умолчанию:** `100`.
-  * `servername` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) значение расширения
-    [Server Name Indication][sni wiki], отправляемое серверу. Пустая строка `''`
-    отключает отправку расширения.
-    **По умолчанию:** имя хоста целевого сервера, если только целевой сервер
-    не задан IP-адресом — тогда по умолчанию `''` (без расширения).
-
-    См. раздел [возобновления сессии](tls.md#session-resumption) о повторном использовании TLS-сессий.
+        См. раздел [возобновления сессии](tls.md#session-resumption) о повторном использовании TLS-сессий.
 
 #### Событие: `'keylog'`
 
-
-
-* `line` [`<Buffer>`](buffer.md#buffer) Строка ASCII-текста в формате NSS `SSLKEYLOGFILE`.
-* `tlsSocket` [`<tls.TLSSocket>`](tls.md#class-tlstlssocket) Экземпляр `tls.TLSSocket`, для которого материал был сгенерирован.
+-   `line` [`<Buffer>`](buffer.md#buffer) Строка ASCII-текста в формате NSS `SSLKEYLOGFILE`.
+-   `tlsSocket` [`<tls.TLSSocket>`](tls.md#class-tlstlssocket) Экземпляр `tls.TLSSocket`, для которого материал был сгенерирован.
 
 Событие `keylog` испускается, когда ключевой материал генерируется или получается соединением, управляемым этим агентом (обычно до завершения рукопожатия, но не обязательно). Этот материал можно сохранять для отладки: по нему можно расшифровать захваченный трафик TLS. Для каждого сокета событие может испускаться несколько раз.
 
@@ -91,30 +74,26 @@ Node.js может быть собран без поддержки модуля 
 ```js
 // ...
 https.globalAgent.on('keylog', (line, tlsSocket) => {
-  fs.appendFileSync('/tmp/ssl-keys.log', line, { mode: 0o600 });
+    fs.appendFileSync('/tmp/ssl-keys.log', line, {
+        mode: 0o600,
+    });
 });
 ```
 
-## Класс: `https.Server`
+## Класс: `https.Server` {#class-httpserver}
 
-
-
-* Наследует: [`<tls.Server>`](#class-tlsserver)
+-   Наследует: [`<tls.Server>`](tls.md#class-tlsserver)
 
 См. [`http.Server`](http.md#class-httpserver).
 
-### `server.close([callback])`
+### `server.close([callback])` {#serverclosecallback}
 
-
-
-* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [`<https.Server>`](https.md)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<https.Server>`](https.md#class-httpserver)
 
 См. [`server.close()`](http.md#serverclosecallback) в модуле `node:http`.
 
 ### `server[Symbol.asyncDispose]()`
-
-
 
 Добавлено в: v20.4.0
 
@@ -122,81 +101,63 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
 
 ### `server.closeAllConnections()`
 
-
-
 См. [`server.closeAllConnections()`](http.md#servercloseallconnections) в модуле `node:http`.
 
 ### `server.closeIdleConnections()`
-
-
 
 См. [`server.closeIdleConnections()`](http.md#servercloseidleconnections) в модуле `node:http`.
 
 ### `server.headersTimeout`
 
-
-
-* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `60000`
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `60000`
 
 См. [`server.headersTimeout`](http.md#serverheaderstimeout) в модуле `node:http`.
 
 ### `server.listen()`
 
-Запускает прослушивание HTTPS-сервером зашифрованных соединений.
-Метод совпадает с [`server.listen()`](net.md#serverlisten) у [`net.Server`](net.md#class-netserver).
+Запускает прослушивание HTTPS-сервером зашифрованных соединений. Метод совпадает с [`server.listen()`](net.md#serverlisten) у [`net.Server`](net.md#class-netserver).
 
 ### `server.maxHeadersCount`
 
-* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `2000`
 
 См. [`server.maxHeadersCount`](http.md#servermaxheaderscount) в модуле `node:http`.
 
 ### `server.requestTimeout`
 
-
-
 Добавлено в: v14.11.0
 
-* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `300000`
 
 См. [`server.requestTimeout`](http.md#serverrequesttimeout) в модуле `node:http`.
 
 ### `server.setTimeout([msecs][, callback])`
 
-
-
-* `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `120000` (2 минуты)
-* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [`<https.Server>`](https.md)
+-   `msecs` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `120000` (2 минуты)
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<https.Server>`](https.md#class-httpserver)
 
 См. [`server.setTimeout()`](http.md#serversettimeoutmsecs-callback) в модуле `node:http`.
 
 ### `server.timeout`
 
-
-
 Добавлено в: v0.11.2
 
-* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** 0 (без таймаута)
 
 См. [`server.timeout`](http.md#servertimeout) в модуле `node:http`.
 
 ### `server.keepAliveTimeout`
 
-
-
-* Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5000` (5 секунд)
+-   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `5000` (5 секунд)
 
 См. [`server.keepAliveTimeout`](http.md#serverkeepalivetimeout) в модуле `node:http`.
 
 ## `https.createServer([options][, requestListener])`
 
-
-
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `options` из [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener),
-  [`tls.createSecureContext()`](tls.md#tlscreatesecurecontextoptions) и [`http.createServer()`](http.md#httpcreateserveroptions-requestlistener).
-* `requestListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик, добавляемый к событию `'request'`.
-* Возвращает: [`<https.Server>`](https.md)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Принимает `options` из [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener), [`tls.createSecureContext()`](tls.md#tlscreatesecurecontextoptions) и [`http.createServer()`](http.md#httpcreateserveroptions-requestlistener).
+-   `requestListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Обработчик, добавляемый к событию `'request'`.
+-   Возвращает: [`<https.Server>`](https.md#class-httpserver)
 
 === "MJS"
 
@@ -204,12 +165,12 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
     // curl -k https://localhost:8000/
     import { createServer } from 'node:https';
     import { readFileSync } from 'node:fs';
-    
+
     const options = {
       key: readFileSync('private-key.pem'),
       cert: readFileSync('certificate.pem'),
     };
-    
+
     createServer(options, (req, res) => {
       res.writeHead(200);
       res.end('hello world\n');
@@ -222,12 +183,12 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
     // curl -k https://localhost:8000/
     const https = require('node:https');
     const fs = require('node:fs');
-    
+
     const options = {
       key: fs.readFileSync('private-key.pem'),
       cert: fs.readFileSync('certificate.pem'),
     };
-    
+
     https.createServer(options, (req, res) => {
       res.writeHead(200);
       res.end('hello world\n');
@@ -241,12 +202,12 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
     ```js
     import { createServer } from 'node:https';
     import { readFileSync } from 'node:fs';
-    
+
     const options = {
       pfx: readFileSync('test_cert.pfx'),
       passphrase: 'sample',
     };
-    
+
     createServer(options, (req, res) => {
       res.writeHead(200);
       res.end('hello world\n');
@@ -258,12 +219,12 @@ https.globalAgent.on('keylog', (line, tlsSocket) => {
     ```js
     const https = require('node:https');
     const fs = require('node:fs');
-    
+
     const options = {
       pfx: fs.readFileSync('test_cert.pfx'),
       passphrase: 'sample',
     };
-    
+
     https.createServer(options, (req, res) => {
       res.writeHead(200);
       res.end('hello world\n');
@@ -288,15 +249,12 @@ openssl pkcs12 -certpbe AES-256-CBC -export -out test_cert.pfx \
 
 ## `https.get(url[, options][, callback])`
 
-
-
 Добавлено в: v0.3.6
 
-* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает те же `options`, что и
-  [`https.request()`](#httpsrequestoptions-callback), метод по умолчанию — GET.
-* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [`<http.ClientRequest>`](#httpclientrequest)
+-   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает те же `options`, что и [`https.request()`](#httpsrequestoptions-callback), метод по умолчанию — GET.
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<http.ClientRequest>`](http.md#class-httpclientrequest)
 
 Аналог [`http.get()`](http.md#httpgetoptions-callback), но для HTTPS.
 
@@ -307,15 +265,15 @@ openssl pkcs12 -certpbe AES-256-CBC -export -out test_cert.pfx \
     ```js
     import { get } from 'node:https';
     import process from 'node:process';
-    
+
     get('https://encrypted.google.com/', (res) => {
       console.log('statusCode:', res.statusCode);
       console.log('headers:', res.headers);
-    
+
       res.on('data', (d) => {
         process.stdout.write(d);
       });
-    
+
     }).on('error', (e) => {
       console.error(e);
     });
@@ -325,15 +283,15 @@ openssl pkcs12 -certpbe AES-256-CBC -export -out test_cert.pfx \
 
     ```js
     const https = require('node:https');
-    
+
     https.get('https://encrypted.google.com/', (res) => {
       console.log('statusCode:', res.statusCode);
       console.log('headers:', res.headers);
-    
+
       res.on('data', (d) => {
         process.stdout.write(d);
       });
-    
+
     }).on('error', (e) => {
       console.error(e);
     });
@@ -341,64 +299,54 @@ openssl pkcs12 -certpbe AES-256-CBC -export -out test_cert.pfx \
 
 ## `https.globalAgent`
 
-
-
 Добавлено в: v0.5.9
 
 Глобальный экземпляр [`https.Agent`](#class-httpsagent) для всех клиентских HTTPS-запросов. Отличается от конфигурации [`https.Agent`](#class-httpsagent) по умолчанию тем, что у него включён `keepAlive` и `timeout` 5 секунд.
 
-## `https.request(options[, callback])`
+## `https.request(options[, callback])` {#httpsrequestoptions-callback}
 
 ## `https.request(url[, options][, callback])`
 
-
-
 Добавлено в: v0.3.6
 
-* `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает все `options` из
-  [`http.request()`](http.md#httprequestoptions-callback), с отличиями значений по умолчанию:
-  * `protocol` **По умолчанию:** `'https:'`
-  * `port` **По умолчанию:** `443`
-  * `agent` **По умолчанию:** `https.globalAgent`
-* `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
-* Возвращает: [`<http.ClientRequest>`](#httpclientrequest)
+-   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api) Принимает все `options` из [`http.request()`](http.md#httprequestoptions-callback), с отличиями значений по умолчанию:
+    -   `protocol` **По умолчанию:** `'https:'`
+    -   `port` **По умолчанию:** `443`
+    -   `agent` **По умолчанию:** `https.globalAgent`
+-   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
+-   Возвращает: [`<http.ClientRequest>`](http.md#class-httpclientrequest)
 
 Выполняет запрос к защищённому веб-серверу.
 
-Также принимаются дополнительные `options` из [`tls.connect()`](tls.md#tlsconnectoptions-callback):
-`ca`, `cert`, `ciphers`, `clientCertEngine` (устарело), `crl`, `dhparam`, `ecdhCurve`,
-`honorCipherOrder`, `key`, `passphrase`, `pfx`, `rejectUnauthorized`,
-`secureOptions`, `secureProtocol`, `servername`, `sessionIdContext`,
-`highWaterMark`.
+Также принимаются дополнительные `options` из [`tls.connect()`](tls.md#tlsconnectoptions-callback): `ca`, `cert`, `ciphers`, `clientCertEngine` (устарело), `crl`, `dhparam`, `ecdhCurve`, `honorCipherOrder`, `key`, `passphrase`, `pfx`, `rejectUnauthorized`, `secureOptions`, `secureProtocol`, `servername`, `sessionIdContext`, `highWaterMark`.
 
 `options` может быть объектом, строкой или объектом [`URL`](url.md#the-whatwg-url-api). Если `options` — строка, она автоматически разбирается через [`new URL()`](url.md#new-urlinput-base). Если это [`URL`](url.md#the-whatwg-url-api), он преобразуется в обычный объект `options`.
 
-`https.request()` возвращает экземпляр класса [`http.ClientRequest`](http.md#class-httpclientrequest).
-`ClientRequest` — поток для записи. Чтобы загрузить файл запросом POST, пишите в объект `ClientRequest`.
+`https.request()` возвращает экземпляр класса [`http.ClientRequest`](http.md#class-httpclientrequest). `ClientRequest` — поток для записи. Чтобы загрузить файл запросом POST, пишите в объект `ClientRequest`.
 
 === "MJS"
 
     ```js
     import { request } from 'node:https';
     import process from 'node:process';
-    
+
     const options = {
       hostname: 'encrypted.google.com',
       port: 443,
       path: '/',
       method: 'GET',
     };
-    
+
     const req = request(options, (res) => {
       console.log('statusCode:', res.statusCode);
       console.log('headers:', res.headers);
-    
+
       res.on('data', (d) => {
         process.stdout.write(d);
       });
     });
-    
+
     req.on('error', (e) => {
       console.error(e);
     });
@@ -409,23 +357,23 @@ openssl pkcs12 -certpbe AES-256-CBC -export -out test_cert.pfx \
 
     ```js
     const https = require('node:https');
-    
+
     const options = {
       hostname: 'encrypted.google.com',
       port: 443,
       path: '/',
       method: 'GET',
     };
-    
+
     const req = https.request(options, (res) => {
       console.log('statusCode:', res.statusCode);
       console.log('headers:', res.headers);
-    
+
       res.on('data', (d) => {
         process.stdout.write(d);
       });
     });
-    
+
     req.on('error', (e) => {
       console.error(e);
     });
@@ -436,17 +384,17 @@ openssl pkcs12 -certpbe AES-256-CBC -export -out test_cert.pfx \
 
 ```js
 const options = {
-  hostname: 'encrypted.google.com',
-  port: 443,
-  path: '/',
-  method: 'GET',
-  key: fs.readFileSync('private-key.pem'),
-  cert: fs.readFileSync('certificate.pem'),
+    hostname: 'encrypted.google.com',
+    port: 443,
+    path: '/',
+    method: 'GET',
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('certificate.pem'),
 };
 options.agent = new https.Agent(options);
 
 const req = https.request(options, (res) => {
-  // ...
+    // ...
 });
 ```
 
@@ -454,17 +402,17 @@ const req = https.request(options, (res) => {
 
 ```js
 const options = {
-  hostname: 'encrypted.google.com',
-  port: 443,
-  path: '/',
-  method: 'GET',
-  key: fs.readFileSync('private-key.pem'),
-  cert: fs.readFileSync('certificate.pem'),
-  agent: false,
+    hostname: 'encrypted.google.com',
+    port: 443,
+    path: '/',
+    method: 'GET',
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('certificate.pem'),
+    agent: false,
 };
 
 const req = https.request(options, (res) => {
-  // ...
+    // ...
 });
 ```
 
@@ -474,7 +422,7 @@ const req = https.request(options, (res) => {
 const options = new URL('https://abc:xyz@example.com');
 
 const req = https.request(options, (res) => {
-  // ...
+    // ...
 });
 ```
 
@@ -486,7 +434,7 @@ const req = https.request(options, (res) => {
     import { checkServerIdentity } from 'node:tls';
     import { Agent, request } from 'node:https';
     import { createHash } from 'node:crypto';
-    
+
     function sha256(s) {
       return createHash('sha256').update(s).digest('base64');
     }
@@ -501,7 +449,7 @@ const req = https.request(options, (res) => {
         if (err) {
           return err;
         }
-    
+
         // Pin the public key, similar to HPKP pin-sha256 pinning
         const pubkey256 = 'SIXvRyDmBJSgatgTQRGbInBaAK+hZOQ18UmrSwnDlK8=';
         if (sha256(cert.pubkey) !== pubkey256) {
@@ -510,7 +458,7 @@ const req = https.request(options, (res) => {
             'does not match our pinned fingerprint';
           return new Error(msg);
         }
-    
+
         // Pin the exact certificate, rather than the pub key
         const cert256 = 'FD:6E:9B:0E:F3:98:BC:D9:04:C3:B2:EC:16:7A:7B:' +
           '0F:DA:72:01:C9:03:C5:3A:6A:6A:E5:D0:41:43:63:EF:65';
@@ -520,7 +468,7 @@ const req = https.request(options, (res) => {
             'does not match our pinned fingerprint';
           return new Error(msg);
         }
-    
+
         // This loop is informational only.
         // Print the certificate and public key fingerprints of all certs in the
         // chain. Its common to pin the public key of the issuer on the public
@@ -530,25 +478,25 @@ const req = https.request(options, (res) => {
         do {
           console.log('Subject Common Name:', cert.subject.CN);
           console.log('  Certificate SHA256 fingerprint:', cert.fingerprint256);
-    
+
           const hash = createHash('sha256');
           console.log('  Public key ping-sha256:', sha256(cert.pubkey));
-    
+
           lastprint256 = cert.fingerprint256;
           cert = cert.issuerCertificate;
         } while (cert.fingerprint256 !== lastprint256);
-    
+
       },
     };
-    
+
     options.agent = new Agent(options);
     const req = request(options, (res) => {
       console.log('All OK. Server matched our pinned cert or public key');
       console.log('statusCode:', res.statusCode);
-    
+
       res.on('data', (d) => {});
     });
-    
+
     req.on('error', (e) => {
       console.error(e.message);
     });
@@ -561,7 +509,7 @@ const req = https.request(options, (res) => {
     const tls = require('node:tls');
     const https = require('node:https');
     const crypto = require('node:crypto');
-    
+
     function sha256(s) {
       return crypto.createHash('sha256').update(s).digest('base64');
     }
@@ -576,7 +524,7 @@ const req = https.request(options, (res) => {
         if (err) {
           return err;
         }
-    
+
         // Pin the public key, similar to HPKP pin-sha256 pinning
         const pubkey256 = 'SIXvRyDmBJSgatgTQRGbInBaAK+hZOQ18UmrSwnDlK8=';
         if (sha256(cert.pubkey) !== pubkey256) {
@@ -585,7 +533,7 @@ const req = https.request(options, (res) => {
             'does not match our pinned fingerprint';
           return new Error(msg);
         }
-    
+
         // Pin the exact certificate, rather than the pub key
         const cert256 = 'FD:6E:9B:0E:F3:98:BC:D9:04:C3:B2:EC:16:7A:7B:' +
           '0F:DA:72:01:C9:03:C5:3A:6A:6A:E5:D0:41:43:63:EF:65';
@@ -595,7 +543,7 @@ const req = https.request(options, (res) => {
             'does not match our pinned fingerprint';
           return new Error(msg);
         }
-    
+
         // This loop is informational only.
         // Print the certificate and public key fingerprints of all certs in the
         // chain. Its common to pin the public key of the issuer on the public
@@ -604,25 +552,25 @@ const req = https.request(options, (res) => {
         do {
           console.log('Subject Common Name:', cert.subject.CN);
           console.log('  Certificate SHA256 fingerprint:', cert.fingerprint256);
-    
+
           hash = crypto.createHash('sha256');
           console.log('  Public key ping-sha256:', sha256(cert.pubkey));
-    
+
           lastprint256 = cert.fingerprint256;
           cert = cert.issuerCertificate;
         } while (cert.fingerprint256 !== lastprint256);
-    
+
       },
     };
-    
+
     options.agent = new https.Agent(options);
     const req = https.request(options, (res) => {
       console.log('All OK. Server matched our pinned cert or public key');
       console.log('statusCode:', res.statusCode);
-    
+
       res.on('data', (d) => {});
     });
-    
+
     req.on('error', (e) => {
       console.error(e.message);
     });
@@ -647,35 +595,3 @@ Subject Common Name: AAA Certificate Services
 All OK. Server matched our pinned cert or public key
 statusCode: 200
 ```
-
-[`Agent`]: #class-httpsagent
-[возобновления сессии]: tls.md#session-resumption
-[`URL`]: url.md#the-whatwg-url-api
-[`agent.createConnection()`]: http.md#agentcreateconnectionoptions-callback
-[`http.Agent(options)`]: http.md#new-agentoptions
-[`http.Agent`]: http.md#class-httpagent
-[`http.ClientRequest`]: http.md#class-httpclientrequest
-[`http.Server`]: http.md#class-httpserver
-[`http.createServer()`]: http.md#httpcreateserveroptions-requestlistener
-[`http.get()`]: http.md#httpgetoptions-callback
-[`http.request()`]: http.md#httprequestoptions-callback
-[`https.Agent`]: #class-httpsagent
-[`https.request()`]: #httpsrequestoptions-callback
-[`import()`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import
-[`net.Server`]: net.md#class-netserver
-[`new URL()`]: url.md#new-urlinput-base
-[`server.close()`]: http.md#serverclosecallback
-[`server.closeAllConnections()`]: http.md#servercloseallconnections
-[`server.closeIdleConnections()`]: http.md#servercloseidleconnections
-[`server.headersTimeout`]: http.md#serverheaderstimeout
-[`server.keepAliveTimeout`]: http.md#serverkeepalivetimeout
-[`server.listen()`]: net.md#serverlisten
-[`server.maxHeadersCount`]: http.md#servermaxheaderscount
-[`server.requestTimeout`]: http.md#serverrequesttimeout
-[`server.setTimeout()`]: http.md#serversettimeoutmsecs-callback
-[`server.timeout`]: http.md#servertimeout
-[`tls.connect()`]: tls.md#tlsconnectoptions-callback
-[`tls.createSecureContext()`]: tls.md#tlscreatesecurecontextoptions
-[`tls.createServer()`]: tls.md#tlscreateserveroptions-secureconnectionlistener
-[httpsServerClose]: #serverclosecallback
-[sni wiki]: https://en.wikipedia.org/wiki/Server_Name_Indication

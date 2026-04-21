@@ -5,15 +5,9 @@ description: Модуль node:os — методы и свойства для с
 
 # Операционная система
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/os.html)
-
-
-
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
-
-
 
 Модуль `node:os` предоставляет утилиты, связанные с операционной системой. Подключение:
 
@@ -31,139 +25,121 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.EOL`
 
-
-
-* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Маркер конца строки для текущей ОС.
 
-* `\n` в POSIX
-* `\r\n` в Windows
+-   `\n` в POSIX
+-   `\r\n` в Windows
 
 ## `os.availableParallelism()`
 
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-
-* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
-
-Оценка рекомендуемой степени параллелизма для программы.
-Всегда возвращает значение больше нуля.
+Оценка рекомендуемой степени параллелизма для программы. Всегда возвращает значение больше нуля.
 
 Тонкая обёртка над [`uv_available_parallelism()`](https://docs.libuv.org/en/v1.x/misc.html#c.uv_available_parallelism) в libuv.
 
 ## `os.arch()`
 
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-
-Архитектура ЦП, под которую скомпилирован бинарник Node.js. Возможные значения:
-`'arm'`, `'arm64'`, `'ia32'`, `'loong64'`,
-`'mips'`, `'mipsel'`, `'ppc64'`, `'riscv64'`, `'s390x'` и `'x64'`.
+Архитектура ЦП, под которую скомпилирован бинарник Node.js. Возможные значения: `'arm'`, `'arm64'`, `'ia32'`, `'loong64'`, `'mips'`, `'mipsel'`, `'ppc64'`, `'riscv64'`, `'s390x'` и `'x64'`.
 
 Эквивалентно [`process.arch`](process.md#processarch).
 
 ## `os.constants`
 
+-   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-
-* Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
-Часто используемые константы ОС: коды ошибок, сигналы процесса и т.д. Перечень —
-в разделе [Константы ОС](#os-constants).
+Часто используемые константы ОС: коды ошибок, сигналы процесса и т.д. Перечень — в разделе [Константы ОС](#os-constants).
 
 ## `os.cpus()`
 
+-   Возвращает: [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-
-* Возвращает: [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
-Массив объектов с информацией о каждом логическом ядре ЦП.
-Пустой массив, если сведений нет (например, недоступна `/proc`).
+Массив объектов с информацией о каждом логическом ядре ЦП. Пустой массив, если сведений нет (например, недоступна `/proc`).
 
 Свойства каждого объекта:
 
-* `model` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-* `speed` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (в МГц)
-* `times` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `user` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в пользовательском режиме
-  * `nice` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме nice
-  * `sys` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме ядра
-  * `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в простое
-  * `irq` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды обработки IRQ
-
-
+-   `model` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   `speed` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) (в МГц)
+-   `times` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `user` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в пользовательском режиме
+    -   `nice` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме nice
+    -   `sys` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в режиме ядра
+    -   `idle` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды в простое
+    -   `irq` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) миллисекунды обработки IRQ
 
 ```js
 [
-  {
-    model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
-    speed: 2926,
-    times: {
-      user: 252020,
-      nice: 0,
-      sys: 30340,
-      idle: 1070356870,
-      irq: 0,
+    {
+        model:
+            'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+        speed: 2926,
+        times: {
+            user: 252020,
+            nice: 0,
+            sys: 30340,
+            idle: 1070356870,
+            irq: 0,
+        },
     },
-  },
-  {
-    model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
-    speed: 2926,
-    times: {
-      user: 306960,
-      nice: 0,
-      sys: 26980,
-      idle: 1071569080,
-      irq: 0,
+    {
+        model:
+            'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+        speed: 2926,
+        times: {
+            user: 306960,
+            nice: 0,
+            sys: 26980,
+            idle: 1071569080,
+            irq: 0,
+        },
     },
-  },
-  {
-    model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
-    speed: 2926,
-    times: {
-      user: 248450,
-      nice: 0,
-      sys: 21750,
-      idle: 1070919370,
-      irq: 0,
+    {
+        model:
+            'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+        speed: 2926,
+        times: {
+            user: 248450,
+            nice: 0,
+            sys: 21750,
+            idle: 1070919370,
+            irq: 0,
+        },
     },
-  },
-  {
-    model: 'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
-    speed: 2926,
-    times: {
-      user: 256880,
-      nice: 0,
-      sys: 19430,
-      idle: 1070905480,
-      irq: 20,
+    {
+        model:
+            'Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz',
+        speed: 2926,
+        times: {
+            user: 256880,
+            nice: 0,
+            sys: 19430,
+            idle: 1070905480,
+            irq: 20,
+        },
     },
-  },
-]
+];
 ```
 
 Значения `nice` только для POSIX. В Windows у всех процессоров `nice` всегда 0.
 
-Не используйте `os.cpus().length` для оценки доступного параллелизма.
-Для этого используйте [`os.availableParallelism()`](#osavailableparallelism).
+Не используйте `os.cpus().length` для оценки доступного параллелизма. Для этого используйте [`os.availableParallelism()`](#osavailableparallelism).
 
 ## `os.devNull`
 
-
-
-* Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Путь к нулевому устройству для текущей платформы.
 
-* `\\.\nul` в Windows
-* `/dev/null` в POSIX
+-   `\\.\nul` в Windows
+-   `/dev/null` в POSIX
 
 ## `os.endianness()`
 
-
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с порядком байт ЦП, под которое скомпилирован бинарник Node.js.
 
@@ -171,48 +147,36 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.freemem()`
 
-
-
-* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Объём свободной оперативной памяти в байтах (целое число).
 
 ## `os.getPriority([pid])`
 
-
-
-* `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для запроса приоритета планирования.
-  **По умолчанию:** `0`.
-* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для запроса приоритета планирования. **По умолчанию:** `0`.
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Приоритет планирования процесса `pid`. Если `pid` не передан или равен `0`, возвращается приоритет текущего процесса.
 
 ## `os.homedir()`
 
-
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с путём домашнего каталога текущего пользователя.
 
-В POSIX используется переменная `$HOME`, если задана. Иначе —
-[эффективный UID][EUID] для поиска домашнего каталога.
+В POSIX используется переменная `$HOME`, если задана. Иначе — [эффективный UID](https://en.wikipedia.org/wiki/User_identifier#Effective_user_ID) для поиска домашнего каталога.
 
 В Windows — переменная `USERPROFILE`, если задана. Иначе — путь к каталогу профиля.
 
 ## `os.hostname()`
 
-
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя хоста ОС в виде строки.
 
 ## `os.loadavg()`
 
-
-
-* Возвращает: [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Возвращает: [`<number[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Массив из средних нагрузок за 1, 5 и 15 минут.
 
@@ -222,23 +186,15 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.machine()`
 
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
+Тип машины строкой, например `arm`, `arm64`, `aarch64`, `mips`, `mips64`, `ppc64`, `ppc64le`, `s390x`, `i386`, `i686`, `x86_64`.
 
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-
-Тип машины строкой, например `arm`, `arm64`, `aarch64`,
-`mips`, `mips64`, `ppc64`, `ppc64le`, `s390x`, `i386`, `i686`, `x86_64`.
-
-В POSIX тип определяется вызовом [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `RtlGetVersion()`, при недоступности — `GetVersionExW()`. См. также
-<https://en.wikipedia.org/wiki/Uname#Examples>.
+В POSIX тип определяется вызовом [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `RtlGetVersion()`, при недоступности — `GetVersionExW()`. См. также <https://en.wikipedia.org/wiki/Uname#Examples>.
 
 ## `os.networkInterfaces()`
 
-
-
-Добавлено в: v0.6.0
-
-* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект с сетевыми интерфейсами, которым назначен адрес.
 
@@ -246,15 +202,13 @@ description: Модуль node:os — методы и свойства для с
 
 Свойства объекта адреса:
 
-* `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) назначенный IPv4 или IPv6
-* `netmask` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) маска сети IPv4 или IPv6
-* `family` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `IPv4` или `IPv6`
-* `mac` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MAC-адрес интерфейса
-* `internal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для петлевых и аналогичных недоступных извне интерфейсов; иначе `false`
-* `scopeid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) числовой IPv6 scope ID (только при `family` равном `IPv6`)
-* `cidr` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) адрес в нотации CIDR с префиксом маршрутизации. При неверной `netmask` — `null`.
-
-
+-   `address` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) назначенный IPv4 или IPv6
+-   `netmask` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) маска сети IPv4 или IPv6
+-   `family` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) `IPv4` или `IPv6`
+-   `mac` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) MAC-адрес интерфейса
+-   `internal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true` для петлевых и аналогичных недоступных извне интерфейсов; иначе `false`
+-   `scopeid` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) числовой IPv6 scope ID (только при `family` равном `IPv6`)
+-   `cidr` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) адрес в нотации CIDR с префиксом маршрутизации. При неверной `netmask` — `null`.
 
 ```js
 {
@@ -301,37 +255,26 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.platform()`
 
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
-
-Строка с платформой ОС, под которую скомпилирован бинарник Node.js. Значение задаётся при сборке.
-Возможные значения: `'aix'`, `'darwin'`, `'freebsd'`,`'linux'`,
-`'openbsd'`, `'sunos'` и `'win32'`.
+Строка с платформой ОС, под которую скомпилирован бинарник Node.js. Значение задаётся при сборке. Возможные значения: `'aix'`, `'darwin'`, `'freebsd'`,`'linux'`, `'openbsd'`, `'sunos'` и `'win32'`.
 
 Эквивалентно [`process.platform`](process.md#processplatform).
 
-Может вернуться `'android'`, если Node.js собран для Android.
-[Поддержка Android экспериментальна][Android building].
+Может вернуться `'android'`, если Node.js собран для Android. [Поддержка Android экспериментальна](https://github.com/nodejs/node/blob/HEAD/BUILDING.md#android).
 
 ## `os.release()`
 
-
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с версией выпуска ОС.
 
-В POSIX — через [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `GetVersionExW()`. См.
-<https://en.wikipedia.org/wiki/Uname#Examples>.
+В POSIX — через [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `GetVersionExW()`. См. <https://en.wikipedia.org/wiki/Uname#Examples>.
 
 ## `os.setPriority([pid, ]priority)`
 
-
-
-* `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для установки приоритета.
-  **По умолчанию:** `0`.
-* `priority` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Приоритет планирования.
+-   `pid` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Идентификатор процесса для установки приоритета. **По умолчанию:** `0`.
+-   `priority` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Приоритет планирования.
 
 Пытается задать приоритет планирования процесса `pid`. Если `pid` не передан или равен `0`, используется текущий процесс.
 
@@ -341,11 +284,7 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.tmpdir()`
 
-
-
-Добавлено в: v0.9.9
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Каталог временных файлов по умолчанию для ОС.
 
@@ -357,17 +296,13 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.totalmem()`
 
-
-
-* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Общий объём оперативной памяти в байтах (целое число).
 
 ## `os.type()`
 
-
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Имя ОС, как в [`uname(3)`](https://linux.die.net/man/3/uname). Например `'Linux'`, `'Darwin'` на macOS, `'Windows_NT'` в Windows.
 
@@ -375,22 +310,15 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.uptime()`
 
-
-
-Добавлено в: v0.3.3
-
-* Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
+-   Возвращает: [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
 Время работы системы в секундах.
 
 ## `os.userInfo([options])`
 
-
-
-* `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-  * `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для строк результата.
-    При `'buffer'` поля `username`, `shell` и `homedir` — экземпляры `Buffer`. **По умолчанию:** `'utf8'`.
-* Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+    -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка для строк результата. При `'buffer'` поля `username`, `shell` и `homedir` — экземпляры `Buffer`. **По умолчанию:** `'utf8'`.
+-   Возвращает: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Сведения о текущем эффективном пользователе. В POSIX обычно подмножество файла паролей: `username`, `uid`, `gid`, `shell`, `homedir`. В Windows `uid` и `gid` равны `-1`, `shell` — `null`.
 
@@ -400,24 +328,19 @@ description: Модуль node:os — методы и свойства для с
 
 ## `os.version()`
 
-
-
-* Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
+-   Возвращает: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Строка с версией ядра.
 
-В POSIX — через [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `RtlGetVersion()`, при необходимости `GetVersionExW()`. См.
-<https://en.wikipedia.org/wiki/Uname#Examples>.
+В POSIX — через [`uname(3)`](https://linux.die.net/man/3/uname). В Windows — `RtlGetVersion()`, при необходимости `GetVersionExW()`. См. <https://en.wikipedia.org/wiki/Uname#Examples>.
 
-## Константы ОС
+## Константы ОС {#os-constants}
 
 Константы экспортируются через `os.constants`.
 
 Не все константы доступны на каждой ОС.
 
 ### Константы сигналов
-
-
 
 Константы сигналов экспортируются в `os.constants.signals`.
 
@@ -627,10 +550,7 @@ description: Модуль node:os — методы и свойства для с
 
 ### Константы приоритета
 
-
-
-Константы планирования процессов экспортируются в
-`os.constants.priority`.
+Константы планирования процессов экспортируются в `os.constants.priority`.
 
 | Константа | Описание |
 | --- | --- |
@@ -643,14 +563,6 @@ description: Модуль node:os — методы и свойства для с
 
 ### Константы libuv
 
-| Константа | Описание |
-| --- | --- |
-| `UV_UDP_REUSEADDR` |  |
-
-[Android building]: https://github.com/nodejs/node/blob/HEAD/BUILDING.md#android
-[EUID]: https://en.wikipedia.org/wiki/User_identifier#Effective_user_ID
-[`SystemError`]: errors.md#class-systemerror
-[`process.arch`]: process.md#processarch
-[`process.platform`]: process.md#processplatform
-[`uname(3)`]: https://linux.die.net/man/3/uname
-[`uv_available_parallelism()`]: https://docs.libuv.org/en/v1.x/misc.html#c.uv_available_parallelism
+| Константа          | Описание |
+| ------------------ | -------- |
+| `UV_UDP_REUSEADDR` |          |
