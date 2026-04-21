@@ -5,12 +5,6 @@ description: Глобальные объекты и API, доступные во
 
 # Глобальные объекты
 
-[:octicons-tag-24: latest](https://nodejs.org/docs/latest/api/globals.html)
-
-
-
-
-
 !!!success "Стабильность: 2 – Стабильная"
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
@@ -37,8 +31,6 @@ description: Глобальные объекты и API, доступные во
 
 ## Класс: `AbortController`
 
-
-
 Вспомогательный класс для сигнализации об отмене в выбранных API на основе `Promise`. API основан на веб-API [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 
 ```js
@@ -57,29 +49,21 @@ console.log(ac.signal.aborted); // Выводит true
 
 ### `abortController.abort([reason])`
 
-
-
 -   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Необязательная причина; доступна в свойстве `reason` у `AbortSignal`.
 
 Инициирует сигнал отмены: у `abortController.signal` генерируется событие `'abort'`.
 
 ### `abortController.signal`
 
-
-
 -   Тип: [`<AbortSignal>`](globals.md#abortsignal)
 
 ## Класс: `AbortSignal`
-
-
 
 -   Расширяет: [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget)
 
 `AbortSignal` уведомляет подписчиков о вызове метода `abortController.abort()`.
 
 ### Статический метод: `AbortSignal.abort([reason])`
-
-
 
 -   `reason` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 -   Возвращает: [`<AbortSignal>`](globals.md#abortsignal)
@@ -88,23 +72,17 @@ console.log(ac.signal.aborted); // Выводит true
 
 ### Статический метод: `AbortSignal.timeout(delay)`
 
-
-
 -   `delay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Задержка в миллисекундах до срабатывания `AbortSignal`.
 
 Возвращает новый `AbortSignal`, который будет прерван через `delay` миллисекунд.
 
 ### Статический метод: `AbortSignal.any(signals)`
 
-
-
 -   `signals` [`<AbortSignal[]>`](globals.md#abortsignal) `AbortSignal`, из которых составляется новый `AbortSignal`.
 
 Возвращает новый `AbortSignal`, который будет прерван, если прерван любой из переданных сигналов. Свойство [`abortSignal.reason`](globals.md#abortsignalreason) получит значение той причины, которая привела к прерыванию.
 
 ### Событие: `'abort'`
-
-
 
 Событие `'abort'` генерируется при вызове `abortController.abort()`. Колбэк получает один объект-аргумент с единственным свойством `type`, равным `'abort'`:
 
@@ -132,23 +110,17 @@ ac.abort();
 
 ### `abortSignal.aborted`
 
-
-
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 `true` после того, как `AbortController` был прерван.
 
 ### `abortSignal.onabort`
 
-
-
 -   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Необязательный колбэк, который пользовательский код может задать для уведомления о вызове `abortController.abort()`.
 
 ### `abortSignal.reason`
-
-
 
 -   Тип: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
 
@@ -162,13 +134,9 @@ console.log(ac.signal.reason); // Error: boom!
 
 ### `abortSignal.throwIfAborted()`
 
-
-
 Если `abortSignal.aborted` равно `true`, выбрасывает `abortSignal.reason`.
 
 ## `atob(data)`
-
-
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -184,19 +152,13 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ## Класс: `Blob`
 
-
-
 См. [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
 
 ## Класс: `BroadcastChannel`
 
-
-
 См. [BroadcastChannel](worker_threads.md).
 
 ## `btoa(data)`
-
-
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -212,55 +174,35 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ## Класс: `Buffer`
 
-
-
 -   Тип: [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 
 Для работы с двоичными данными. См. раздел [buffer](buffer.md).
 
 ## Класс: `ByteLengthQueuingStrategy`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`ByteLengthQueuingStrategy`](webstreams.md#class-bytelengthqueuingstrategy), совместимая с браузером.
 
 ## `clearImmediate(immediateObject)`
-
-
 
 [`clearImmediate`](timers.md#clearimmediateimmediate) описан в разделе [таймеры](timers.md).
 
 ## `clearInterval(intervalObject)`
 
-
-
 [`clearInterval`](timers.md#clearintervaltimeout) описан в разделе [таймеры](timers.md).
 
 ## `clearTimeout(timeoutObject)`
-
-
 
 [`clearTimeout`](timers.md#cleartimeouttimeout) описан в разделе [таймеры](timers.md).
 
 ## Класс: `CloseEvent`
 
-
-
 Реализация [CloseEvent](globals.md), совместимая с браузером. Отключите это API флагом CLI [`--no-experimental-websocket`](cli.md#--no-experimental-websocket).
 
 ## Класс: `CompressionStream`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`CompressionStream`](webstreams.md#class-compressionstream), совместимая с браузером.
 
 ## `console`
-
-
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -268,67 +210,41 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ## Класс: `CountQueuingStrategy`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`CountQueuingStrategy`](webstreams.md#class-countqueuingstrategy), совместимая с браузером.
 
 ## Класс: `Crypto`
-
-
 
 Реализация [Crypto](crypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## `crypto`
 
-
-
-Реализация [Web Crypto API][web crypto api], совместимая с браузером.
+Реализация [Web Crypto API](webcrypto.md), совместимая с браузером.
 
 ## Класс: `CryptoKey`
-
-
 
 Реализация [CryptoKey](webcrypto.md#class-cryptokey), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## Класс: `CustomEvent`
 
-
-
 Реализация [CustomEvent](globals.md), совместимая с браузером.
 
 ## Класс: `DecompressionStream`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`DecompressionStream`](webstreams.md#class-decompressionstream), совместимая с браузером.
 
 ## Класс: `DOMException`
 
-
-
 Класс WHATWG [DOMException](https://developer.mozilla.org/en-US/docs/Web/API/DOMException).
 
 ## `ErrorEvent`
-
-
 
 Реализация [ErrorEvent](globals.md), совместимая с браузером.
 
 ## Класс: `Event`
 
-
-
-Добавлено в: v15.0.0
-
 Реализация класса `Event`, совместимая с браузером. Подробнее — [API `EventTarget` и `Event`](events.md#eventtarget-and-event-api).
 
 ## Класс: `EventSource`
-
-
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -338,10 +254,6 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 
 ## Класс: `EventTarget`
 
-
-
-Добавлено в: v15.0.0
-
 Реализация класса `EventTarget`, совместимая с браузером. Подробнее — [API `EventTarget` и `Event`](events.md#eventtarget-and-event-api).
 
 ## `exports`
@@ -349,8 +261,6 @@ npx codemod@latest @nodejs/buffer-atob-btoa
 Эта переменная может казаться глобальной, но таковой не является. См. [`exports`](modules.md#exports).
 
 ## `fetch`
-
-
 
 Реализация функции [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch), совместимая с браузером.
 
@@ -394,19 +304,13 @@ fetch(url, { dispatcher: new MyAgent() });
 
 ## Класс: `File`
 
-
-
 См. [File](https://developer.mozilla.org/en-US/docs/Web/API/File).
 
-## Класс: `FormData`
-
-
+## Класс: `FormData` {#class-formdata}
 
 Реализация [FormData](#class-formdata), совместимая с браузером.
 
 ## `global`
-
-
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -414,19 +318,13 @@ fetch(url, { dispatcher: new MyAgent() });
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект глобального пространства имён.
 
-В браузерах традиционно верхний уровень — глобальная область: `var something` создаёт глобальную переменную (кроме модулей ECMAScript). В Node.js иначе: верхний уровень модуля не совпадает с глобальной областью; `var something` в модуле Node.js локально для этого модуля — и для [CommonJS][commonjs module], и для [ECMAScript][ecmascript module].
+В браузерах традиционно верхний уровень — глобальная область: `var something` создаёт глобальную переменную (кроме модулей ECMAScript). В Node.js иначе: верхний уровень модуля не совпадает с глобальной областью; `var something` в модуле Node.js локально для этого модуля — и для [CommonJS](modules.md), и для [ECMAScript](esm.md).
 
-## Класс: `Headers`
-
-
+## Класс: `Headers` {#class-headers}
 
 Реализация [Headers](globals.md#class-headers), совместимая с браузером.
 
 ## `localStorage`
-
-
-
-Добавлено в: v22.4.0
 
 !!!warning "Кандидат в релиз"
 
@@ -436,19 +334,13 @@ fetch(url, { dispatcher: new MyAgent() });
 
 ## Класс: `MessageChannel`
 
-
-
 Класс `MessageChannel`. Подробнее — [`MessageChannel`](worker_threads.md#class-messagechannel).
 
 ## Класс: `MessageEvent`
 
-
-
 Реализация [MessageEvent](https://developer.mozilla.org/en-US/docs/Web/API/MessageEvent/MessageEvent), совместимая с браузером.
 
 ## Класс: `MessagePort`
-
-
 
 Класс `MessagePort`. Подробнее — [`MessagePort`](worker_threads.md#class-messageport).
 
@@ -458,17 +350,13 @@ fetch(url, { dispatcher: new MyAgent() });
 
 ## Класс: `Navigator`
 
-
-
 !!!warning "Стабильность: 1 – Экспериментальная"
 
     Отключите это API флагом [`--no-experimental-global-navigator`](cli.md#--no-experimental-global-navigator).
 
-Частичная реализация [Navigator API][navigator api].
+Частичная реализация [Navigator API](https://html.spec.whatwg.org/multipage/system-state.html#the-navigator-object).
 
 ## `navigator`
-
-
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -477,8 +365,6 @@ fetch(url, { dispatcher: new MyAgent() });
 Частичная реализация [`window.navigator`](https://developer.mozilla.org/en-US/docs/Web/API/Window/navigator).
 
 ### `navigator.hardwareConcurrency`
-
-
 
 -   Тип: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -492,13 +378,11 @@ console.log(
 
 ### `navigator.language`
 
-
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.language` только для чтения: предпочитаемый язык экземпляра Node.js. Определяется библиотекой ICU по умолчанию языка ОС.
 
-Формат — как в [RFC 5646][rfc 5646].
+Формат — как в [RFC 5646](https://www.rfc-editor.org/rfc/rfc5646.txt).
 
 Без ICU значение по умолчанию — `'en-US'`.
 
@@ -509,8 +393,6 @@ console.log(
 ```
 
 ### `navigator.languages`
-
-
 
 -   Тип: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -525,8 +407,6 @@ console.log(
 ```
 
 ### `navigator.locks`
-
-
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -566,8 +446,6 @@ console.log(
 
 ### `navigator.platform`
 
-
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.platform` только для чтения: строка с идентификатором платформы.
@@ -580,8 +458,6 @@ console.log(
 
 ### `navigator.userAgent`
 
-
-
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Свойство `navigator.userAgent` только для чтения: user agent — имя среды и мажорная версия.
@@ -592,57 +468,39 @@ console.log(`The user-agent is ${navigator.userAgent}`); // Выводит "Node
 
 ## `performance`
 
-
-
 Объект [`perf_hooks.performance`](perf_hooks.md#perf_hooksperformance).
 
 ## Класс: `PerformanceEntry`
-
-
 
 Класс `PerformanceEntry`. См. [`PerformanceEntry`](perf_hooks.md#class-performanceentry).
 
 ## Класс: `PerformanceMark`
 
-
-
 Класс `PerformanceMark`. См. [`PerformanceMark`](perf_hooks.md#class-performancemark).
 
 ## Класс: `PerformanceMeasure`
-
-
 
 Класс `PerformanceMeasure`. См. [`PerformanceMeasure`](perf_hooks.md#class-performancemeasure).
 
 ## Класс: `PerformanceObserver`
 
-
-
 Класс `PerformanceObserver`. См. [`PerformanceObserver`](perf_hooks.md#class-performanceobserver).
 
 ## Класс: `PerformanceObserverEntryList`
-
-
 
 Класс `PerformanceObserverEntryList`. См. [`PerformanceObserverEntryList`](perf_hooks.md#class-performanceobserverentrylist).
 
 ## Класс: `PerformanceResourceTiming`
 
-
-
 Класс `PerformanceResourceTiming`. См. [`PerformanceResourceTiming`](perf_hooks.md#class-performanceresourcetiming).
 
 ## `process`
-
-
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Объект process. См. раздел [объект `process`](process.md#process).
 
 ## `queueMicrotask(callback)`
-
-
 
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция для постановки в очередь.
 
@@ -672,61 +530,33 @@ DataHandler.prototype.load = async function load(key) {
 
 ## Класс: `QuotaExceededError`
 
-
-
 Класс WHATWG [QuotaExceededError](globals.md). Наследует [DOMException](https://developer.mozilla.org/en-US/docs/Web/API/DOMException).
 
 ## Класс: `ReadableByteStreamController`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`ReadableByteStreamController`](webstreams.md#class-readablebytestreamcontroller), совместимая с браузером.
 
 ## Класс: `ReadableStream`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`ReadableStream`](webstreams.md#class-readablestream), совместимая с браузером.
 
 ## Класс: `ReadableStreamBYOBReader`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`ReadableStreamBYOBReader`](webstreams.md#class-readablestreambyobreader), совместимая с браузером.
 
 ## Класс: `ReadableStreamBYOBRequest`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`ReadableStreamBYOBRequest`](webstreams.md#class-readablestreambyobrequest), совместимая с браузером.
 
 ## Класс: `ReadableStreamDefaultController`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`ReadableStreamDefaultController`](webstreams.md#class-readablestreamdefaultcontroller), совместимая с браузером.
 
 ## Класс: `ReadableStreamDefaultReader`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`ReadableStreamDefaultReader`](webstreams.md#class-readablestreamdefaultreader), совместимая с браузером.
 
-## Класс: `Request`
-
-
+## Класс: `Request` {#class-request}
 
 Реализация [Request](#class-request), совместимая с браузером.
 
@@ -734,17 +564,11 @@ DataHandler.prototype.load = async function load(key) {
 
 Эта переменная может казаться глобальной, но таковой не является. См. [`require()`](modules.md#requireid).
 
-## Класс: `Response`
-
-
+## Класс: `Response` {#class-response}
 
 Реализация [Response](#class-response), совместимая с браузером.
 
 ## `sessionStorage`
-
-
-
-Добавлено в: v22.4.0
 
 !!!warning "Кандидат в релиз"
 
@@ -754,25 +578,17 @@ DataHandler.prototype.load = async function load(key) {
 
 ## `setImmediate(callback[, ...args])`
 
-
-
-[`setImmediate`](timers.md#setimmediatecallback-args) описан в разделе [таймеры][timers].
+[`setImmediate`](timers.md#setimmediatecallback-args) описан в разделе [таймеры](timers.md).
 
 ## `setInterval(callback, delay[, ...args])`
 
-
-
-[`setInterval`](timers.md#setintervalcallback-delay-args) описан в разделе [таймеры][timers].
+[`setInterval`](timers.md#setintervalcallback-delay-args) описан в разделе [таймеры](timers.md).
 
 ## `setTimeout(callback, delay[, ...args])`
 
-
-
-[`setTimeout`](timers.md#settimeoutcallback-delay-args) описан в разделе [таймеры][timers].
+[`setTimeout`](timers.md#settimeoutcallback-delay-args) описан в разделе [таймеры](timers.md).
 
 ## Класс: `Storage`
-
-
 
 !!!warning "Кандидат в релиз"
 
@@ -782,69 +598,41 @@ DataHandler.prototype.load = async function load(key) {
 
 ## `structuredClone(value[, options])`
 
-
-
 Метод WHATWG [`structuredClone`](https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone).
 
 ## Класс: `SubtleCrypto`
-
-
 
 Реализация [SubtleCrypto](webcrypto.md), совместимая с браузером. Глобал доступен только если бинарник Node.js собран с поддержкой модуля `node:crypto`.
 
 ## Класс: `TextDecoder`
 
-
-
 Класс WHATWG `TextDecoder`. См. раздел [`TextDecoder`](util.md#class-utiltextdecoder).
 
 ## Класс: `TextDecoderStream`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`TextDecoderStream`](webstreams.md#class-textdecoderstream), совместимая с браузером.
 
 ## Класс: `TextEncoder`
 
-
-
 Класс WHATWG `TextEncoder`. См. раздел [`TextEncoder`](util.md#class-utiltextencoder).
 
 ## Класс: `TextEncoderStream`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`TextEncoderStream`](webstreams.md#class-textencoderstream), совместимая с браузером.
 
 ## Класс: `TransformStream`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`TransformStream`](webstreams.md#class-transformstream), совместимая с браузером.
 
 ## Класс: `TransformStreamDefaultController`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`TransformStreamDefaultController`](webstreams.md#class-transformstreamdefaultcontroller), совместимая с браузером.
 
 ## Класс: `URL`
 
-
-
 Класс WHATWG `URL`. См. раздел [`URL`](url.md#class-url).
 
 ## Класс: `URLPattern`
-
-
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -852,123 +640,26 @@ DataHandler.prototype.load = async function load(key) {
 
 ## Класс: `URLSearchParams`
 
-
-
 Класс WHATWG `URLSearchParams`. См. раздел [`URLSearchParams`](url.md#class-urlsearchparams).
 
 ## Класс: `WebAssembly`
 
-
-
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-Пространство имён для функциональности W3C [WebAssembly][webassembly-org]. Использование и совместимость — на [MDN][webassembly-mdn].
+Пространство имён для функциональности W3C [WebAssembly](https://webassembly.org). Использование и совместимость — на [MDN](https://developer.mozilla.org/en-US/docs/WebAssembly).
 
 ## Класс: `WebSocket`
-
-
 
 Реализация [WebSocket](globals.md), совместимая с браузером. Отключите API флагом [`--no-experimental-websocket`](cli.md#--no-experimental-websocket).
 
 ## Класс: `WritableStream`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`WritableStream`](webstreams.md#class-writablestream), совместимая с браузером.
 
 ## Класс: `WritableStreamDefaultController`
-
-
-
-Добавлено в: v18.0.0
 
 Реализация [`WritableStreamDefaultController`](webstreams.md#class-writablestreamdefaultcontroller), совместимая с браузером.
 
 ## Класс: `WritableStreamDefaultWriter`
 
-
-
-Добавлено в: v18.0.0
-
 Реализация [`WritableStreamDefaultWriter`](webstreams.md#class-writablestreamdefaultwriter), совместимая с браузером.
-
-[commonjs module]: modules.md
-[commonjs modules]: modules.md
-[ecmascript module]: esm.md
-[navigator api]: https://html.spec.whatwg.org/multipage/system-state.html#the-navigator-object
-[rfc 5646]: https://www.rfc-editor.org/rfc/rfc5646.txt
-[web crypto api]: webcrypto.md
-[`--experimental-eventsource`]: cli.md#--experimental-eventsource
-[`--localstorage-file`]: cli.md#--localstorage-filefile
-[`--no-experimental-global-navigator`]: cli.md#--no-experimental-global-navigator
-[`--no-experimental-websocket`]: cli.md#--no-experimental-websocket
-[`--no-experimental-webstorage`]: cli.md#--no-experimental-webstorage
-[`bytelengthqueuingstrategy`]: webstreams.md#class-bytelengthqueuingstrategy
-[`compressionstream`]: webstreams.md#class-compressionstream
-[`countqueuingstrategy`]: webstreams.md#class-countqueuingstrategy
-[`decompressionstream`]: webstreams.md#class-decompressionstream
-[API `EventTarget` и `Event`]: events.md#eventtarget-and-event-api
-[`formdata`]: #class-formdata
-[`headers`]: #class-headers
-[`lockmanager`]: worker_threads.md#class-lockmanager
-[`messagechannel`]: worker_threads.md#class-messagechannel
-[`messageport`]: worker_threads.md#class-messageport
-[`performanceentry`]: perf_hooks.md#class-performanceentry
-[`performancemark`]: perf_hooks.md#class-performancemark
-[`performancemeasure`]: perf_hooks.md#class-performancemeasure
-[`performanceobserverentrylist`]: perf_hooks.md#class-performanceobserverentrylist
-[`performanceobserver`]: perf_hooks.md#class-performanceobserver
-[`performanceresourcetiming`]: perf_hooks.md#class-performanceresourcetiming
-[`readablebytestreamcontroller`]: webstreams.md#class-readablebytestreamcontroller
-[`readablestreambyobreader`]: webstreams.md#class-readablestreambyobreader
-[`readablestreambyobrequest`]: webstreams.md#class-readablestreambyobrequest
-[`readablestreamdefaultcontroller`]: webstreams.md#class-readablestreamdefaultcontroller
-[`readablestreamdefaultreader`]: webstreams.md#class-readablestreamdefaultreader
-[`readablestream`]: webstreams.md#class-readablestream
-[`request`]: #class-request
-[`response`]: #class-response
-[`textdecoderstream`]: webstreams.md#class-textdecoderstream
-[`textdecoder`]: util.md#class-utiltextdecoder
-[`textencoderstream`]: webstreams.md#class-textencoderstream
-[`textencoder`]: util.md#class-utiltextencoder
-[`transformstreamdefaultcontroller`]: webstreams.md#class-transformstreamdefaultcontroller
-[`transformstream`]: webstreams.md#class-transformstream
-[`urlpattern`]: url.md#class-urlpattern
-[`urlsearchparams`]: url.md#class-urlsearchparams
-[`url`]: url.md#class-url
-[`writablestreamdefaultcontroller`]: webstreams.md#class-writablestreamdefaultcontroller
-[`writablestreamdefaultwriter`]: webstreams.md#class-writablestreamdefaultwriter
-[`writablestream`]: webstreams.md#class-writablestream
-[`__dirname`]: modules.md#__dirname
-[`__filename`]: modules.md#__filename
-[`abortsignal.reason`]: #abortsignalreason
-[`buffer.atob()`]: buffer.md#bufferatobdata
-[`buffer.btoa()`]: buffer.md#bufferbtoadata
-[`clearimmediate`]: timers.md#clearimmediateimmediate
-[`clearinterval`]: timers.md#clearintervaltimeout
-[`cleartimeout`]: timers.md#cleartimeouttimeout
-[`console`]: console.md
-[`exports`]: modules.md#exports
-[`fetch()`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch
-[`globalthis`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis
-[`localstorage`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
-[`module`]: modules.md#module
-[`perf_hooks.performance`]: perf_hooks.md#perf_hooksperformance
-[`process.nexttick()`]: process.md#processnexttickcallback-args
-[`process` object]: process.md#process
-[`require()`]: modules.md#requireid
-[`sessionstorage`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
-[`setimmediate`]: timers.md#setimmediatecallback-args
-[`setinterval`]: timers.md#setintervalcallback-delay-args
-[`settimeout`]: timers.md#settimeoutcallback-delay-args
-[`structuredclone`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/structuredClone
-[`window.navigator`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/navigator
-[`worker_threads.locks`]: worker_threads.md#worker_threadslocks
-[browser `lockmanager`]: https://developer.mozilla.org/en-US/docs/Web/API/LockManager
-[buffer section]: buffer.md
-[built-in objects]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
-[timers]: timers.md
-[webassembly-mdn]: https://developer.mozilla.org/en-US/docs/WebAssembly
-[webassembly-org]: https://webassembly.org
