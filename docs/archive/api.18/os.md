@@ -50,7 +50,7 @@ const os = require('node:os');
 
 <!-- 0003.part.md -->
 
-## `os.constants`
+## `os.constants` {#os-constants}
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -3232,7 +3232,7 @@ Indicates that a database query was refused.
 
 <!-- 0028.part.md -->
 
-### константы dlopen
+### константы dlopen {#dlopen-constants}
 
 Если они доступны в операционной системе, следующие константы экспортируются в `os.constants.dlopen`. Подробную информацию см. в разделе dlopen(3).
 

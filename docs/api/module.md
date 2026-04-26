@@ -258,7 +258,7 @@ import('node:fs').then((esmFS) => {
 });
 ```
 
-## Кэш компиляции модулей{#module-compile-cache}
+## Кэш компиляции модулей {#module-compile-cache}
 
 Кэш компиляции модулей включается через [`module.enableCompileCache()`](#moduleenablecompilecacheoptions) или переменную окружения [`NODE_COMPILE_CACHE=dir`](cli.md#node_compile_cachedir). После включения при компиляции CommonJS, ECMAScript- или TypeScript-модулей используется дисковый [кэш кода V8](https://v8.dev/blog/code-caching-for-devs) в указанном каталоге, что ускоряет компиляцию. Первый обход графа модулей может стать медленнее, повторные загрузки того же графа — заметно быстрее, если содержимое не менялось.
 
@@ -349,7 +349,7 @@ import('node:fs').then((esmFS) => {
 
 > Стабильность: 1.2 — кандидат в релиз
 
-#### Регистрация синхронных хуков настройки{#registration-of-synchronous-customization-hooks}
+#### Регистрация синхронных хуков настройки {#registration-of-synchronous-customization-hooks}
 
 Чтобы зарегистрировать синхронные хуки настройки, используйте [`module.registerHooks()`](#moduleregisterhooksoptions) — в него передаются [синхронные функции-хуки](#hook-functions-accepted-by-moduleregisterhooks) напрямую.
 
@@ -375,7 +375,7 @@ import('node:fs').then((esmFS) => {
     });
     ```
 
-##### Регистрация хуков до запуска кода приложения через флаги{#registering-hooks-before-application-code-runs-with-flags}
+##### Регистрация хуков до запуска кода приложения через флаги {#registering-hooks-before-application-code-runs-with-flags}
 
 Хуки можно зарегистрировать до выполнения кода приложения с помощью флагов [`--import`](cli.md#--importmodule) или [`--require`](cli.md#-r---require-module):
 
@@ -395,7 +395,7 @@ node --require some-package/register ./my-app.js
 
 Флаги `--import` и `--require` гарантируют регистрацию хуков до загрузки любого кода приложения, включая точку входа и по умолчанию — дочерние потоки worker.
 
-##### Регистрация хуков до запуска кода приложения из кода{#registering-hooks-before-application-code-runs-programmatically}
+##### Регистрация хуков до запуска кода приложения из кода {#registering-hooks-before-application-code-runs-programmatically}
 
 Альтернатива — вызвать `registerHooks()` из точки входа.
 
@@ -430,7 +430,7 @@ node --require some-package/register ./my-app.js
     // require('./my-app.mjs');
     ```
 
-##### Регистрация хуков до запуска кода приложения через URL `data:`{#registering-hooks-before-application-code-runs-with-a-data-url}
+##### Регистрация хуков до запуска кода приложения через URL `data:` {#registering-hooks-before-application-code-runs-with-a-data-url}
 
 Код регистрации хуков можно встроить во встроенный URL `data:` так, чтобы он выполнился до кода приложения. Например:
 
@@ -438,7 +438,7 @@ node --require some-package/register ./my-app.js
 node --import 'data:text/javascript,import {registerHooks} from "node:module"; registerHooks(/* hooks code */);' ./my-app.js
 ```
 
-#### Соглашения о хуках и цепочке{#convention-of-hooks-and-chaining}
+#### Соглашения о хуках и цепочке {#convention-of-hooks-and-chaining}
 
 Хуки образуют цепочку, даже если в ней только один пользовательский хук и встроенный хук по умолчанию.
 
@@ -482,7 +482,7 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
 
 Если хук должен участвовать при загрузке других модулей с хуками, те модули нужно подключать после регистрации этого хука.
 
-#### Снятие регистрации синхронных хуков настройки{#deregistration-of-synchronous-customization-hooks}
+#### Снятие регистрации синхронных хуков настройки {#deregistration-of-synchronous-customization-hooks}
 
 Объект, возвращаемый `registerHooks()`, содержит метод `deregister()`, удаляющий хуки из цепочки. После `deregister()` хуки больше не вызываются при разрешении и загрузке модулей.
 
@@ -540,7 +540,7 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
     require('./another-module.cjs');
     ```
 
-#### Функции-хуки, принимаемые `module.registerHooks()`{#hook-functions-accepted-by-moduleregisterhooks}
+#### Функции-хуки, принимаемые `module.registerHooks()` {#hook-functions-accepted-by-moduleregisterhooks}
 
 Метод `module.registerHooks()` принимает следующие синхронные функции-хуки.
 
@@ -560,7 +560,7 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
 
 В отличие от асинхронных, синхронные хуки по умолчанию не наследуются дочерними worker, но если хуки зарегистрированы через предзагружаемый файл [`--import`](cli.md#--importmodule) или [`--require`](cli.md#-r---require-module), дочерние worker могут унаследовать предзагрузку через `process.execArgv`. Подробнее — в [документации `Worker`](worker_threads.md#new-workerfilename-options).
 
-#### Синхронный `resolve(specifier, context, nextResolve)`{#synchronous-resolvespecifier-context-nextresolve}
+#### Синхронный `resolve(specifier, context, nextResolve)` {#synchronous-resolvespecifier-context-nextresolve}
 
 -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -617,7 +617,7 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
     registerHooks({ resolve });
     ```
 
-#### Синхронный `load(url, context, nextLoad)`{#synchronous-loadurl-context-nextload}
+#### Синхронный `load(url, context, nextLoad)` {#synchronous-loadurl-context-nextload}
 
 -   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL, возвращённый цепочкой `resolve`
 -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -666,7 +666,7 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
 
 В более сложных сценариях хук можно использовать для преобразования неподдерживаемого исходника в поддерживаемый (см. [примеры](#examples) ниже).
 
-##### Допустимые итоговые форматы, возвращаемые `load`{#accepted-final-formats-returned-by-load}
+##### Допустимые итоговые форматы, возвращаемые `load` {#accepted-final-formats-returned-by-load}
 
 Итоговое значение `format` должно быть одним из следующих:
 
@@ -690,11 +690,11 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
 
 Если для текстового формата (например `'json'`, `'module'`) значение `source` не строка, оно приводится к строке через [`util.TextDecoder`](util.md#class-utiltextdecoder).
 
-### Асинхронные хуки настройки{#asynchronous-customization-hooks}
+### Асинхронные хуки настройки {#asynchronous-customization-hooks}
 
 > Стабильность: 1.1 — активная разработка
 
-#### Ограничения асинхронных хуков настройки{#caveats-of-asynchronous-customization-hooks}
+#### Ограничения асинхронных хуков настройки {#caveats-of-asynchronous-customization-hooks}
 
 У асинхронных хуков настройки много ограничений, и неясно, удастся ли их устранить. Рекомендуется использовать синхронные хуки через `module.registerHooks()`.
 
@@ -706,7 +706,7 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
 -   Когда вызовы `require()` внутри CommonJS-модулей настраиваются асинхронными хуками, Node.js может несколько раз загружать исходный код модуля для совместимости с существующим «monkey patching» в CommonJS. Если код между загрузками меняется, возможно неожиданное поведение.
     -   Побочный эффект: если зарегистрированы и асинхронные, и синхронные хуки, а асинхронные настраивают CommonJS-модуль, синхронные хуки для вызовов `require()` в этом модуле могут вызываться несколько раз.
 
-#### Регистрация асинхронных хуков настройки{#registration-of-asynchronous-customization-hooks}
+#### Регистрация асинхронных хуков настройки {#registration-of-asynchronous-customization-hooks}
 
 Асинхронные хуки регистрируются через [`module.register()`](#moduleregisterspecifier-parenturl-options) — передаётся путь или URL модуля, экспортирующего [асинхронные функции-хуки](#asynchronous-hooks-accepted-by-moduleregister).
 
@@ -789,7 +789,7 @@ Node.js default `resolve` ← `hook1.resolve` ← `hook2.resolve`
 node --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("my-instrumentation", pathToFileURL("./"));' ./my-app.js
 ```
 
-#### Цепочка асинхронных хуков настройки{#chaining-of-asynchronous-customization-hooks}
+#### Цепочка асинхронных хуков настройки {#chaining-of-asynchronous-customization-hooks}
 
 Цепочка вызовов `register()` устроена похоже на `registerHooks()`. При смешении синхронных и асинхронных хуков сначала всегда выполняются синхронные; у последнего синхронного хука следующим шагом идёт вызов асинхронных хуков.
 
@@ -825,7 +825,7 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
 
 Метод `register()` нельзя вызывать из потока, в котором выполняется модуль с хуками или его зависимости.
 
-#### Взаимодействие с асинхронными хуками настройки модулей{#communication-with-asynchronous-module-customization-hooks}
+#### Взаимодействие с асинхронными хуками настройки модулей {#communication-with-asynchronous-module-customization-hooks}
 
 Асинхронные хуки выполняются в отдельном потоке, не в основном потоке приложения. Поэтому изменение глобальных переменных не затронет другой поток — для обмена нужны каналы сообщений.
 
@@ -876,7 +876,7 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
     });
     ```
 
-#### Асинхронные хуки, принимаемые `module.register()`{#asynchronous-hooks-accepted-by-moduleregister}
+#### Асинхронные хуки, принимаемые `module.register()` {#asynchronous-hooks-accepted-by-moduleregister}
 
 Метод [`register`](#moduleregisterspecifier-parenturl-options) регистрирует модуль, экспортирующий набор хуков. Это функции, которые Node.js вызывает для настройки разрешения и загрузки модулей. Имена и сигнатуры должны совпадать с ожидаемыми, экспорт — именованный.
 
@@ -898,7 +898,7 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
 
 Асинхронные хуки выполняются в отдельном потоке, изолированно от основного потока приложения — это другая [область](https://tc39.es/ecma262/#realm). Поток хуков может быть завершён основным потоком в любой момент, не рассчитывайте на завершение асинхронных операций вроде `console.log`. По умолчанию хуки наследуются дочерними worker.
 
-#### `initialize()`{#initialize}
+#### `initialize()` {#initialize}
 
 -   `data` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Данные из `register(loader, import.meta.url, { data })`.
 
@@ -971,7 +971,7 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
     });
     ```
 
-#### Асинхронный `resolve(specifier, context, nextResolve)`{#asynchronous-resolvespecifier-context-nextresolve}
+#### Асинхронный `resolve(specifier, context, nextResolve)` {#asynchronous-resolvespecifier-context-nextresolve}
 
 -   `specifier` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1024,7 +1024,7 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
     }
     ```
 
-#### Асинхронный `load(url, context, nextLoad)`{#asynchronous-loadurl-context-nextload}
+#### Асинхронный `load(url, context, nextLoad)` {#asynchronous-loadurl-context-nextload}
 
 -   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) URL, возвращённый цепочкой `resolve`
 -   `context` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -1068,11 +1068,11 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
 
 Для синхронного хука `load` это тоже не так: возвращаемый `source` содержит код, загруженный следующим хуком, независимо от формата модуля.
 
-### Примеры{#examples}
+### Примеры {#examples}
 
 Разные хуки настройки модулей можно комбинировать для широкого круга сценариев загрузки и выполнения кода в Node.js.
 
-#### Импорт по HTTPS{#import-from-https}
+#### Импорт по HTTPS {#import-from-https}
 
 Ниже хук включает базовую поддержку таких спецификаторов. Это может выглядеть как сильное расширение возможностей ядра, но на практике есть серьёзные минусы: производительность ниже, чем при чтении с диска, нет кэширования и нет модели безопасности.
 
@@ -1118,13 +1118,13 @@ Node.js default ← `./foo.mjs` ← `./bar.mjs`
 
 С подключённым выше модулем хуков команда `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./https-hooks.mjs"));' ./main.mjs` выводит текущую версию CoffeeScript согласно модулю по URL из `main.mjs`.
 
-#### Транспиляция{#transpilation}
+#### Транспиляция {#transpilation}
 
 Исходники в форматах, которые Node.js не понимает напрямую, можно преобразовать в JavaScript через [хук `load`](#synchronous-loadurl-context-nextload).
 
 Это медленнее, чем транспилировать файлы до запуска Node.js; хуки-транспиляторы имеют смысл в основном для разработки и тестов.
 
-##### Асинхронная версия{#asynchronous-version}
+##### Асинхронная версия {#asynchronous-version}
 
 === "MJS"
 
@@ -1247,7 +1247,7 @@ export scream = (str) -> str.toUpperCase()
 
 С подключёнными выше модулями хуков команды `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./coffeescript-hooks.mjs"));' ./main.coffee` или `node --import ./coffeescript-sync-hooks.mjs ./main.coffee` превращают `main.coffee` в JavaScript после чтения исходника с диска, но до выполнения; то же для любых `.coffee`, `.litcoffee` или `.coffee.md`, на которые есть `import` в загружаемых файлах.
 
-#### Карты импорта (import maps){#import-maps}
+#### Карты импорта (import maps) {#import-maps}
 
 В двух предыдущих примерах использовались хуки `load`. Ниже — пример хука `resolve`: модуль читает `import-map.json`, в котором задано, какие спецификаторы подменять другими URL (упрощённая реализация небольшой части спецификации import maps).
 
@@ -1321,7 +1321,7 @@ export scream = (str) -> str.toUpperCase()
 
 Команда `node --import 'data:text/javascript,import [register](#moduleregisterspecifier-parenturl-options) from "node:module"; import { pathToFileURL } from "node:url"; register(pathToFileURL("./import-map-hooks.js"));' main.js` или `node --import ./import-map-sync-hooks.js main.js` должна вывести `some module!`.
 
-## Поддержка source map{#source-map-support}
+## Поддержка source map {#source-map-support}
 
 > Стабильность: 1 — экспериментальная
 

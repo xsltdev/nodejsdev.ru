@@ -836,7 +836,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 -   Тип: {CryptoKey} Криптоключ {CryptoKey}, `тип` которого будет `"public"`.
 
-## Класс: `SubtleCrypto`
+## Класс: `SubtleCrypto` {#class-subtlecrypto}
 
 ### `subtle.decrypt(algorithm, key, data)`
 

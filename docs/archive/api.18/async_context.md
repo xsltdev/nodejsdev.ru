@@ -31,7 +31,7 @@ const {
 } = require('node:async_hooks');
 ```
 
-## Класс: `AsyncLocalStorage`
+## Класс: `AsyncLocalStorage` {#class-asynclocalstorage}
 
 Этот класс создает хранилища, которые остаются целостными благодаря асинхронным операциям.
 
@@ -297,7 +297,7 @@ async function fn() {
 
 Если вам необходимо использовать API на основе обратного вызова или ваш код предполагает пользовательскую реализацию thenable, используйте класс `AsyncResource`, чтобы связать асинхронную операцию с правильным контекстом выполнения. Найдите вызов функции, ответственный за потерю контекста, записывая в журнал содержимое `asyncLocalStorage.getStore()` после вызовов, которые, как вы подозреваете, ответственны за потерю. Если код регистрирует `undefined`, то, вероятно, за потерю контекста отвечает последний вызванный обратный вызов.
 
-## Класс: `AsyncResource`
+## Класс: `AsyncResource` {#class-asyncresource}
 
 Класс `AsyncResource` предназначен для расширения асинхронных ресурсов embedder'а. Используя его, пользователи могут легко запускать события времени жизни своих собственных ресурсов.
 
@@ -423,7 +423,7 @@ class DBQuery extends AsyncResource {
 
 ### `asyncResource.emitDestroy()`
 
--   Возвращает: [`<AsyncResource>`](async_hooks.md#asyncresource) Ссылка на `asyncResource`.
+-   Возвращает: [`<AsyncResource>`](async_hooks.md#class-asyncresource) Ссылка на `asyncResource`.
 
 Вызывает все хуки `destroy`. Это должно быть вызвано только один раз. Если он будет вызван более одного раза, будет выдана ошибка. Это **должно** быть вызвано вручную. Если ресурс оставлен для сбора GC, то хуки `destroy` никогда не будут вызваны.
 
@@ -435,7 +435,7 @@ class DBQuery extends AsyncResource {
 
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, который передается в конструктор `AsyncResource`.
 
-### Использование `AsyncResource` для пула потоков `Worker`
+### Использование `AsyncResource` для пула потоков `Worker` {#using-asyncresource-for-a-worker-thread-pool}
 
 Следующий пример показывает, как использовать класс `AsyncResource` для правильного обеспечения асинхронного отслеживания для пула [`Worker`](worker_threads.md#class-worker). Другие пулы ресурсов, такие как пулы соединений с базами данных, могут следовать аналогичной модели.
 

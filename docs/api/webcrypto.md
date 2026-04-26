@@ -657,7 +657,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 Генерирует случайный UUID версии 4 по [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.txt). UUID создаётся с помощью криптографически стойкого генератора псевдослучайных чисел.
 
-## Класс: `CryptoKey`
+## Класс: `CryptoKey` {#class-cryptokey}
 
 ### `cryptoKey.algorithm`
 
@@ -756,7 +756,7 @@ async function digest(data, algorithm = 'SHA-512') {
 
 -   Тип: [`<CryptoKey>`](webcrypto.md#class-cryptokey) — [CryptoKey](webcrypto.md#class-cryptokey), у которого `type` будет `'public'`.
 
-## Класс: `SubtleCrypto`
+## Класс: `SubtleCrypto` {#class-subtlecrypto}
 
 ### Статический метод: `SubtleCrypto.supports(operation, algorithm[, lengthOrAdditionalAlgorithm])` {#subtlecrypto-supports}
 

@@ -323,7 +323,7 @@ JSON Web Key (JWK) — представление ключа в JSON по [RFC 7
     decapsulate(privateKey, ciphertext);
     ```
 
-## Класс: `Certificate`
+## Класс: `Certificate` {#class-certificate}
 
 SPKAC — механизм запроса на подпись сертификата, изначально в Netscape и формально вошедший в элемент HTML5 `keygen`.
 
@@ -411,7 +411,7 @@ SPKAC — механизм запроса на подпись сертифика
     // Prints: true or false
     ```
 
-### Устаревший API
+### Устаревший API {#legacy-api}
 
 > Стабильность: 0 - Устарело
 
@@ -1826,7 +1826,7 @@ SPKAC — механизм запроса на подпись сертифика
 
 Экземпляры `KeyObject` можно передавать в другие потоки через [`postMessage()`](worker_threads.md#portpostmessagevalue-transferlist). Получатель получает клонированный `KeyObject`; указывать `KeyObject` в аргументе `transferList` не нужно.
 
-### Статический метод: `KeyObject.from(key)`
+### Статический метод: `KeyObject.from(key)` {#static-method-keyobjectfromkey}
 
 -   `key` [`<CryptoKey>`](webcrypto.md#class-cryptokey)
 -   Возвращает: [`<KeyObject>`](#class-keyobject)
@@ -1949,7 +1949,7 @@ SPKAC — механизм запроса на подпись сертифика
 
 ## Class: `Sign`
 
--   Расширяет: [`<stream.Writable>`](stream.md#streamwritable)
+-   Расширяет: [`<stream.Writable>`](stream.md#class-streamwritable)
 
 Класс `Sign` - это утилита для генерации подписей. Он может использоваться одним из двух способов:
 
@@ -2102,12 +2102,12 @@ SPKAC — механизм запроса на подпись сертифика
 
 ## Класс: `Verify` {#class-verify}
 
--   Расширяет: [`<stream.Writable>`](stream.md#streamwritable)
+-   Расширяет: [`<stream.Writable>`](stream.md#class-streamwritable)
 
 Класс `Verify` - это утилита для проверки подписей. Он может использоваться одним из двух способов:
 
 -   Как записываемый [stream](stream.md), где записанные данные используются для проверки переданной подписи, или
--   С помощью методов [`verify.update()`](#verifyupdatedata-inputencoding) и [`verify.verify()`](#verifyverifykey-signature-signatureencoding) для проверки подписи.
+-   С помощью методов [`verify.update()`](#verifyupdatedata-inputencoding) и [`verify.verify()`](#verifyverifyobject-signature-signatureencoding) для проверки подписи.
 
 Метод [`crypto.createVerify()`](#cryptocreateverifyalgorithm-options) используется для создания экземпляров `Verify`. Объекты `Verify` не должны создаваться напрямую с помощью ключевого слова `new`.
 
@@ -2122,7 +2122,7 @@ SPKAC — механизм запроса на подпись сертифика
 
 Этот метод можно вызывать многократно по мере поступления новых данных в потоке.
 
-### `verify.verify(key, signature[, signatureEncoding])`
+### `verify.verify(key, signature[, signatureEncoding])` {#verifyverifyobject-signature-signatureencoding}
 
 -   `key` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<KeyObject>`](#class-keyobject) | [`<CryptoKey>`](webcrypto.md#class-cryptokey)
     -   `dsaEncoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
@@ -4526,7 +4526,7 @@ default_properties = fips=yes
 
 Следующие константы, экспортируемые через `crypto.constants`, применяются в различных сценариях использования модулей `node:crypto`, `node:tls` и `node:https` и в целом относятся к OpenSSL.
 
-### Параметры OpenSSL
+### Параметры OpenSSL {#openssl-options}
 
 Подробности см. в [списке флагов SSL OP](https://wiki.openssl.org/index.php/List_of_SSL_OP_Flags#Table_of_Options).
 

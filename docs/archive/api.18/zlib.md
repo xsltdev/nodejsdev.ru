@@ -392,7 +392,7 @@ http.createServer((request, response) => {
 -   `zlib.constants.Z_FIXED`
 -   `zlib.constants.Z_DEFAULT_STRATEGY`
 
-### Константы Brotli
+### Константы Brotli {#brotli-constants}
 
 Существует несколько опций и других констант, доступных для потоков на основе Brotli:
 
@@ -490,39 +490,39 @@ const stream = zlib.createBrotliCompress({
 });
 ```
 
-## Класс: `zlib.BrotliCompress`.
+## Класс: `zlib.BrotliCompress`. {#class-zlibbrotlicompress}
 
 Сжатие данных с помощью алгоритма Brotli.
 
-## Класс: `zlib.BrotliDecompress`.
+## Класс: `zlib.BrotliDecompress`. {#class-zlibbrotlidecompress}
 
 Декомпрессия данных с использованием алгоритма Brotli.
 
-## Класс: `zlib.Deflate`.
+## Класс: `zlib.Deflate`. {#class-zlibdeflate}
 
 Сжатие данных с помощью deflate.
 
-## Класс: `zlib.DeflateRaw`.
+## Класс: `zlib.DeflateRaw`. {#class-zlibdeflateraw}
 
 Сжимает данные с помощью deflate и не добавляет заголовок `zlib`.
 
-## Класс: `zlib.Gunzip`
+## Класс: `zlib.Gunzip` {#class-zlibgunzip}
 
 Декомпрессия потока gzip.
 
-## Класс: `zlib.Gzip`
+## Класс: `zlib.Gzip` {#class-zlibgzip}
 
 Сжатие данных с помощью gzip.
 
-## Класс: `zlib.Inflate`.
+## Класс: `zlib.Inflate`. {#class-zlibinflate}
 
 Декомпрессия потока deflate.
 
-## Класс: `zlib.InflateRaw`.
+## Класс: `zlib.InflateRaw`. {#class-zlibinflateraw}
 
 Декомпрессия необработанного потока deflate.
 
-## Класс: `zlib.Unzip`
+## Класс: `zlib.Unzip` {#class-zlibunzip}
 
 Распаковывает поток, сжатый Gzip- или Deflate, автоматически определяя заголовок.
 
@@ -530,7 +530,7 @@ const stream = zlib.createBrotliCompress({
 
 Не экспортируется модулем `node:zlib`. Он документирован здесь, поскольку является базовым классом классов компрессора/декомпрессора.
 
-Этот класс наследуется от [`stream.Transform`](stream.md#class-streamtransform), что позволяет использовать объекты `node:zlib` в трубах и подобных потоковых операциях.
+Этот класс наследуется от [`stream.Transform`](stream.md#streamtransform), что позволяет использовать объекты `node:zlib` в трубах и подобных потоковых операциях.
 
 ### `zlib.bytesRead`.
 
@@ -637,7 +637,7 @@ const stream = zlib.createBrotliCompress({
 
 Создает и возвращает новый объект [`Unzip`](#class-zlibunzip).
 
-## Удобные методы
+## Удобные методы {#convenience-methods}
 
 Все эти методы принимают [`Buffer`](buffer.md#class-buffer), [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView), [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) или строку в качестве первого аргумента, необязательный второй аргумент для предоставления опций классам `zlib` и вызывают предоставленный обратный вызов с `callback(error, result)`.
 

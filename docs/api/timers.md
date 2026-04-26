@@ -251,7 +251,7 @@ description: Глобальный API для отложенного вызова
 
 Отменяет объект `Timeout`, созданный [`setTimeout()`](#settimeoutcallback-delay-args).
 
-## API таймеров на промисах
+## API таймеров на промисах {#timers-promises-api}
 
 API `timers/promises` предоставляет альтернативный набор функций таймеров, возвращающих объекты `Promise`. Доступ через `require('node:timers/promises')`.
 

@@ -536,7 +536,7 @@ description: Модуль node:os — методы и свойства для с
 | `WSA_E_CANCELLED` | Вызов отменён. |
 | `WSAEREFUSED` | Запрос к базе отклонён. |
 
-### Константы dlopen
+### Константы dlopen {#dlopen-constants}
 
 Если доступны в ОС, эти константы экспортируются в `os.constants.dlopen`. Подробности — в dlopen(3).
 

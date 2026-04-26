@@ -14,7 +14,7 @@
 
 Перечисленные здесь объекты относятся к Node.js. Есть [встроенные объекты](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) которые являются частью самого языка JavaScript и также доступны во всем мире.
 
-## Класс: `AbortController`
+## Класс: `AbortController` {#class-abortcontroller}
 
 <!-- YAML
 added:
@@ -440,6 +440,16 @@ added: v10.0.0
 <!-- type=global -->
 
 WHATWG `URLSearchParams` класс. Увидеть [`URLSearchParams`](url.md#class-urlsearchparams) раздел.
+
+## Класс: `Headers` {#class-headers}
+
+<!-- YAML
+added: v18.0.0
+-->
+
+<!-- type=global -->
+
+WHATWG `Headers`. См. [`Headers` на MDN](https://developer.mozilla.org/en-US/docs/Web/API/Headers).
 
 ## `WebAssembly`
 

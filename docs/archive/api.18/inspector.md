@@ -40,7 +40,7 @@ const inspector = require('node:inspector');
 
 ### Класс: `inspector.Session`
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Класс `inspector.Session` используется для отправки сообщений в бэкэнд инспектора V8 и получения ответов на сообщения и уведомлений.
 
@@ -176,7 +176,7 @@ fs.closeSync(fd);
 
 ### Класс: `inspector.Session`
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Класс `inspector.Session` используется для отправки сообщений в бэкэнд инспектора V8 и получения ответов на сообщения и уведомлений.
 

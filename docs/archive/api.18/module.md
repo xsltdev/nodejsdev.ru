@@ -123,7 +123,7 @@ const { findSourceMap, SourceMap } = require('node:module');
 
 `path` - это разрешенный путь к файлу, для которого должна быть найдена соответствующая карта источников.
 
-### Класс: `module.SourceMap`
+### Класс: `module.SourceMap` {#class-modulesourcemap}
 
 #### `new SourceMap(payload)`
 

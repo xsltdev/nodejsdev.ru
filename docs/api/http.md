@@ -1746,11 +1746,11 @@ const server = http.createServer((req, res) => {
 
 ## Класс: `http.IncomingMessage` {#class-httpincomingmessage}
 
--   Наследует: [`<stream.Readable>`](stream.md#streamreadable)
+-   Наследует: [`<stream.Readable>`](stream.md#class-streamreadable)
 
 Объект `IncomingMessage` создаётся [`http.Server`](#class-httpserver) или [`http.ClientRequest`](#class-httpclientrequest) и передаётся первым аргументом в [`'request'`](#event-request) и [`'response'`](#event-response) соответственно. Через него доступны статус, заголовки и данные ответа.
 
-В отличие от `socket` (подкласс [stream.Duplex](stream.md#class-streamduplex)), сам `IncomingMessage` — [stream.Readable](stream.md#streamreadable): он создаётся отдельно для разбора и выдачи входящих заголовков и тела, тогда как сокет при keep-alive может переиспользоваться.
+В отличие от `socket` (подкласс [stream.Duplex](stream.md#class-streamduplex)), сам `IncomingMessage` — [stream.Readable](stream.md#class-streamreadable): он создаётся отдельно для разбора и выдачи входящих заголовков и тела, тогда как сокет при keep-alive может переиспользоваться.
 
 ### Событие: `'aborted'`
 
@@ -1768,7 +1768,7 @@ const server = http.createServer((req, res) => {
 
 !!!warning "Стабильность: 0 - Устарело"
 
-    Проверяйте `message.destroyed` из [stream.Readable](stream.md#streamreadable).
+    Проверяйте `message.destroyed` из [stream.Readable](stream.md#class-streamreadable).
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 

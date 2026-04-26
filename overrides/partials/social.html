@@ -23,34 +23,32 @@
 <!-- Social links -->
 <div class="md-social">
 	<a
-	  href="https://ruitunion.org/"
-	  target="_blank"
-	  title="Профсоюз работников ИТ"
-	  class="md-social__link"
+		href="https://ruitunion.org/"
+		target="_blank"
+		title="Профсоюз работников ИТ"
+		class="md-social__link"
 	>
-	  {% include "./partials/itunion.svg" %}
+		{% include "./partials/itunion.svg" %}
 	</a>
 	{% for social in config.extra.social %}
 
-	  <!-- Automatically set rel=me for Mastodon -->
-	  {% set rel = "noopener" %}
-	  {% if "mastodon" in social.icon %}
-		{% set rel = rel ~ " me" %}
-	  {% endif %}
+	<!-- Automatically set rel=me for Mastodon -->
+	{% set rel = "noopener" %} {% if "mastodon" in
+	social.icon %} {% set rel = rel ~ " me" %} {% endif %}
 
-	  <!-- Compute title and render link -->
-	  {% set title = social.name %}
-	  {% if not title and "//" in social.link %}
-		{% set _, url = social.link.split("//") %}
-		{% set title  = url.split("/")[0] %}
-	  {% endif %}
-	  <a
+	<!-- Compute title and render link -->
+	{% set title = social.name %} {% if not title and "//"
+	in social.link %} {% set _, url =
+	social.link.split("//") %} {% set title =
+	url.split("/")[0] %} {% endif %}
+	<a
 		href="{{ social.link }}"
-		target="_blank" rel="{{ rel }}"
+		target="_blank"
+		rel="{{ rel }}"
 		title="{{ title | e }}"
 		class="md-social__link"
-	  >
+	>
 		{% include ".icons/" ~ social.icon ~ ".svg" %}
-	  </a>
+	</a>
 	{% endfor %}
-  </div>
+</div>

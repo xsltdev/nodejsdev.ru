@@ -3,7 +3,7 @@ title: Поток
 description: Поток — абстрактный интерфейс для работы с потоковыми данными в Node.js
 ---
 
-# Поток
+# Поток {#stream}
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -368,7 +368,7 @@ server.listen(1337);
 
 Разработчикам новых типов потоков см. раздел [API для реализаторов потоков](#api-for-stream-implementers).
 
-### Потоки Writable
+### Потоки Writable {#writable-streams}
 
 Потоки Writable — абстракция _приёмника_, куда записываются данные.
 
@@ -467,7 +467,7 @@ writer.end('This is the end\n');
 
 ##### Событие: `'pipe'`
 
--   `src` [`<stream.Readable>`](stream.md#streamreadable) читаемый поток, подключаемый к этому `Writable`
+-   `src` [`<stream.Readable>`](stream.md#class-streamreadable) читаемый поток, подключаемый к этому `Writable`
 
 Событие `'pipe'` испускается при вызове [`stream.pipe()`](#readablepipedestination-options) на читаемом потоке, когда этот `Writable` добавляется в список назначений.
 
@@ -483,7 +483,7 @@ reader.pipe(writer);
 
 ##### Событие: `'unpipe'`
 
--   `src` [`<stream.Readable>`](stream.md#streamreadable) исходный поток, который [отключает](#readableunpipedestination) этот `Writable`
+-   `src` [`<stream.Readable>`](stream.md#class-streamreadable) исходный поток, который [отключает](#readableunpipedestination) этот `Writable`
 
 Событие `'unpipe'` испускается при вызове [`stream.unpipe()`](#readableunpipedestination) на [`Readable`](#class-streamreadable), когда этот [`Writable`](#class-streamwritable) удаляется из назначений.
 
@@ -734,7 +734,7 @@ write('hello', () => {
 
 В объектном режиме `Writable` игнорирует аргумент `encoding`.
 
-### Потоки Readable
+### Потоки Readable {#readable-streams}
 
 Потоки Readable — абстракция _источника_, из которого потребляют данные.
 
@@ -980,10 +980,10 @@ readable.on('data', (chunk) => {
 
 ##### `readable.pipe(destination[, options])`
 
--   `destination` [`<stream.Writable>`](stream.md#streamwritable) Поток назначения для записи
+-   `destination` [`<stream.Writable>`](stream.md#class-streamwritable) Поток назначения для записи
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Параметры `pipe`
 -   `end` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Завершать поток записи при `'end'` потока чтения. **По умолчанию:** `true`.
--   Возвращает: [`<stream.Writable>`](stream.md#streamwritable) `destination` для цепочки `pipe`, если это [`Duplex`](#class-streamduplex) или [`Transform`](#class-streamtransform)
+-   Возвращает: [`<stream.Writable>`](stream.md#class-streamwritable) `destination` для цепочки `pipe`, если это [`Duplex`](#class-streamduplex) или [`Transform`](#class-streamtransform)
 
 `readable.pipe()` подключает [`Writable`](#class-streamwritable) к `readable`, переводит его в потоковый режим и передаёт все данные в этот [`Writable`](#class-streamwritable). Поток данных регулируется так, чтобы быстрый `Readable` не перегружал приёмник.
 
@@ -1191,7 +1191,7 @@ readable.on('data', (chunk) => {
 
 ##### `readable.unpipe([destination])`
 
--   `destination` [`<stream.Writable>`](stream.md#streamwritable) Необязательно — какой поток отсоединить
+-   `destination` [`<stream.Writable>`](stream.md#class-streamwritable) Необязательно — какой поток отсоединить
 -   Возвращает: [`<this>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/this)
 
 `readable.unpipe()` отсоединяет ранее подключённый через [`stream.pipe()`](#readablepipedestination-options) `Writable`.
@@ -2126,7 +2126,7 @@ const server = http.createServer((req, res) => {
 
 -   `iterable` [`<Iterable>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) объект с протоколом `Symbol.asyncIterator` или `Symbol.iterator`. Испускает `'error'`, если передано значение `null`.
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) опции для `new stream.Readable([options])`. По умолчанию `Readable.from()` выставляет `options.objectMode` в `true`, если явно не задать `options.objectMode: false`.
--   Возвращает: [`<stream.Readable>`](stream.md#streamreadable)
+-   Возвращает: [`<stream.Readable>`](stream.md#class-streamreadable)
 
 Служебный метод создания читаемых потоков из итераторов.
 
@@ -2162,7 +2162,7 @@ Readable.from([
 ]);
 ```
 
-### `stream.Readable.fromWeb(readableStream[, options])`
+### `stream.Readable.fromWeb(readableStream[, options])` {#class-streamreadablefromwebreadablestream-options}
 
 -   `readableStream` [`<ReadableStream>`](webstreams.md#readablestream)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -2170,18 +2170,18 @@ Readable.from([
     -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `objectMode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal)
--   Возвращает: [`<stream.Readable>`](stream.md#streamreadable)
+-   Возвращает: [`<stream.Readable>`](stream.md#class-streamreadable)
 
 ### `stream.Readable.isDisturbed(stream)`
 
--   `stream` [`<stream.Readable>`](stream.md#streamreadable) | [`<ReadableStream>`](webstreams.md#readablestream)
+-   `stream` [`<stream.Readable>`](stream.md#class-streamreadable) | [`<ReadableStream>`](webstreams.md#readablestream)
 -   Возвращает: `boolean`
 
 Возвращает, было ли чтение из потока или он отменён.
 
-### `stream.Readable.toWeb(streamReadable[, options])`
+### `stream.Readable.toWeb(streamReadable[, options])` {#class-streamreadabletowebstreamreadable-options}
 
--   `streamReadable` [`<stream.Readable>`](stream.md#streamreadable)
+-   `streamReadable` [`<stream.Readable>`](stream.md#class-streamreadable)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `strategy` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
         -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) максимальный размер внутренней очереди создаваемого `ReadableStream` до применения обратного давления при чтении из исходного `stream.Readable`. Если не задано, берётся из переданного `stream.Readable`.
@@ -2191,7 +2191,7 @@ Readable.from([
     -   `type` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) тип создаваемого `ReadableStream`: `'bytes'` или `undefined`.
 -   Возвращает: [`<ReadableStream>`](webstreams.md#readablestream)
 
-### `stream.Writable.fromWeb(writableStream[, options])`
+### `stream.Writable.fromWeb(writableStream[, options])` {#class-streamwritablefromwebwritablestream-options}
 
 -   `writableStream` [`<WritableStream>`](webstreams.md#class-writablestream)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
@@ -2199,11 +2199,11 @@ Readable.from([
     -   `highWaterMark` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `objectMode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal)
--   Возвращает: [`<stream.Writable>`](stream.md#streamwritable)
+-   Возвращает: [`<stream.Writable>`](stream.md#class-streamwritable)
 
-### `stream.Writable.toWeb(streamWritable)`
+### `stream.Writable.toWeb(streamWritable)` {#class-streamwritabletowebstreamwritable}
 
--   `streamWritable` [`<stream.Writable>`](stream.md#streamwritable)
+-   `streamWritable` [`<stream.Writable>`](stream.md#class-streamwritable)
 -   Возвращает: [`<WritableStream>`](webstreams.md#class-writablestream)
 
 ### `stream.Duplex.from(src)`

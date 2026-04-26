@@ -355,7 +355,7 @@ import submodule from 'es-module-package/private-module.js';
 
 Правила разрешения для поля `imports` в остальном аналогичны полю `exports`.
 
-### Шаблоны подпутей
+### Шаблоны подпутей {#subpath-patterns}
 
 Для пакетов с небольшим числом экспортов или импортов рекомендуется явно перечислять каждый подпуть в `exports`. Если же подпутей очень много, это может раздувать `package.json` и усложнять сопровождение.
 
@@ -631,6 +631,8 @@ $ node other.js
 Поле `"name"` можно использовать вместе с [`"exports"`](#exports) для [самоссылки](#self-referencing-a-package-using-its-name) на пакет по его имени.
 
 ### `"main"` {#main}
+
+<a id="main-entry-point-export"></a>
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 

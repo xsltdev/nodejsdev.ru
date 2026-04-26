@@ -3,7 +3,7 @@ title: Process
 description: Объект process предоставляет информацию о текущем процессе Node.js и контроль над ним
 ---
 
-# Процесс
+# Процесс {#process}
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/process.html)
 
@@ -81,13 +81,13 @@ console.log('Это сообщение выводится первым.');
 
 <!-- 0002.part.md -->
 
-### Событие: `disconnect`
+### Событие: `disconnect` {#event-disconnect}
 
 Если процесс Node.js порожден с IPC-каналом (см. документацию [Child Process](child_process.md) и [Cluster](cluster.md)), событие `'disconnect'` будет испущено, когда IPC-канал будет закрыт.
 
 <!-- 0003.part.md -->
 
-### Событие: `exit`
+### Событие: `exit` {#event-exit}
 
 -   `code` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -140,7 +140,7 @@ process.on('exit', (code) => {
 
 <!-- 0004.part.md -->
 
-### Событие: `message`
+### Событие: `message` {#event-message}
 
 -   `message` { Object | boolean | number | string | null } разобранный объект JSON или сериализуемое примитивное значение.
 -   `sendHandle` {net.Server|net.Socket} объект [`net.Server`](net.md#class-netserver) или [`net.Socket`](net.md#class-netsocket), или undefined.
@@ -278,7 +278,7 @@ process.on('rejectionHandled', (promise) => {
 
 <!-- 0007.part.md -->
 
-### Событие: `'uncaughtException'`
+### Событие: `'uncaughtException'` {#event-uncaughtexception}
 
 -   `err` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Непойманное исключение.
 -   `origin` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Указывает, происходит ли исключение из необработанного отказа или из синхронной ошибки. Может быть либо `'uncaughtException'`, либо `'unhandledRejection'`. Последнее используется, когда исключение происходит в асинхронном контексте на основе `Promise` (или если `Promise` отклоняется) и флаг [`--unhandled-rejections`](cli.md#--unhandled-rejectionsmode) установлен на `strict` или `throw` (что является значением по умолчанию) и отклонение не обрабатывается, или когда отклонение происходит во время фазы статической загрузки модуля ES в командной строке.
@@ -378,7 +378,7 @@ nonexistentFunc();
 
 <!-- 0010.part.md -->
 
-### Событие: `'unhandledRejection'`
+### Событие: `'unhandledRejection'` {#event-unhandledrejection}
 
 -   `reason` {Error|any} Объект, с которым обещание было отклонено (обычно это объект [`Error`](errors.md#class-error)).
 -   `promise` [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) Отклоненное обещание.
@@ -455,7 +455,7 @@ const resource = new SomeResource();
 
 <!-- 0011.part.md -->
 
-### Событие: `warning`
+### Событие: `warning` {#event-warning}
 
 -   `warning` [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error) Ключевыми свойствами предупреждения являются:
     -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя предупреждения. **По умолчанию:** `'Warning'`.
@@ -548,7 +548,7 @@ $ node --no-warnings
 
 <!-- 0015.part.md -->
 
-### Сигнальные события
+### Сигнальные события {#signal-events}
 
 Сигнальные события будут возникать, когда процесс Node.js получает сигнал. Пожалуйста, обратитесь к signal(7) для получения списка стандартных имен сигналов POSIX, таких как `'SIGINT'`, `'SIGHUP'` и т.д.
 
@@ -1632,7 +1632,7 @@ if (process.getuid) {
 
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Указывает, был ли установлен обратный вызов с помощью [`process.setUncaughtExceptionCaptureCallback()`](#processsetuncaughaughtexceptioncapturecallbackfn).
+Указывает, был ли установлен обратный вызов с помощью [`process.setUncaughtExceptionCaptureCallback()`](#processsetuncaughtexceptioncapturecallbackfn).
 
 <!-- 0048.part.md -->
 
@@ -2126,7 +2126,7 @@ console.log('scheduled');
 
 Этот API доступен через флаг [`--experimental-permission`](cli.md#--experimental-permission).
 
-`process.permission` - это объект, методы которого используются для управления разрешениями для текущего процесса. Дополнительная документация доступна в [Permission Model](permissions.md#permission-model).
+`process.permission` - это объект, методы которого используются для управления разрешениями для текущего процесса. Дополнительная документация доступна в [Permission Model](permissions.md#process-based-permissions).
 
 <!-- 0059.part.md -->
 
@@ -2817,7 +2817,7 @@ if (process.getuid && process.setuid) {
 
 <!-- 0083.part.md -->
 
-## `process.setUncaughtExceptionCaptureCallback(fn)`
+## `process.setUncaughtExceptionCaptureCallback(fn)` {#processsetuncaughtexceptioncapturecallbackfn}
 
 -   `fn` {Function|null}
 
@@ -2835,7 +2835,7 @@ if (process.getuid && process.setuid) {
 
 -   [`<Stream>`](stream.md#stream)
 
-Свойство `process.stderr` возвращает поток, подключенный к `stderr` (fd `2`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `2` не ссылается на файл, в этом случае это [Writable](stream.md#writable-streams) поток.
+Свойство `process.stderr` возвращает поток, подключенный к `stderr` (fd `2`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `2` не ссылается на файл, в этом случае это [Writable](stream.md#streamwritable) поток.
 
 `process.stderr` отличается от других потоков Node.js важным образом. Дополнительную информацию смотрите в [заметке о процессах ввода/вывода](#a-note-on-process-io).
 
@@ -2853,9 +2853,9 @@ if (process.getuid && process.setuid) {
 
 -   [`<Stream>`](stream.md#stream)
 
-Свойство `process.stdin` возвращает поток, подключенный к `stdin` (fd `0`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `0` не ссылается на файл, в этом случае это [Readable](stream.md#readable-streams) поток.
+Свойство `process.stdin` возвращает поток, подключенный к `stdin` (fd `0`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `0` не ссылается на файл, в этом случае это [Readable](stream.md#streamreadable) поток.
 
-О том, как читать из `stdin`, смотрите [`readable.read()`](stream.md#readablereadsize).
+О том, как читать из `stdin`, смотрите [`readable.read()`](stream.md#readable_readsize).
 
 Как поток [Duplex](stream.md#duplex-and-transform-streams), `process.stdin` может также использоваться в "старом" режиме, который совместим со скриптами, написанными для Node.js до версии 0.10. Для получения дополнительной информации смотрите [Совместимость потоков](stream.md#compatibility-with-older-nodejs-versions).
 
@@ -2875,7 +2875,7 @@ if (process.getuid && process.setuid) {
 
 -   [`<Stream>`](stream.md#stream)
 
-Свойство `process.stdout` возвращает поток, подключенный к `stdout` (fd `1`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `1` не ссылается на файл, в этом случае это [Writable](stream.md#writable-streams) поток.
+Свойство `process.stdout` возвращает поток, подключенный к `stdout` (fd `1`). Это [`net.Socket`](net.md#class-netsocket) (который является [Duplex](stream.md#duplex-and-transform-streams) потоком), если только fd `1` не ссылается на файл, в этом случае это [Writable](stream.md#streamwritable) поток.
 
 Например, чтобы скопировать `process.stdin` в `process.stdout`:
 
@@ -2903,7 +2903,7 @@ stdin.pipe(stdout);
 
 <!-- 0090.part.md -->
 
-### Замечание о вводе-выводе процессов
+### Замечание о вводе-выводе процессов {#a-note-on-process-io}
 
 `process.stdout` и `process.stderr` отличаются от других потоков Node.js важным образом:
 
@@ -3102,7 +3102,7 @@ console.log(versions);
 
 <!-- 0099.part.md -->
 
-## Коды выхода
+## Коды выхода {#exit-codes}
 
 Node.js обычно завершает работу с кодом состояния `0`, когда больше не ожидается никаких асинхронных операций. В других случаях используются следующие коды состояния:
 

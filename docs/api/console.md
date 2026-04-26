@@ -89,8 +89,8 @@ const { Console } = console;
 ### `new Console(options)`
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `stdout` [`<stream.Writable>`](stream.md#streamwritable)
-    -   `stderr` [`<stream.Writable>`](stream.md#streamwritable)
+    -   `stdout` [`<stream.Writable>`](stream.md#class-streamwritable)
+    -   `stderr` [`<stream.Writable>`](stream.md#class-streamwritable)
     -   `ignoreErrors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Игнорировать ошибки записи в базовые потоки. **По умолчанию:** `true`.
     -   `colorMode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Поддержка цвета для этого экземпляра `Console`. `true` — раскраска при инспекции значений. `false` — без раскраски. `'auto'` — зависит от `isTTY` и результата `getColorDepth()` для соответствующего потока. Нельзя использовать вместе с `inspectOptions.colors`. **По умолчанию:** `'auto'`.
     -   `inspectOptions` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<Map>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) Параметры для [`util.inspect()`](util.md#utilinspectobject-options). Может быть объектом опций или, если для stdout и stderr нужны разные опции, `Map` от потоков к опциям.

@@ -838,7 +838,9 @@ const server = net
 
 Разработчики библиотек, которые сами управляют асинхронными ресурсами (I/O, пулы соединений, очереди обратных вызовов), могут использовать JavaScript API `AsyncResource`, чтобы вызывались все нужные обратные вызовы.
 
-### Класс: `AsyncResource`
+### Класс: `AsyncResource` {#class-asyncresource}
+
+<a id="asyncresource"></a>
 
 Документация по этому классу перенесена: [AsyncResource](async_context.md#class-asyncresource).
 

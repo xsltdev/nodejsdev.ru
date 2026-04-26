@@ -228,7 +228,7 @@ node --no-warnings --max-old-space-size=2048 /path/to/bundled/script.js user-arg
 node --no-warnings --trace-exit /path/to/bundled/script.js user-arg1 user-arg2
 ```
 
-## API одноисполняемого приложения
+## API одноисполняемого приложения {#single-executable-application-api}
 
 Встроенный модуль `node:sea` позволяет работать с одноисполняемым приложением из основного JavaScript-скрипта, встроенного в исполняемый файл.
 

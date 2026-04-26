@@ -48,6 +48,10 @@ try {
 
 <!-- 0001.part.md -->
 
+## Compatibility API {#compatibility-api}
+
+Помимо Core API модуль `http2` предоставляет слой, совместимый с [`http`](http.md) и [`https`](https.md) (сервер с событиями `request`/`response`, запросы клиента и т.д.).
+
 ## Core API
 
 Core API предоставляет низкоуровневый интерфейс, разработанный специально для поддержки функций протокола HTTP/2. Он специально _не_ предназначен для совместимости с существующим API модуля [HTTP/1](http.md). Однако, [Compatibility API](#compatibility-api) является таковым.
@@ -127,7 +131,7 @@ req.end();
 
 ### Класс: `Http2Session`
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Экземпляры класса `http2.Http2Session` представляют активный сеанс связи между HTTP/2 клиентом и сервером. Экземпляры этого класса _не_ предназначены для создания непосредственно пользовательским кодом.
 
@@ -137,7 +141,7 @@ req.end();
 
 <!-- 0005.part.md -->
 
-#### `Http2Session` и сокеты
+#### `Http2Session` и сокеты {#http2session-and-sockets}
 
 Каждый экземпляр `Http2Session` при создании ассоциируется ровно с одним [`net.Socket`](net.md#class-netsocket) или [`tls.TLSSocket`](tls.md#class-tlstlssocket). При уничтожении `Socket` или `Http2Session` будут уничтожены оба.
 
@@ -156,7 +160,7 @@ req.end();
 #### Событие: `'connect'`
 
 -   `session` {Http2Session}
--   `socket` [`<net.Socket>`](net.md#netsocket)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket)
 
 Событие `'connect'` происходит, когда `Http2Session` успешно соединяется с удаленным аналогом и может начать взаимодействие.
 
@@ -236,7 +240,7 @@ session.on('remoteSettings', (settings) => {
 
 <!-- 0014.part.md -->
 
-#### Событие: `stream`
+#### Событие: `stream` {#event-stream}
 
 -   `stream` {Http2Stream} Ссылка на поток
 -   `headers` {HTTP/2 Headers Object} Объект, описывающий заголовки
@@ -736,7 +740,7 @@ req.on('response', (headers) => {
 
 <!-- 0045.part.md -->
 
-### Класс: `Http2Stream`
+### Класс: `Http2Stream` {#class-http2stream}
 
 -   Расширяет: {stream.Duplex}
 
@@ -746,7 +750,7 @@ req.on('response', (headers) => {
 
 Класс `Http2Stream` является базой для классов [`ServerHttp2Stream`](#class-serverhttp2stream) и [`ClientHttp2Stream`](#class-clienthttp2stream), каждый из которых используется на стороне сервера или клиента соответственно.
 
-Все экземпляры `Http2Stream` являются потоками [`Duplex`](stream.md#class-streamduplex). Сторона `Writable` потока `Duplex` используется для отправки данных подключенному аналогу, а сторона `Readable` используется для получения данных, отправленных подключенным аналогом.
+Все экземпляры `Http2Stream` являются потоками [`Duplex`](stream.md#streamduplex). Сторона `Writable` потока `Duplex` используется для отправки данных подключенному аналогу, а сторона `Readable` используется для получения данных, отправленных подключенным аналогом.
 
 Кодировка текстовых символов по умолчанию для `Http2Stream` - UTF-8. При использовании `Http2Stream` для отправки текста, используйте заголовок `'content-type'` для установки кодировки.
 
@@ -1035,7 +1039,7 @@ server.on('stream', (stream) => {
 
 <!-- 0074.part.md -->
 
-### Класс: `ClientHttp2Stream`
+### Класс: `ClientHttp2Stream` {#class-clienthttp2stream}
 
 -   Расширяет {Http2Stream}
 
@@ -1097,7 +1101,7 @@ req.on('response', (headers, flags) => {
 
 <!-- 0079.part.md -->
 
-### Класс: `ServerHttp2Stream`
+### Класс: `ServerHttp2Stream` {#class-serverhttp2stream}
 
 -   Расширяет: {Http2Stream}
 
@@ -1371,7 +1375,7 @@ server.on('stream', (stream) => {
 
 <!-- 0087.part.md -->
 
-### Класс: `Http2Server`
+### Класс: `Http2Server` {#class-http2server}
 
 -   Расширяет: {net.Server}
 
@@ -1379,7 +1383,7 @@ server.on('stream', (stream) => {
 
 <!-- 0088.part.md -->
 
-#### Событие: `'checkContinue'`
+#### Событие: `'checkContinue'` {#event-checkcontinue}
 
 -   `запрос` {http2.Http2ServerRequest}
 -   `ответ` {http2.Http2ServerResponse}
@@ -1398,11 +1402,11 @@ server.on('stream', (stream) => {
 
 Это событие возникает при установлении нового TCP-потока. `socket` обычно представляет собой объект типа [`net.Socket`](net.md#class-netsocket). Обычно пользователи не хотят обращаться к этому событию.
 
-Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#class-streamduplex).
+Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#streamduplex).
 
 <!-- 0090.part.md -->
 
-#### Событие: `request`
+#### Событие: `request` {#event-request}
 
 -   `запрос` {http2.Http2ServerRequest}
 -   `response` {http2.Http2ServerResponse}
@@ -1519,7 +1523,7 @@ server.on('stream', (stream, headers, flags) => {
 
 <!-- 0099.part.md -->
 
-### Класс: `Http2SecureServer`
+### Класс: `Http2SecureServer` {#class-http2secureserver}
 
 -   Расширяет: {tls.Server}
 
@@ -1546,7 +1550,7 @@ server.on('stream', (stream, headers, flags) => {
 
 Это событие возникает при установлении нового TCP-потока, до начала квитирования TLS. `socket` обычно представляет собой объект типа [`net.Socket`](net.md#class-netsocket). Обычно пользователи не хотят обращаться к этому событию.
 
-Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#class-streamduplex).
+Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#streamduplex).
 
 <!-- 0102.part.md -->
 
@@ -1621,7 +1625,7 @@ server.on('stream', (stream, headers, flags) => {
 
 <!-- 0107.part.md -->
 
-#### Событие: `unknownProtocol`
+#### Событие: `unknownProtocol` {#event-unknownprotocol}
 
 -   `socket` {stream.Duplex}
 
@@ -1749,7 +1753,7 @@ server.listen(8000);
     -   `maxSessionInvalidFrames` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает максимальное количество недействительных кадров, которое будет допущено до закрытия сессии. **По умолчанию:** `1000`.
     -   `maxSessionRejectedStreams` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Устанавливает максимальное количество отклоненных при создании потоков, которое будет допустимо до закрытия сессии. Каждый отказ связан с ошибкой `NGHTTP2_ENHANCE_YOUR_CALM`, которая должна сказать пиру больше не открывать потоки, поэтому продолжение открытия потоков рассматривается как признак неправильного поведения пира. **По умолчанию:** `100`.
     -   `settings` {HTTP/2 Settings Object} Начальные настройки для отправки удаленному пиру при подключении.
-    -   ...: Можно предоставить любые опции [`tls.createServer()`](tls.md#tlscreateserveroptions-secureconnectionlistener). Для серверов обычно требуются опции идентификации (`pfx` или `key`/`cert`).
+    -   ...: Можно предоставить любые опции [`tls.createServer()`](tls.md#tlsscreateserveroptions-secureconnectionlistener). Для серверов обычно требуются опции идентификации (`pfx` или `key`/`cert`).
     -   `origins` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Массив строк происхождения для отправки во фрейме `ORIGIN` сразу после создания новой серверной `Http2Session`.
     -   `unknownProtocolTimeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Определяет таймаут в миллисекундах, который сервер должен выждать, когда испускается событие [`'unknownProtocol'`](#event-unknownprotocol). Если сокет не будет уничтожен к этому времени, сервер уничтожит его. **По умолчанию:** `10000`.
 -   `onRequestHandler` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) См. [Compatibility API](#compatibility-api).
@@ -1804,7 +1808,7 @@ server.listen(8443);
 
 <!-- 0116.part.md -->
 
-#### Коды ошибок для `RST_STREAM` и `GOAWAY`
+#### Коды ошибок для `RST_STREAM` и `GOAWAY` {#error-codes-for-rst_stream-and-goaway}
 
 | Значение | Имя | Константа |
 | --- | --- | --- |
@@ -1864,7 +1868,7 @@ console.log(packed.toString('base64'));
 
 <!-- 0120.part.md -->
 
-### `http2.sensitiveHeaders`
+### `http2.sensitiveHeaders` {#sensitive-headers}
 
 -   {символ}
 
@@ -1872,7 +1876,7 @@ console.log(packed.toString('base64'));
 
 <!-- 0121.part.md -->
 
-### Объект заголовков
+### Объект заголовков {#headers-object}
 
 Заголовки представляются как собственные свойства объектов JavaScript. Ключи свойств будут сериализованы в нижний регистр. Значения свойств должны быть строками (если это не так, они будут принудительно преобразованы в строки) или `массивом` строк (чтобы отправить более одного значения для каждого поля заголовка).
 
@@ -1934,7 +1938,7 @@ stream.respond(headers);
 
 <!-- 0123.part.md -->
 
-### Объект настроек
+### Объект настроек {#settings-object}
 
 API `http2.getDefaultSettings()`, `http2.getPackedSettings()`, `http2.createServer()`, `http2.createSecureServer()`, `http2session.settings()`, `http2session.localSettings` и `http2session.remoteSettings` либо возвращают, либо получают на вход объект, определяющий настройки конфигурации для объекта `Http2Session`. Эти объекты представляют собой обычные объекты JavaScript, содержащие следующие свойства.
 
@@ -2182,7 +2186,7 @@ function onRequest(req, res) {
 
 <!-- 0131.part.md -->
 
-### Класс: `http2.Http2ServerRequest`
+### Класс: `http2.Http2ServerRequest` {#class-http2http2serverrequest}
 
 -   Расширяет: [`<stream.Readable>`](stream.md#streamreadable)
 
@@ -2427,7 +2431,7 @@ URL {
 
 <!-- 0150.part.md -->
 
-### Класс: `http2.Http2ServerResponse`
+### Класс: `http2.Http2ServerResponse` {#class-http2http2serverresponse}
 
 -   Расширяет: [`<Stream>`](stream.md#stream)
 

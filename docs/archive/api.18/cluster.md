@@ -118,7 +118,7 @@ Node.js не предоставляет логику маршрутизации.
 
 ## Класс: `Worker`
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Объект `Worker` содержит всю публичную информацию и метод о работнике. В первичной системе он может быть получен с помощью `cluster.workers`. В рабочем он может быть получен с помощью `cluster.worker`.
 

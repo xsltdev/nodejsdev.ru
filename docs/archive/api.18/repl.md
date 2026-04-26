@@ -356,7 +356,7 @@ function myWriter(output) {
 
 <!-- 0030.part.md -->
 
-## Класс: `REPLServer`
+## Класс: `REPLServer` {#class-replserver}
 
 -   `options` {Object|string} См. [`repl.start()`](#replstartoptions)
 -   Расширяет: {readline.Interface}

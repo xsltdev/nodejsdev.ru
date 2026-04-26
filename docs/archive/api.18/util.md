@@ -656,7 +656,7 @@ console.log(thousand, million, bigNumber, bigDecimal);
 
 `util.inspect()` - это синхронный метод, предназначенный для отладки. Его максимальная длина выходных данных составляет приблизительно 128 МиБ. Вводы, которые приводят к более длинному выводу, будут усечены.
 
-### Настройка цветов `util.inspect`.
+### Настройка цветов `util.inspect`. {#customizing-utilinspect-colors}
 
 Вывод цвета (если он включен) в `util.inspect` настраивается глобально через свойства `util.inspect.styles` и `util.inspect.colors`.
 
@@ -736,7 +736,7 @@ Modifier support varies throughout different terminals. They will mostly be igno
 -   `bgCyanBright`
 -   `bgWhiteBright`
 
-### Пользовательские функции проверки объектов
+### Пользовательские функции проверки объектов {#custom-inspection-functions-on-objects}
 
 Объекты могут также определять свои собственные [`[util.inspect.custom](depth, opts, inspect)`](#utilinspectcustom) функции, которые `util.inspect()` будет вызывать и использовать результат при инспектировании объекта.
 
@@ -1106,7 +1106,7 @@ console.log(JSON.stringify(myMIMES));
 
 <!-- 0091.part.md -->
 
-### Класс: `util.MIMEParams`.
+### Класс: `util.MIMEParams`. {#class-utilmimeparams}
 
 API `MIMEParams` предоставляет доступ на чтение и запись к параметрам `MIMEType`.
 
@@ -1541,7 +1541,7 @@ bindBar().then((a) => console.log(a)); // '42'
 
 <!-- 0123.part.md -->
 
-### Пользовательские промисифицированные функции
+### Пользовательские промисифицированные функции {#custom-promisified-functions}
 
 Используя символ `util.promisify.custom`, можно переопределить возвращаемое значение функции [`util.promisify()`](#utilpromisifyoriginal):
 
@@ -1627,7 +1627,7 @@ console.log(
 
 <!-- 0131.part.md -->
 
-## Класс: `util.TextDecoder`.
+## Класс: `util.TextDecoder`. {#class-utiltextdecoder}
 
 Реализация API `TextDecoder` [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/).
 
@@ -1641,7 +1641,7 @@ console.log(decoder.decode(u8arr)); // Hello
 
 <!-- 0133.part.md -->
 
-### Поддерживаемые кодировки WHATWG
+### Поддерживаемые кодировки WHATWG {#whatwg-supported-encodings}
 
 Согласно [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/), кодировки, поддерживаемые API `TextDecoder`, приведены в таблицах ниже. Для каждой кодировки может использоваться один или несколько псевдонимов.
 
@@ -1730,7 +1730,7 @@ console.log(decoder.decode(u8arr)); // Hello
 
 Значение будет `true`, если результат декодирования будет включать метку порядка байтов.
 
-## Класс: `util.TextEncoder`.
+## Класс: `util.TextEncoder`. {#class-utiltextencoder}
 
 Реализация API `TextEncoder` [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/). Все экземпляры `TextEncoder` поддерживают только кодировку UTF-8.
 

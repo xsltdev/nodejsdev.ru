@@ -87,7 +87,7 @@ callbackFunction((err, ret) => {
 });
 ```
 
-## `util.convertProcessSignalToExitCode(signal)`
+## `util.convertProcessSignalToExitCode(signal)` {#utilconvertprocesssignaltoexitcodesignalcode}
 
 -   `signal` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя сигнала (например `'SIGTERM'`)
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Код выхода, соответствующий `signal`
@@ -2209,7 +2209,7 @@ const u8arr = new Uint8Array([72, 101, 108, 108, 111]);
 console.log(decoder.decode(u8arr)); // Hello
 ```
 
-### Поддерживаемые кодировки WHATWG
+### Поддерживаемые кодировки WHATWG {#whatwg-supported-encodings}
 
 Согласно [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/), поддерживаемые кодировки `TextDecoder` перечислены в таблицах ниже. Для каждой кодировки можно использовать один или несколько псевдонимов.
 

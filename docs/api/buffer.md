@@ -539,7 +539,7 @@ MIME-тип содержимого `Blob`.
     blob.text().then(console.log);
     ```
 
-## Класс: `Buffer`
+## Класс: `Buffer` {#class-buffer}
 
 Класс `Buffer` — глобальный тип для прямой работы с двоичными данными. Его можно создавать разными способами.
 
@@ -734,7 +734,7 @@ MIME-тип содержимого `Blob`.
 
 Если `size` не является числом, выбрасывается `TypeError`.
 
-### Статический метод: `Buffer.byteLength(string[, encoding])`
+### Статический метод: `Buffer.byteLength(string[, encoding])` {#static-method-bufferbytelengthstring-encoding}
 
 -   `string` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView) | [`<ArrayBuffer>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) | [`<SharedArrayBuffer>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) Значение, для которого вычисляется длина.
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Если `string` — строка, это её кодировка. **По умолчанию:** `'utf8'`.
@@ -1176,7 +1176,7 @@ console.log(buf[1]); // 255
 
 [`Buffer.from(string)`](#static-method-bufferfromstring-encoding) также может использовать внутренний пул `Buffer`, как это делает [`Buffer.allocUnsafe()`](#static-method-bufferallocunsafesize).
 
-### Статический метод: `Buffer.isBuffer(obj)`
+### Статический метод: `Buffer.isBuffer(obj)` {#static-method-bufferisbufferobj}
 
 -   `obj` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   Возвращает: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)

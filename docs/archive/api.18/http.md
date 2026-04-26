@@ -53,9 +53,9 @@ description: Интерфейсы HTTP в Node.js разработаны для 
 
 <!-- 0000.part.md -->
 
-## Класс http.Agent
+## Класс http.Agent {#class-httpagent}
 
-Агент отвечает за управление сохранением и повторным использованием соединений для HTTP-клиентов. Он поддерживает очередь ожидающих запросов для данного хоста и порта, повторно используя одно сокетное соединение для каждого до тех пор, пока очередь не опустеет, после чего сокет либо уничтожается, либо помещается в пул, где он хранится для повторного использования для запросов к тому же хосту и порту. Будет ли он уничтожен или помещен в пул, зависит от `keepAlive` [опция](#new-agent).
+Агент отвечает за управление сохранением и повторным использованием соединений для HTTP-клиентов. Он поддерживает очередь ожидающих запросов для данного хоста и порта, повторно используя одно сокетное соединение для каждого до тех пор, пока очередь не опустеет, после чего сокет либо уничтожается, либо помещается в пул, где он хранится для повторного использования для запросов к тому же хосту и порту. Будет ли он уничтожен или помещен в пул, зависит от `keepAlive` [опция](#new-agentoptions).
 
 Для пула соединений включена функция TCP Keep-Alive, но серверы могут закрывать простаивающие соединения, в этом случае они будут удалены из пула, а новое соединение будет создано при новом HTTP-запросе на этот хост и порт. Серверы также могут отказаться разрешать несколько запросов через одно и то же соединение, в этом случае соединение будет создаваться заново для каждого запроса и не может быть объединено в пул. Агент будет по-прежнему выполнять запросы к этому серверу, но каждый запрос будет выполняться через новое соединение.
 
@@ -93,7 +93,7 @@ http.get(
 
 <!-- 0001.part.md -->
 
-### new Agent
+### new Agent {#new-agentoptions}
 
 ```js
 new Agent([options]);
@@ -137,7 +137,7 @@ agent.createConnection(options[, callback])
 
 Сокет/поток может быть предоставлен одним из двух способов: путем возврата сокета/потока из этой функции или путем передачи сокета/потока в `callback`.
 
-Этот метод гарантированно возвращает экземпляр класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Этот метод гарантированно возвращает экземпляр класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 `callback` имеет сигнатуру `(err, stream)`.
 
@@ -161,7 +161,7 @@ return true;
 
 Этот метод может быть переопределен конкретным подклассом `Agent`. Если этот метод возвращает ложное значение, то сокет будет уничтожен, а не сохранен для использования при следующем запросе.
 
-Аргумент `socket` может быть экземпляром [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}.
+Аргумент `socket` может быть экземпляром [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}.
 
 <!-- 0004.part.md -->
 
@@ -182,7 +182,7 @@ socket.ref();
 
 Этот метод может быть переопределен конкретным подклассом `Agent`.
 
-Аргумент `socket` может быть экземпляром [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}.
+Аргумент `socket` может быть экземпляром [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}.
 
 <!-- 0005.part.md -->
 
@@ -265,15 +265,15 @@ agent.getName([options]);
 
 <!-- 0013.part.md -->
 
-## Класс http.ClientRequest
+## Класс http.ClientRequest {#class-httpclientrequest}
 
 -   Расширяет: {http.OutgoingMessage}
 
-Этот объект создается внутри и возвращается из [`http.request()`](#httprequest). Он представляет _проходящий_ запрос, заголовок которого уже поставлен в очередь. Заголовок все еще можно изменить с помощью API [`setHeader(name, value)`](#requestsetheader), [`getHeader(name)`](#requestgetheader), [`removeHeader(name)`](#requestremoveheader). Фактический заголовок будет отправлен вместе с первым куском данных или при вызове [`request.end()`](#requestend).
+Этот объект создается внутри и возвращается из [`http.request()`](#httprequestoptions-callback). Он представляет _проходящий_ запрос, заголовок которого уже поставлен в очередь. Заголовок все еще можно изменить с помощью API [`setHeader(name, value)`](#requestsetheadername-value), [`getHeader(name)`](#requestgetheader), [`removeHeader(name)`](#requestremoveheader). Фактический заголовок будет отправлен вместе с первым куском данных или при вызове [`request.end()`](#requestend).
 
-Чтобы получить ответ, добавьте к объекту запроса слушатель для [`'response'`](#response). [`'response'`](#response) будет испущен из объекта запроса, когда будут получены заголовки ответа. Событие [`'response'`](#response) выполняется с одним аргументом, который является экземпляром [`http.IncomingMessage`](#httpincomingmessage).
+Чтобы получить ответ, добавьте к объекту запроса слушатель для [`'response'`](#event-response). [`'response'`](#event-response) будет испущен из объекта запроса, когда будут получены заголовки ответа. Событие [`'response'`](#event-response) выполняется с одним аргументом, который является экземпляром [`http.IncomingMessage`](#class-httpincomingmessage).
 
-Во время события [`response`](#response) можно добавить слушателей к объекту ответа, в частности, для прослушивания события `данные`.
+Во время события [`response`](#event-response) можно добавить слушателей к объекту ответа, в частности, для прослушивания события `данные`.
 
 Если обработчик [`response`](#event-response) не добавлен, то ответ будет полностью отброшен. Однако если обработчик события [`'response'`](#event-response) добавлен, то данные из объекта ответа **должны** быть потреблены, либо вызовом `response.read()` при каждом событии `'readable'`, либо добавлением обработчика `'data'`, либо вызовом метода `.resume()`. Пока данные не будут прочитаны, событие `'end'` не произойдет. Кроме того, пока данные не будут считаны, будет расходоваться память, что в конечном итоге может привести к ошибке "процесс вышел из памяти".
 
@@ -311,7 +311,7 @@ agent.getName([options]);
 
 Выдается каждый раз, когда сервер отвечает на запрос методом `CONNECT`. Если это событие не прослушивается, клиенты, получающие метод `CONNECT`, закрывают свои соединения.
 
-Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 Пара клиент-сервер демонстрирует, как слушать событие `'connect'`:
 
@@ -385,7 +385,7 @@ proxy.listen(1337, '127.0.0.1', () => {
 
 <!-- 0018.part.md -->
 
-### Событие finish
+### Событие finish {#event-finish}
 
 Вызывается, когда запрос отправлен. Точнее, это событие возникает, когда последний сегмент заголовков и тела ответа был передан операционной системе для передачи по сети. Это не означает, что сервер уже что-то получил.
 
@@ -428,7 +428,7 @@ req.on('information', (info) => {
 
 <!-- 0020.part.md -->
 
-### Событие response
+### Событие response {#event-response}
 
 -   `response` {http.IncomingMessage}
 
@@ -440,7 +440,7 @@ req.on('information', (info) => {
 
 -   `socket` {stream.Duplex}
 
-Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 <!-- 0022.part.md -->
 
@@ -460,7 +460,7 @@ req.on('information', (info) => {
 
 Выдается каждый раз, когда сервер отвечает на запрос с обновлением. Если это событие не прослушивается и код состояния ответа равен 101 Switching Protocols, клиенты, получившие заголовок обновления, закрывают свои соединения.
 
-Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если только пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 Пара клиент-сервер демонстрирует, как прослушивать событие `update`.
 
@@ -581,7 +581,7 @@ request.end([data[, encoding]][, callback])
 
 <!-- 0029.part.md -->
 
-### request.destroy
+### request.destroy {#requestdestroyerror}
 
 ```js
 request.destroy([error]);
@@ -600,7 +600,7 @@ request.destroy([error]);
 
 -   [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
-Является `true` после вызова [`request.destroy()`](#requestdestroy).
+Является `true` после вызова [`request.destroy()`](#requestdestroyerror).
 
 Более подробную информацию смотрите в [`writable.destroyed`](stream.md#writabledestroyed).
 
@@ -844,7 +844,7 @@ retriableRequest();
 
 <!-- 0045.part.md -->
 
-### request.setHeader
+### request.setHeader {#requestsetheadername-value}
 
 ```js
 request.setHeader(name, value);
@@ -909,7 +909,7 @@ request.setSocketKeepAlive([enable][, initialDelay])
 
 <!-- 0048.part.md -->
 
-### request.setTimeout
+### request.setTimeout {#requestsettimeouttimeout-callback}
 
 ```js
 request.setTimeout(timeout[, callback])
@@ -946,7 +946,7 @@ req.once('response', (res) => {
 });
 ```
 
-Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 <!-- 0050.part.md -->
 
@@ -976,7 +976,7 @@ request.uncork();
 
 <!-- 0053.part.md -->
 
-### request.write
+### request.write {#requestwritechunk-encoding-callback}
 
 ```js
 request.write(chunk[, encoding][, callback])
@@ -999,13 +999,13 @@ request.write(chunk[, encoding][, callback])
 
 <!-- 0054.part.md -->
 
-## http.Server
+## http.Server {#class-httpserver}
 
 -   Расширяет: {net.Server}
 
 <!-- 0055.part.md -->
 
-### Событие: checkContinue
+### Событие: checkContinue {#event-checkcontinue}
 
 -   `запрос` {http.IncomingMessage}
 -   `ответ` {http.ServerResponse}
@@ -1036,9 +1036,9 @@ request.write(chunk[, encoding][, callback])
 
 Если клиентское соединение испускает событие `'error'', оно будет передано сюда. Слушатель этого события отвечает за закрытие/уничтожение базового сокета. Например, можно пожелать более изящно закрыть сокет с помощью пользовательского HTTP-ответа вместо резкого разрыва соединения. Сокет **должен быть закрыт или уничтожен** до завершения работы слушателя.
 
-Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
-Поведение по умолчанию заключается в попытке закрыть сокет с HTTP '400 Bad Request', или HTTP '431 Request Header Fields Too Large' в случае ошибки [`HPE_HEADER_OVERFLOW`](errors.md#hpe_header_overflow). Если сокет не доступен для записи или были отправлены заголовки текущего присоединенного [`http.ServerResponse`](#httpserverresponse), он немедленно уничтожается.
+Поведение по умолчанию заключается в попытке закрыть сокет с HTTP '400 Bad Request', или HTTP '431 Request Header Fields Too Large' в случае ошибки [`HPE_HEADER_OVERFLOW`](errors.md#hpe_header_overflow). Если сокет не доступен для записи или были отправлены заголовки текущего присоединенного [`http.ServerResponse`](#class-httpserverresponse), он немедленно уничтожается.
 
 `socket` - это объект [`net.Socket`](net.md#class-netsocket), с которого произошла ошибка.
 
@@ -1089,7 +1089,7 @@ server.on('clientError', (err, socket) => {
 
 Выдается каждый раз, когда клиент запрашивает метод HTTP `CONNECT`. Если это событие не прослушивается, то клиенты, запрашивающие метод `CONNECT`, будут иметь закрытые соединения.
 
-Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 После испускания этого события сокет запроса не будет иметь слушателя события `'data'`, что означает, что для обработки данных, отправленных на сервер по этому сокету, его нужно будет привязать.
 
@@ -1101,11 +1101,11 @@ server.on('clientError', (err, socket) => {
 
 Это событие возникает при установлении нового TCP-потока. `socket` обычно представляет собой объект типа [`net.Socket`](net.md#class-netsocket). Обычно пользователи не хотят обращаться к этому событию. В частности, сокет не будет испускать события `readable` из-за того, как парсер протокола присоединяется к сокету. Доступ к `socket` можно также получить через `request.socket`.
 
-Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#class-streamduplex).
+Это событие также может быть явно вызвано пользователями для инъекции соединений в HTTP-сервер. В этом случае может быть передан любой поток [`Duplex`](stream.md#streamduplex).
 
 Если здесь вызывается `socket.setTimeout()`, то таймаут будет заменен на `server.keepAliveTimeout`, когда сокет обслужит запрос (если `server.keepAliveTimeout` ненулевой).
 
-Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 <!-- 0061.part.md -->
 
@@ -1118,7 +1118,7 @@ server.on('clientError', (err, socket) => {
 
 <!-- 0062.part.md -->
 
-### Событие: request
+### Событие: request {#event-request}
 
 -   `запрос` {http.IncomingMessage}
 -   `ответ` {http.ServerResponse}
@@ -1137,11 +1137,11 @@ server.on('clientError', (err, socket) => {
 
 После испускания этого события сокет запроса не будет иметь слушателя события `'data'`, что означает, что его нужно будет привязать, чтобы обрабатывать данные, отправленные серверу на этом сокете.
 
-Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это событие гарантированно передается экземпляру класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не укажет тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 <!-- 0064.part.md -->
 
-### server.close
+### server.close {#serverclosecallback}
 
 ```js
 server.close([callback]);
@@ -1221,7 +1221,7 @@ server.listen();
 
 <!-- 0072.part.md -->
 
-### server.setTimeout
+### server.setTimeout {#serversettimeoutmsecs-callback}
 
 ```js
 server.setTimeout([msecs][, callback])
@@ -1275,7 +1275,7 @@ server.setTimeout([msecs][, callback])
 
 <!-- 0076.part.md -->
 
-## http.ServerResponse
+## http.ServerResponse {#class-httpserverresponse}
 
 -   Расширяет: {http.OutgoingMessage}
 
@@ -1390,7 +1390,7 @@ response.flushHeaders();
 
 <!-- 0085.part.md -->
 
-### response.getHeader
+### response.getHeader {#responsegetheadername}
 
 ```js
 response.getHeader(name);
@@ -1522,7 +1522,7 @@ response.removeHeader('Content-Encoding');
 
 <!-- 0093.part.md -->
 
-### response.setHeader
+### response.setHeader {#responsesetheadername-value}
 
 ```js
 response.setHeader(name, value);
@@ -1534,7 +1534,7 @@ response.setHeader(name, value);
 
 Возвращает объект ответа.
 
-Устанавливает одно значение заголовка для неявных заголовков. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Для отправки нескольких заголовков с одинаковым именем используйте массив строк. Значения, не являющиеся строками, будут сохранены без изменений. Поэтому [`response.getHeader()`](#responsegetheader) может возвращать нестроковые значения. Однако нестроковые значения будут преобразованы в строки для передачи по сети. Один и тот же объект ответа возвращается вызывающей стороне, чтобы обеспечить возможность цепочки вызовов.
+Устанавливает одно значение заголовка для неявных заголовков. Если этот заголовок уже существует в отправляемых заголовках, его значение будет заменено. Для отправки нескольких заголовков с одинаковым именем используйте массив строк. Значения, не являющиеся строками, будут сохранены без изменений. Поэтому [`response.getHeader()`](#responsegetheadername) может возвращать нестроковые значения. Однако нестроковые значения будут преобразованы в строки для передачи по сети. Один и тот же объект ответа возвращается вызывающей стороне, чтобы обеспечить возможность цепочки вызовов.
 
 ```js
 response.setHeader('Content-Type', 'text/html');
@@ -1551,7 +1551,7 @@ response.setHeader('Set-Cookie', [
 
 Попытка установить имя или значение поля заголовка, которое содержит недопустимые символы, приведет к возникновению [`TypeError`](errors.md#class-typeerror).
 
-Когда заголовки были установлены с помощью [`response.setHeader()`](#responsesetheader), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
+Когда заголовки были установлены с помощью [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
 
 ```js
 // Возвращает content-type = text/plain
@@ -1602,7 +1602,7 @@ const server = http
     .listen(3000);
 ```
 
-Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#netsocket).
+Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket).
 
 <!-- 0096.part.md -->
 
@@ -1668,7 +1668,7 @@ response.uncork();
 
 <!-- 0102.part.md -->
 
-### response.write
+### response.write {#responsewritechunk-encoding-callback}
 
 ```js
 response.write(chunk[, encoding][, callback])
@@ -1689,7 +1689,7 @@ response.write(chunk[, encoding][, callback])
 
 Это необработанное тело HTTP и не имеет ничего общего с многокомпонентными кодировками тела более высокого уровня, которые могут быть использованы.
 
-При первом вызове [`response.write()`](#responsewrite) клиенту будет отправлена буферизованная информация заголовка и первый фрагмент тела. При втором вызове [`response.write()`](#responsewrite) Node.js предполагает, что данные будут передаваться потоком, и отправляет новые данные отдельно. То есть, ответ буферизируется до первого куска тела.
+При первом вызове [`response.write()`](#responsewritechunk-encoding-callback) клиенту будет отправлена буферизованная информация заголовка и первый фрагмент тела. При втором вызове [`response.write()`](#responsewritechunk-encoding-callback) Node.js предполагает, что данные будут передаваться потоком, и отправляет новые данные отдельно. То есть, ответ буферизируется до первого куска тела.
 
 Возвращает `true`, если все данные были успешно переданы в буфер ядра. Возвращает `false`, если все данные или их часть были помещены в пользовательскую память. Когда буфер снова освободится, будет выдано сообщение `'drain'`.
 
@@ -1746,7 +1746,7 @@ response.writeEarlyHints(
 
 <!-- 0105.part.md -->
 
-### response.writeHead
+### response.writeHead {#responsewriteheadstatuscode-statusmessage-headers}
 
 ```js
 response.writeHead(statusCode[, statusMessage][, headers])
@@ -1775,11 +1775,11 @@ response
 
 Этот метод должен быть вызван только один раз для сообщения, и он должен быть вызван до вызова [`response.end()`](#responseend).
 
-Если [`response.write()`](#responsewrite) или [`response.end()`](#responseend) будут вызваны до вызова этой функции, неявные/изменяемые заголовки будут вычислены и вызовут эту функцию.
+Если [`response.write()`](#responsewritechunk-encoding-callback) или [`response.end()`](#responseend) будут вызваны до вызова этой функции, неявные/изменяемые заголовки будут вычислены и вызовут эту функцию.
 
-Если заголовки были установлены с помощью [`response.setHeader()`](#responsesetheader), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewritehead), причем заголовки, переданные в [`response.writeHead()`](#responsewritehead), будут иметь приоритет.
+Если заголовки были установлены с помощью [`response.setHeader()`](#responsesetheadername-value), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
 
-Если этот метод вызван, а [`response.setHeader()`](#responsesetheader) не был вызван, он будет напрямую записывать переданные значения заголовков в сетевой канал без внутреннего кэширования, и [`response.getHeader()`](#responsegetheader) по заголовку не даст ожидаемого результата. Если требуется постепенное накопление заголовков с возможным извлечением и изменением в будущем, используйте вместо этого [`response.setHeader()`](#responsesetheader).
+Если этот метод вызван, а [`response.setHeader()`](#responsesetheadername-value) не был вызван, он будет напрямую записывать переданные значения заголовков в сетевой канал без внутреннего кэширования, и [`response.getHeader()`](#responsegetheadername) по заголовку не даст ожидаемого результата. Если требуется постепенное накопление заголовков с возможным извлечением и изменением в будущем, используйте вместо этого [`response.setHeader()`](#responsesetheadername-value).
 
 ```js
 // Возвращает content-type = text/plain
@@ -1807,11 +1807,11 @@ response.writeProcessing();
 
 <!-- 0107.part.md -->
 
-## http.IncomingMessage
+## http.IncomingMessage {#class-httpincomingmessage}
 
 -   Расширяет: [`<stream.Readable>`](stream.md#streamreadable)
 
-Объект `IncomingMessage` создается [`http.Server`](#httpserver) или [`http.ClientRequest`](#httpclientrequest) и передается в качестве первого аргумента в события [`'request'`](#request) и [`'response'`](#response) соответственно. Он может быть использован для доступа к статусу ответа, заголовкам и данным.
+Объект `IncomingMessage` создается [`http.Server`](#class-httpserver) или [`http.ClientRequest`](#class-httpclientrequest) и передается в качестве первого аргумента в события [`'request'`](#event-request) и [`'response'`](#event-response) соответственно. Он может быть использован для доступа к статусу ответа, заголовкам и данным.
 
 В отличие от своего значения `socket`, которое является подклассом {stream.Duplex}, само `IncomingMessage` расширяет [`<stream.Readable>`](stream.md#streamreadable) и создается отдельно для разбора и выдачи входящих HTTP-заголовков и полезной нагрузки, поскольку базовый сокет может быть использован многократно в случае keep-alive.
 
@@ -1960,7 +1960,7 @@ console.log(request.headersDistinct);
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-**Действителен только для запроса, полученного с [`http.Server`](#httpserver).**.
+**Действителен только для запроса, полученного с [`http.Server`](#class-httpserver).**.
 
 Метод запроса в виде строки. Только для чтения. Примеры: `'GET'`, `'DELETE'`.
 
@@ -2022,7 +2022,7 @@ message.setTimeout(msecs[, callback])
 
 При поддержке HTTPS используйте [`request.socket.getPeerCertificate()`](tls.md#tlssocketgetpeercertificatedetailed) для получения аутентификационных данных клиента.
 
-Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#netsocket), или не обнулен внутренне.
+Это свойство гарантированно является экземпляром класса [`<net.Socket>`](net.md#class-netsocket), подкласса {stream.Duplex}, если пользователь не указал тип сокета, отличный от [`<net.Socket>`](net.md#class-netsocket), или не обнулен внутренне.
 
 <!-- 0122.part.md -->
 
@@ -2030,7 +2030,7 @@ message.setTimeout(msecs[, callback])
 
 -   [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-**Действительно только для ответа, полученного от [`http.ClientRequest`](#httpclientrequest).**.
+**Действительно только для ответа, полученного от [`http.ClientRequest`](#class-httpclientrequest).**.
 
 Трехзначный код состояния ответа HTTP. НАПРИМЕР, `404`.
 
@@ -2040,7 +2040,7 @@ message.setTimeout(msecs[, callback])
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-**Действительно только для ответа, полученного из [`http.ClientRequest`](#httpclientrequest).**.
+**Действительно только для ответа, полученного из [`http.ClientRequest`](#class-httpclientrequest).**.
 
 Сообщение о статусе ответа HTTP (фраза причины). Например, `OK` или `Internal Server Error`.
 
@@ -2066,7 +2066,7 @@ message.setTimeout(msecs[, callback])
 
 -   [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
-**Действительно только для запроса, полученного с [`http.Server`](#httpserver).**.
+**Действительно только для запроса, полученного с [`http.Server`](#class-httpserver).**.
 
 Строка URL запроса. Она содержит только тот URL, который присутствует в фактическом HTTP-запросе. Возьмем следующий запрос:
 
@@ -2108,7 +2108,7 @@ URL {
 
 -   Расширяет: [`<Stream>`](stream.md#stream)
 
-Этот класс служит в качестве родительского класса для [`http.ClientRequest`](#httpclientrequest) и [`http.ServerResponse`](#httpserverresponse). Это абстрактное исходящее сообщение с точки зрения участников HTTP-транзакции.
+Этот класс служит в качестве родительского класса для [`http.ClientRequest`](#class-httpclientrequest) и [`http.ServerResponse`](#class-httpserverresponse). Это абстрактное исходящее сообщение с точки зрения участников HTTP-транзакции.
 
 <!-- 0128.part.md -->
 
@@ -2392,7 +2392,7 @@ const headers = new Map([['foo', 'bar']]);
 res.setHeaders(headers);
 ```
 
-Когда заголовки были установлены с помощью [`outgoingMessage.setHeaders()`](#outgoingmessagesetheaders), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewritehead), причем заголовки, переданные в [`response.writeHead()`](#responsewritehead), будут иметь приоритет.
+Когда заголовки были установлены с помощью [`outgoingMessage.setHeaders()`](#outgoingmessagesetheaders), они будут объединены с любыми заголовками, переданными в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), причем заголовки, переданные в [`response.writeHead()`](#responsewriteheadstatuscode-statusmessage-headers), будут иметь приоритет.
 
 ```js
 // Возвращает content-type = text/plain
@@ -2527,7 +2527,7 @@ outgoingMessage.write(chunk[, encoding][, callback])
 
 <!-- 0159.part.md -->
 
-## http.createServer
+## http.createServer {#httpcreateserveroptions-requestlistener}
 
 ```js
 http.createServer([options][, requestListener])
@@ -2554,7 +2554,7 @@ http.createServer([options][, requestListener])
 
 -   Возвращает: {http.Server}
 
-Возвращает новый экземпляр [`http.Server`](#httpserver).
+Возвращает новый экземпляр [`http.Server`](#class-httpserver).
 
 `requestListener` - это функция, которая автоматически добавляется к событию [`'request'`](#event-request).
 
@@ -2601,7 +2601,7 @@ server.listen(8000);
 
 <!-- 0160.part.md -->
 
-## http.get
+## http.get {#httpgetoptions-callback}
 
 ```js
 http.get(options[, callback])
@@ -2616,9 +2616,9 @@ http.get(url[, options][, callback])
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
 -   Возвращает: {http.ClientRequest}
 
-Поскольку большинство запросов - это GET-запросы без тела, Node.js предоставляет этот удобный метод. Единственное отличие этого метода от [`http.request()`](#httprequest) в том, что он устанавливает метод на GET и автоматически вызывает `req.end()`. Обратный вызов должен позаботиться о потреблении данных ответа по причинам, указанным в разделе [`http.ClientRequest`](#httpclientrequest).
+Поскольку большинство запросов - это GET-запросы без тела, Node.js предоставляет этот удобный метод. Единственное отличие этого метода от [`http.request()`](#httprequestoptions-callback) в том, что он устанавливает метод на GET и автоматически вызывает `req.end()`. Обратный вызов должен позаботиться о потреблении данных ответа по причинам, указанным в разделе [`http.ClientRequest`](#class-httpclientrequest).
 
-Обратный вызов вызывается с единственным аргументом, который является экземпляром [`http.IncomingMessage`](#httpincomingmessage).
+Обратный вызов вызывается с единственным аргументом, который является экземпляром [`http.IncomingMessage`](#class-httpincomingmessage).
 
 Пример получения JSON:
 
@@ -2698,7 +2698,7 @@ server.listen(8000);
 
 <!-- 0164.part.md -->
 
-## http.request
+## http.request {#httprequestoptions-callback}
 
 ```js
 http.request(options[, callback])
@@ -2706,7 +2706,7 @@ http.request(options[, callback])
 
 <!-- 0165.part.md -->
 
-## http.request
+### http.request(url[, options][, callback])
 
 ```js
 http.request(url[, options][, callback])
@@ -2714,12 +2714,12 @@ http.request(url[, options][, callback])
 
 -   `url` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<URL>`](url.md#the-whatwg-url-api)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `agent` {http.Agent} | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Управляет поведением [`Agent`](#httpagent). Возможные значения:
+    -   `agent` {http.Agent} | [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Управляет поведением [`Agent`](#class-httpagent). Возможные значения:
         -   `undefined` (по умолчанию): использовать [`http.globalAgent`](#httpglobalagent) для данного хоста и порта.
         -   `Agent` объект: явно использовать переданный `Agent`.
         -   `false`: заставляет использовать новый `Agent` со значениями по умолчанию.
     -   `auth` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовая аутентификация (`'user:password'`) для вычисления заголовка Authorization.
-    -   `createConnection` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, создающая сокет/поток для использования в запросе, когда опция `agent` не используется. Это можно использовать, чтобы не создавать собственный класс `Agent` только для переопределения функции по умолчанию `createConnection`. Подробнее см. в [`agent.createConnection()`](#agentcreateconnection). Любой поток [`Duplex`](stream.md#class-streamduplex) является допустимым возвращаемым значением.
+    -   `createConnection` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция, создающая сокет/поток для использования в запросе, когда опция `agent` не используется. Это можно использовать, чтобы не создавать собственный класс `Agent` только для переопределения функции по умолчанию `createConnection`. Подробнее см. в [`agent.createConnection()`](#agentcreateconnection). Любой поток [`Duplex`](stream.md#streamduplex) является допустимым возвращаемым значением.
     -   `defaultPort` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт по умолчанию для протокола. **По умолчанию:** `agent.defaultPort`, если используется `Agent`, иначе `undefined`.
     -   `family` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Семейство IP-адресов для использования при разрешении `host` или `hostname`. Допустимыми значениями являются `4` или `6`. Если значение не указано, будут использоваться IP v4 и v6.
     -   `headers` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Объект, содержащий заголовки запроса.
@@ -2754,7 +2754,7 @@ Node.js поддерживает несколько соединений для 
 
 Необязательный параметр `callback` будет добавлен как одноразовый слушатель для события [`'response'`](#event-response).
 
-`http.request()` возвращает экземпляр класса [`http.ClientRequest`](#httpclientrequest). Экземпляр `ClientRequest` представляет собой поток, доступный для записи. Если нужно загрузить файл с помощью POST-запроса, то пишите в объект `ClientRequest`.
+`http.request()` возвращает экземпляр класса [`http.ClientRequest`](#class-httpclientrequest). Экземпляр `ClientRequest` представляет собой поток, доступный для записи. Если нужно загрузить файл с помощью POST-запроса, то пишите в объект `ClientRequest`.
 
 ```js
 const http = require('node:http');

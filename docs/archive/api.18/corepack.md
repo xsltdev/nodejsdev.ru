@@ -53,7 +53,7 @@ corepack prepare yarn@stable --activate
 
 Команда `prepare` имеет [различные флаги](https://github.com/nodejs/corepack#utility-commands). Для получения дополнительной информации обратитесь к подробной документации [Corepack documentation](https://github.com/nodejs/corepack#readme).
 
-## Поддерживаемые менеджеры пакетов
+## Поддерживаемые менеджеры пакетов {#supported-package-managers}
 
 Следующие двоичные файлы предоставляются через Corepack:
 

@@ -1298,7 +1298,7 @@ stream.on('push', (headers, flags) => {
 
 #### `http2stream.respondWithFD(fd[, headers[, options]])`
 
--   `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<FileHandle>`](fs.md#filehandle) Дескриптор файла для чтения.
+-   `fd` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) | [`<FileHandle>`](fs.md#class-filehandle) Дескриптор файла для чтения.
 -   `headers` [`<HTTP/2 Headers Object>`](#headers-object)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `statCheck` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
@@ -2652,7 +2652,7 @@ ALPN позволяет обслуживать и [HTTPS](https.md), и HTTP/2 �
 
 ### Класс: `http2.Http2ServerRequest` {#class-http2http2serverrequest}
 
--   Наследует: [`<stream.Readable>`](stream.md#streamreadable)
+-   Наследует: [`<stream.Readable>`](stream.md#class-streamreadable)
 
 Объект `Http2ServerRequest` создаётся [`http2.Server`](#class-http2server) или [`http2.SecureServer`](#class-http2secureserver) и передаётся первым аргументом в [`'request'`](#event-request). Даёт доступ к состоянию запроса, заголовкам и данным.
 

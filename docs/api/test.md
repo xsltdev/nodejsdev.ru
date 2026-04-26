@@ -102,7 +102,7 @@ test('top level test', async (t) => {
 
 Здесь `await` гарантирует завершение обоих подтестов: родительский тест сам по себе не ждёт подтесты (в отличие от тестов внутри suite). Незавершённые подтесты при завершении родителя отменяются и считаются провалом; провал подтеста ведёт к провалу родителя.
 
-## Повторный запуск проваленных тестов
+## Повторный запуск проваленных тестов {#rerunning-failed-tests}
 
 Раннер может сохранять состояние прогона в файл и затем перезапускать только проваленные тесты без полного прогона. Укажите путь к файлу состояния ключом [`--test-rerun-failures`](cli.md#--test-rerun-failures); если файла нет, он будет создан.
 
@@ -407,7 +407,7 @@ describe.only('a suite', () => {
 });
 ```
 
-## Фильтрация тестов по имени
+## Фильтрация тестов по имени {#filtering-tests-by-name}
 
 Опция командной строки [`--test-name-pattern`](cli.md#--test-name-pattern) позволяет запускать только те тесты, имя которых соответствует заданному шаблону; опция [`--test-skip-pattern`](cli.md#--test-skip-pattern) — пропускать тесты, имя которых соответствует шаблону. Шаблоны имён интерпретируются как регулярные выражения JavaScript. Опции `--test-name-pattern` и `--test-skip-pattern` можно указывать несколько раз, в том числе для вложенных тестов. Для каждого выполняемого теста также выполняются соответствующие хуки, например `beforeEach()`. Тесты, которые не выполняются, не попадают в вывод раннера.
 
@@ -481,7 +481,7 @@ node --test --watch
 
 В режиме watch раннер отслеживает изменения в тестовых файлах и зависимостях. При обнаружении изменений перезапускаются затронутые тесты. Работа продолжается, пока процесс не будет завершён.
 
-## Глобальная подготовка и завершение
+## Глобальная подготовка и завершение {#global-setup-and-teardown}
 
 > Стабильность: 1.0 — ранняя разработка
 
@@ -564,7 +564,7 @@ node --test
 node --test "**/*.test.js" "**/*.spec.js"
 ```
 
-### Случайный порядок выполнения тестов
+### Случайный порядок выполнения тестов {#randomizing-tests-execution-order}
 
 > Стабильность: 1.0 — ранняя разработка
 
@@ -1427,7 +1427,7 @@ node --test-reporter=spec --test-reporter=dot --test-reporter-destination=stdout
         -   `total` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) — положительное целое: на сколько шардов делятся тестовые файлы. Параметр _обязателен_.
     -   `randomize` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Перемешивать порядок тестовых файлов и очередь тестов. Несовместимо с `watch: true`. **По умолчанию:** `false`.
     -   `randomSeed` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Зерно для перемешивания порядка. Если задано, прогоны можно повторять с тем же порядком, а указание опции также включает рандомизацию. Значение — целое от `0` до `4294967295`. **По умолчанию:** `undefined`.
-    -   `rerunFailuresFilePath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к файлу, в котором раннер сохраняет состояние тестов, чтобы при следующем запуске выполнить только проваленные тесты; подробнее см. [Повторный запуск проваленных тестов](#повторный-запуск-проваленных-тестов). **По умолчанию:** `undefined`.
+    -   `rerunFailuresFilePath` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь к файлу, в котором раннер сохраняет состояние тестов, чтобы при следующем запуске выполнить только проваленные тесты; подробнее см. [Повторный запуск проваленных тестов](#rerunning-failed-tests). **По умолчанию:** `undefined`.
     -   `coverage` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Включить сбор [покрытия кода](#collecting-code-coverage). **По умолчанию:** `false`.
     -   `coverageExcludeGlobs` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Исключить файлы из покрытия по glob-шаблону (абсолютные и относительные пути). Учитывается только при `coverage: true`. Если заданы и `coverageExcludeGlobs`, и `coverageIncludeGlobs`, в отчёт попадают файлы, удовлетворяющие **обоим** условиям. **По умолчанию:** `undefined`.
     -   `coverageIncludeGlobs` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | [`<Array>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array) Явно включить файлы в покрытие по glob-шаблону (абсолютные и относительные пути). Учитывается только при `coverage: true`. Если заданы и `coverageExcludeGlobs`, и `coverageIncludeGlobs`, в отчёт попадают файлы, удовлетворяющие **обоим** условиям. **По умолчанию:** `undefined`.

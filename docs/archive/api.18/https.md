@@ -44,7 +44,7 @@ try {
 
 <!-- 0001.part.md -->
 
-## Класс: `https.Agent`
+## Класс: `https.Agent` {#class-httpsagent}
 
 Объект [`Agent`](#class-httpsagent) для HTTPS, аналогичный [`http.Agent`](http.md#class-httpagent). Дополнительную информацию смотрите в [`https.request()`](#httpsrequestoptions-callback).
 

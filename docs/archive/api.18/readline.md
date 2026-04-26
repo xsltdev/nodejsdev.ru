@@ -10,7 +10,7 @@ description: Модуль readline предоставляет интерфейс
 
     АПИ является удовлетворительным. Совместимость с NPM имеет высший приоритет и не будет нарушена кроме случаев явной необходимости.
 
-Модуль **`node:readline`** предоставляет интерфейс для чтения данных из потока [Readable](stream.md#readable-streams) (например, [`process.stdin`](process.md#processstdin)) по одной строке за раз.
+Модуль **`node:readline`** предоставляет интерфейс для чтения данных из потока [Readable](stream.md#streamreadable) (например, [`process.stdin`](process.md#processstdin)) по одной строке за раз.
 
 Чтобы использовать API на основе обещаний:
 
@@ -99,11 +99,11 @@ rl.question('What do you think of Node.js? ', (answer) => {
 
 После вызова этого кода приложение Node.js не завершится, пока не будет закрыт `readline.Interface`, поскольку интерфейс ожидает получения данных в потоке `input`.
 
-## Class: `InterfaceConstructor`
+## Class: `InterfaceConstructor` {#interfaceconstructor}
 
--   Extends: [`<EventEmitter>`](events.md#eventemitter)
+-   Extends: [`<EventEmitter>`](events.md#class-eventemitter)
 
-Экземпляры класса `InterfaceConstructor` создаются с помощью метода `readlinePromises.createInterface()` или `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
+Экземпляры класса `InterfaceConstructor` создаются с помощью метода `readlinePromises.createInterface()` или `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#streamreadable) и одним потоком `output` [Writable](stream.md#streamwritable). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
 ### Событие: `close`
 
@@ -118,7 +118,7 @@ rl.question('What do you think of Node.js? ', (answer) => {
 
 Экземпляр `InterfaceConstructor` завершается, как только произойдет событие `'close'`.
 
-### Событие: `'line'`
+### Событие: `'line'` {#event-line}
 
 Событие `line` возникает всякий раз, когда поток `ввода` получает ввод конца строки (`\n`, `\r` или `\r\n`). Обычно это происходит, когда пользователь нажимает Enter или Return.
 
@@ -189,7 +189,7 @@ rl.on('resume', () => {
 
 <!-- 0020.part.md -->
 
-### Событие: `'SIGCONT'`
+### Событие: `'SIGCONT'` {#event-sigcont}
 
 Событие `SIGCONT` возникает, когда процесс Node.js, ранее переведенный в фоновый режим с помощью Ctrl+Z (т.е. `SIGTSTP`), затем возвращается на передний план с помощью fg(1p).
 
@@ -231,7 +231,7 @@ rl.on('SIGINT', () => {
 
 <!-- 0024.part.md -->
 
-### Событие: `SIGTSTP`
+### Событие: `SIGTSTP` {#event-sigtstp}
 
 Событие `'SIGTSTP'` происходит, когда поток `ввода` получает входной сигнал Ctrl+Z, обычно известный как `SIGTSTP`. Если нет зарегистрированных слушателей события `'SIGTSTP'`, когда поток `ввода` получает `SIGTSTP`, процесс Node.js будет отправлен в фоновый режим.
 
@@ -413,7 +413,7 @@ process.stdin.on('keypress', (c, k) => {
 
 -   Расширяет: {readline.InterfaceConstructor}
 
-Экземпляры класса `readlinePromises.Interface` создаются с помощью метода `readlinePromises.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
+Экземпляры класса `readlinePromises.Interface` создаются с помощью метода `readlinePromises.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#streamreadable) и одним потоком `output` [Writable](stream.md#streamwritable). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
 #### `rl.question(query[, options])`
 
@@ -522,8 +522,8 @@ console.log(`Oh, so your favorite food is ${answer}`);
 ### `readlinePromises.createInterface(options)`
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `вход` [`<stream.Readable>`](stream.md#streamreadable) Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
-    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток [Writable](stream.md#writable-streams) для записи данных readline.
+    -   `вход` [`<stream.Readable>`](stream.md#streamreadable) Поток [Readable](stream.md#streamreadable), который нужно слушать. Этот параметр _обязателен_.
+    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток [Writable](stream.md#streamwritable) для записи данных readline.
     -   `completer` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, используемая для автодополнения табуляции.
     -   `терминал` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
     -   `history` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
@@ -608,7 +608,7 @@ async function completer(linePartial) {
 
 -   Расширяет: {readline.InterfaceConstructor}
 
-Экземпляры класса `readline.Interface` создаются с помощью метода `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#readable-streams) и одним потоком `output` [Writable](stream.md#writable-streams). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
+Экземпляры класса `readline.Interface` создаются с помощью метода `readline.createInterface()`. Каждый экземпляр связан с одним потоком `input` [Readable](stream.md#streamreadable) и одним потоком `output` [Writable](stream.md#streamwritable). Поток `output` используется для печати подсказок для пользовательского ввода, который поступает на поток `input` и считывается с него.
 
 #### `rl.question(query[, options], callback)`.
 
@@ -693,8 +693,8 @@ setTimeout(() => ac.abort(), 10000);
 ### `readline.createInterface(options)`.
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-    -   `input` [`<stream.Readable>`](stream.md#streamreadable) Поток [Readable](stream.md#readable-streams), который нужно слушать. Этот параметр _обязателен_.
-    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток [Writable](stream.md#writable-streams) для записи данных readline.
+    -   `input` [`<stream.Readable>`](stream.md#streamreadable) Поток [Readable](stream.md#streamreadable), который нужно слушать. Этот параметр _обязателен_.
+    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток [Writable](stream.md#streamwritable) для записи данных readline.
     -   `completer` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательная функция, используемая для автодополнения табуляции.
     -   `терминал` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если потоки `ввода` и `вывода` должны рассматриваться как TTY, и в них должны записываться коды ANSI/VT100. **По умолчанию:** проверка `isTTY` на потоке `output` при инстанцировании.
     -   `history` [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Начальный список строк истории. Эта опция имеет смысл только если `terminal` установлен в `true` пользователем или внутренней проверкой `output`, иначе механизм кэширования истории не инициализируется вообще. **По умолчанию:** `[]`.
@@ -800,7 +800,7 @@ function completer(linePartial, callback) {
 -   `поток` [`<stream.Readable>`](stream.md#streamreadable)
 -   `интерфейс` {readline.InterfaceConstructor}
 
-Метод `readline.emitKeypressEvents()` заставляет данный поток [Readable](stream.md#readable-streams) начать испускать события `'keypress'`, соответствующие полученным входным данным.
+Метод `readline.emitKeypressEvents()` заставляет данный поток [Readable](stream.md#streamreadable) начать испускать события `'keypress'`, соответствующие полученным входным данным.
 
 Опционально, `interface` указывает экземпляр `readline.Interface`, для которого отключается автозавершение при обнаружении копируемого ввода.
 
@@ -853,7 +853,7 @@ rl.on('line', (line) => {
 
 <!-- 0062.part.md -->
 
-## Пример: Чтение потока файлов построчно
+## Пример: Чтение потока файлов построчно {#example-read-file-stream-line-by-line}
 
 Обычный случай использования `readline` - это потребление входного файла по одной строке за раз. Самый простой способ сделать это - использовать API [`fs.ReadStream`](fs.md#class-fsreadstream), а также цикл `for await...of`:
 

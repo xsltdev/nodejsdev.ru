@@ -35,7 +35,7 @@ description: Классы для связывания состояния и ег
     } = require('node:async_hooks');
     ```
 
-## Класс: `AsyncLocalStorage`
+## Класс: `AsyncLocalStorage` {#class-asynclocalstorage}
 
 Этот класс создаёт хранилища, которые сохраняют целостность при асинхронных операциях.
 
@@ -404,7 +404,7 @@ async function fn() {
 
 В этом примере хранилище доступно только в функции обратного вызова и в функциях, вызываемых `foo`. Вне `run` вызов `getStore` вернёт `undefined`.
 
-### Устранение неполадок: потеря контекста
+### Устранение неполадок: потеря контекста {#troubleshooting-context-loss}
 
 В большинстве случаев `AsyncLocalStorage` работает без проблем. В редких ситуациях текущее хранилище теряется в одной из асинхронных операций.
 
@@ -602,7 +602,7 @@ class DBQuery extends AsyncResource {
 
 -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Тот же `triggerAsyncId`, который передаётся в конструктор `AsyncResource`.
 
-### Использование `AsyncResource` для пула потоков `Worker` {#async-resource-worker-pool}
+### Использование `AsyncResource` для пула потоков `Worker` {#using-asyncresource-for-a-worker-thread-pool}
 
 Следующий пример показывает, как использовать класс `AsyncResource` для корректного асинхронного отслеживания в пуле [`Worker`](worker_threads.md#class-worker). Другие пулы ресурсов, например пулы подключений к базам данных, могут использовать аналогичную модель.
 

@@ -205,7 +205,7 @@ debug>
 
 ## Расширенное использование
 
-### Интеграция V8 Inspector с Node.js
+### Интеграция V8 Inspector с Node.js {#v8-inspector-integration-for-nodejs}
 
 Интеграция V8 Inspector позволяет подключать Chrome DevTools к процессам Node.js для отладки и профилирования. Используется [протокол Chrome DevTools](https://chromedevtools.github.io/devtools-protocol/).
 

@@ -118,7 +118,7 @@ Node.js не реализует прикладную маршрутизацию.
 
 ## Класс: `Worker`
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Объект `Worker` содержит всю публичную информацию и методы о рабочем процессе. В основном процессе его можно получить через `cluster.workers`. В рабочем — через `cluster.worker`.
 

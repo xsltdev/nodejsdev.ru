@@ -64,7 +64,7 @@ if (status != napi_ok) {
 
 Ресурс [Node-API Resource](https://nodejs.github.io/node-addon-examples/) предлагает отличную ориентацию и советы для разработчиков, только начинающих работать с Node-API и `node-addon-api`. Дополнительные медиа-ресурсы можно найти на странице [Node-API Media](https://github.com/nodejs/abi-stable-node/blob/HEAD/node-api-media.md).
 
-## Последствия стабильности ABI
+## Последствия стабильности ABI {#implications-of-abi-stability}
 
 Хотя Node-API обеспечивает гарантию стабильности ABI, другие части Node.js этого не делают, и любые внешние библиотеки, используемые из аддона, могут этого не делать. В частности, ни один из следующих API не обеспечивает гарантию стабильности ABI в основных версиях:
 
@@ -1072,7 +1072,7 @@ typedef void (*napi_async_cleanup_hook)(napi_async_cleanup_hook_handle handle,
 
 Тело функции должно инициировать асинхронные действия по очистке, в конце которых `handle` должен быть передан в вызов [`napi_remove_async_cleanup_hook`](#napi_remove_async_cleanup_hook).
 
-## Обработка ошибок
+## Обработка ошибок {#error-handling}
 
 Node-API использует как возвращаемые значения, так и исключения JavaScript для обработки ошибок. В следующих разделах объясняется подход для каждого случая.
 
@@ -1466,7 +1466,7 @@ NAPI_NO_RETURN void napi_fatal_error(const char* location,
 
 Этот API может быть вызван даже при наличии ожидающего исключения JavaScript.
 
-## Управление временем жизни объекта
+## Управление временем жизни объекта {#object-lifetime-management}
 
 При вызове Node-API в качестве `napi_values` могут быть возвращены дескрипторы объектов в куче для базовой виртуальной машины. Эти дескрипторы должны удерживать объекты "живыми" до тех пор, пока они не перестанут требоваться исходному коду, иначе объекты могут быть собраны до того, как исходный код закончит их использовать.
 
@@ -3500,7 +3500,7 @@ napi_status napi_is_detached_arraybuffer(napi_env env,
 
 Этот API представляет собой вызов операции `ArrayBuffer` `IsDetachedBuffer`, как определено в [Section 24.1.1.2](https://tc39.es/ecma262/#sec-isdetachedbuffer) спецификации языка ECMAScript.
 
-## Работа со свойствами JavaScript
+## Работа со свойствами JavaScript {#working-with-javascript-properties}
 
 Node-API предоставляет набор API для получения и установки свойств объектов JavaScript. Некоторые из этих типов документированы в [Разделе 7](https://tc39.github.io/ecma262/#sec-abstract-operations) [Спецификации языка ECMAScript](https://tc39.github.io/ecma262/).
 
@@ -4375,7 +4375,7 @@ status = napi_new_instance(env, constructor, argc, argv, &value);
 
 Возвращает `napi_ok`, если API прошел успешно.
 
-## Обертывание объектов
+## Обертывание объектов {#object-wrap}
 
 Node-API предлагает способ "обернуть" классы и экземпляры C++ так, чтобы конструктор класса и методы можно было вызывать из JavaScript.
 

@@ -68,13 +68,13 @@ server.bind(41234);
 
 ## Класс: `dgram.Socket`
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Инкапсулирует функциональность дейтаграммы.
 
 Новые экземпляры `dgram.Socket` создаются с помощью [`dgram.createSocket()`](#dgramcreatesocketoptions-callback). Ключевое слово `new` не должно использоваться для создания экземпляров `dgram.Socket`.
 
-### Событие: `'close'`
+### Событие: `'close'` {#event-close}
 
 Событие `'close'` происходит после закрытия сокета с помощью [`close()`](#socketclosecallback). После его срабатывания на этом сокете не будет испускаться никаких новых событий `'message'`.
 

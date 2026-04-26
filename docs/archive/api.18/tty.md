@@ -29,7 +29,7 @@ false
 
 ## Класс: `tty.ReadStream`
 
--   Расширяет: [`<net.Socket>`](net.md#netsocket)
+-   Расширяет: [`<net.Socket>`](net.md#class-netsocket)
 
 Представляет читаемую сторону TTY. В обычных обстоятельствах [`process.stdin`](process.md#processstdin) будет единственным экземпляром `tty.ReadStream` в процессе Node.js, и не должно быть причин для создания дополнительных экземпляров.
 
@@ -52,7 +52,7 @@ When in raw mode, input is always available character-by-character, not includin
 
 ## Класс: `tty.WriteStream`
 
--   Расширяет: [`<net.Socket>`](net.md#netsocket)
+-   Расширяет: [`<net.Socket>`](net.md#class-netsocket)
 
 Представляет записываемую сторону TTY. В обычных обстоятельствах [`process.stdout`](process.md#processstdout) и [`process.stderr`](process.md#processstderr) будут единственными экземплярами `tty.WriteStream`, созданными для процесса Node.js, и не должно быть причин для создания дополнительных экземпляров.
 

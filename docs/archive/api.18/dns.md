@@ -188,7 +188,7 @@ dns.lookup('example.com', options, (err, addresses) =>
 
 <!-- 0006.part.md -->
 
-### Поддерживаемые флаги getaddrinfo
+### Поддерживаемые флаги getaddrinfo {#supported-getaddrinfo-flags}
 
 Следующие флаги могут быть переданы в качестве подсказок в [`dns.lookup()`](#dnslookuphostname-options-callback).
 

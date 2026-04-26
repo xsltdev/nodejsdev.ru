@@ -633,7 +633,7 @@ const options = { windowBits: 14, memLevel: 7 };
 -   `zlib.constants.BROTLI_OPERATION_EMIT_METADATA`
     -   В контексте Node.js эту операцию использовать сложно: потоковый уровень не даёт ясно знать, какие данные попадут в кадр; через API Node.js эти данные сейчас не прочитать.
 
-#### Параметры компрессора
+#### Параметры компрессора {#compressor-options}
 
 У кодировщиков Brotli можно задать параметры, влияющие на эффективность и скорость. Ключи и значения доступны как свойства объекта `zlib.constants`.
 
@@ -663,7 +663,7 @@ const options = { windowBits: 14, memLevel: 7 };
 -   `BROTLI_PARAM_NDIRECT`
     -   От `0` до `15 << NPOSTFIX` с шагом `1 << NPOSTFIX`.
 
-#### Параметры декомпрессора
+#### Параметры декомпрессора {#decompressor-options}
 
 Дополнительные опции управления распаковкой:
 
@@ -688,7 +688,7 @@ const options = { windowBits: 14, memLevel: 7 };
 -   `zlib.constants.ZSTD_e_flush` (по умолчанию при вызове `.flush()`)
 -   `zlib.constants.ZSTD_e_end` (по умолчанию для последнего фрагмента)
 
-#### Параметры компрессора
+#### Параметры компрессора {#compressor-options-1}
 
 У кодировщиков Zstd можно задать параметры, влияющие на эффективность и скорость. Ключи и значения доступны как свойства `zlib.constants`.
 
@@ -729,14 +729,14 @@ const stream = zlib.createZstdCompress({
 
 Ожидаемый полный размер несжатого входа можно задать через `opts.pledgedSrcSize`. Если в конце входа размер не совпадает, сжатие завершится с кодом `ZSTD_error_srcSize_wrong`.
 
-#### Параметры декомпрессора
+#### Параметры декомпрессора {#decompressor-options-1}
 
 Дополнительные опции распаковки:
 
 -   `ZSTD_d_windowLogMax`
     -   Верхний предел (степень двойки), выше которого потоковый API откажется выделять буфер, чтобы защитить хост от чрезмерных требований к памяти.
 
-## Класс: `Options`
+## Класс: `Options` {#class-options}
 
 У каждого класса на базе zlib есть объект `options`. Он необязателен.
 
@@ -755,7 +755,7 @@ const stream = zlib.createZstdCompress({
 
 Подробнее см. документацию [`deflateInit2` и `inflateInit2`](https://zlib.net/manual.html#Advanced).
 
-## Класс: `BrotliOptions`
+## Класс: `BrotliOptions` {#class-brotlioptions}
 
 У каждого класса на базе Brotli есть объект `options`. Все поля необязательны.
 
@@ -879,7 +879,7 @@ const stream = zlib.createBrotliCompress({
 
 Сбрасывает компрессор/декомпрессор к настройкам по умолчанию. Только для inflate и deflate.
 
-## Класс: `ZstdOptions`
+## Класс: `ZstdOptions` {#class-zstdoptions}
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 

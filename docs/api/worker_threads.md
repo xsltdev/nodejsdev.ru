@@ -3,7 +3,7 @@ title: Потоки worker
 description: Модуль node:worker_threads — потоки выполнения JavaScript в параллели, общая память, MessagePort, Worker и BroadcastChannel
 ---
 
-# Потоки worker (worker_threads)
+# Потоки worker (worker_threads) {#worker-threads}
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -864,7 +864,7 @@ API `worker.setEnvironmentData()` задаёт содержимое `worker.getE
 
 Вызов `unref()` у BroadcastChannel позволяет потоку завершиться, если это единственный активный handle в системе событий. Если BroadcastChannel уже `unref()`ed, повторный `unref()` не действует.
 
-## Класс: `MessageChannel`
+## Класс: `MessageChannel` {#class-messagechannel}
 
 Класс `worker.MessageChannel` представляет асинхронный двусторонний канал связи. У `MessageChannel` нет собственных методов. `new MessageChannel()` возвращает объект с полями `port1` и `port2` — связанные экземпляры [`MessagePort`](#class-messageport).
 
@@ -1258,8 +1258,8 @@ port2.postMessage(new URL('https://example.org'));
     -   `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, Worker отслеживает «сырые» дескрипторы файлов, открытые через [`fs.open()`](fs.md#fsopenpath-flags-mode-callback) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при завершении Worker, аналогично другим ресурсам (сетевые сокеты, дескрипторы через API [`FileHandle`](fs.md#class-filehandle)). Опция автоматически наследуется всеми вложенными `Worker`. **По умолчанию:** `true`.
     -   `transferList` [`<Object[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Если в `workerData` передан один или несколько объектов, похожих на `MessagePort`, для них нужен `transferList`, иначе выбрасывается [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`](errors.md#err_missing_message_port_in_transfer_list). Подробнее см. [`port.postMessage()`](#portpostmessagevalue-transferlist).
     -   `resourceLimits` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Необязательный набор ограничений ресурсов для нового экземпляра JS-движка. При достижении лимитов экземпляр `Worker` завершается. Ограничения действуют только на движок JS, не на внешние данные, в том числе на `ArrayBuffer`. Даже при заданных лимитах процесс может аварийно завершиться при глобальной нехватке памяти.
-        -   `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер основной кучи в МБ. Если задан аргумент командной строки [`--max-old-space-size`](cli.md#--max-old-space-sizesize-in-mib), он переопределяет это значение.
-        -   `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер области кучи для недавно созданных объектов. Если задан аргумент [`--max-semi-space-size`](cli.md#--max-semi-space-sizesize-in-mib), он переопределяет это значение.
+        -   `maxOldGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер основной кучи в МБ. Если задан аргумент командной строки [`--max-old-space-size`](cli.md#--max-old-space-sizesize-in-megabytes), он переопределяет это значение.
+        -   `maxYoungGenerationSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер области кучи для недавно созданных объектов. Если задан аргумент [`--max-semi-space-size`](cli.md#--max-semi-space-sizesize-in-megabytes), он переопределяет это значение.
         -   `codeRangeSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Размер заранее выделенного диапазона памяти для сгенерированного кода.
         -   `stackSizeMb` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Максимальный размер стека потока по умолчанию. Слишком малые значения могут сделать экземпляры Worker непригодными. **По умолчанию:** `4`.
     -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Необязательное имя `name`, подставляемое в имя потока и заголовок worker для отладки и идентификации; итоговый заголовок вида `[worker ${id}] ${name}`. Максимальная длина зависит от ОС. Если имя длиннее допустимого, оно обрезается.
@@ -1541,19 +1541,19 @@ port2.postMessage(new URL('https://example.org'));
 
 ### `worker.stderr`
 
--   Тип: [`<stream.Readable>`](stream.md#streamreadable)
+-   Тип: [`<stream.Readable>`](stream.md#class-streamreadable)
 
 Поток чтения с данными, записанными в [`process.stderr`](process.md#processstderr) внутри потока worker. Если в конструктор [`Worker`](#class-worker) не передано `stderr: true`, данные перенаправляются в [`process.stderr`](process.md#processstderr) родительского потока.
 
 ### `worker.stdin`
 
--   Тип: null | [`<stream.Writable>`](stream.md#streamwritable)
+-   Тип: null | [`<stream.Writable>`](stream.md#class-streamwritable)
 
 Если в конструктор [`Worker`](#class-worker) передано `stdin: true`, это поток записи. Данные, записанные в него, доступны в потоке worker как [`process.stdin`](process.md#processstdin).
 
 ### `worker.stdout`
 
--   Тип: [`<stream.Readable>`](stream.md#streamreadable)
+-   Тип: [`<stream.Readable>`](stream.md#class-streamreadable)
 
 Поток чтения с данными, записанными в [`process.stdout`](process.md#processstdout) внутри потока worker. Если в конструктор [`Worker`](#class-worker) не передано `stdout: true`, данные перенаправляются в [`process.stdout`](process.md#processstdout) родительского потока.
 

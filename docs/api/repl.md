@@ -588,8 +588,8 @@ npx codemod@latest @nodejs/repl-builtin-modules
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
     -   `prompt` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Приглашение ввода. **По умолчанию:** `'> '` (с пробелом в конце).
-    -   `input` [`<stream.Readable>`](stream.md#streamreadable) Поток `Readable` для ввода REPL. **По умолчанию:** `process.stdin`.
-    -   `output` [`<stream.Writable>`](stream.md#streamwritable) Поток `Writable` для вывода REPL. **По умолчанию:** `process.stdout`.
+    -   `input` [`<stream.Readable>`](stream.md#class-streamreadable) Поток `Readable` для ввода REPL. **По умолчанию:** `process.stdin`.
+    -   `output` [`<stream.Writable>`](stream.md#class-streamwritable) Поток `Writable` для вывода REPL. **По умолчанию:** `process.stdout`.
     -   `terminal` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` вывод `output` считается TTY. **По умолчанию:** проверка `isTTY` у `output` при создании.
     -   `eval` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция оценки каждой строки ввода. **По умолчанию:** асинхронная обёртка над `eval()`. Ошибка с `repl.Recoverable` означает неполный ввод и запрос дополнительных строк. См. раздел [пользовательские функции вычисления](#custom-evaluation-functions).
     -   `useColors` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) При `true` встроенный `writer` добавляет ANSI-цвета к выводу. При своём `writer` не действует. **По умолчанию:** проверка цветов на `output`, если у репла `terminal` равен `true`.

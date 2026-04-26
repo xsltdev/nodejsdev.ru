@@ -144,7 +144,7 @@ assert.deepEqual(/a/gi, new Date());
 
 ## Класс: `assert.AssertionError` {#class-assertassertionerror}
 
--   Наследует: [`<errors.Error>`](errors.md#error)
+-   Наследует: [`<errors.Error>`](errors.md#class-error)
 
 Указывает на неудачу утверждения. Все ошибки, выбрасываемые модулем `node:assert`, являются экземплярами класса `AssertionError`.
 

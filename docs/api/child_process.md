@@ -1465,7 +1465,7 @@ process.on('message', (m, socket) => {
 
 ### `subprocess.stderr`
 
--   Тип: [`<stream.Readable>`](stream.md#streamreadable) | null | undefined
+-   Тип: [`<stream.Readable>`](stream.md#class-streamreadable) | null | undefined
 
 Поток `Readable` для `stderr` дочернего процесса.
 
@@ -1477,7 +1477,7 @@ process.on('message', (m, socket) => {
 
 ### `subprocess.stdin`
 
--   Тип: [`<stream.Writable>`](stream.md#streamwritable) | null | undefined
+-   Тип: [`<stream.Writable>`](stream.md#class-streamwritable) | null | undefined
 
 Поток `Writable` для `stdin` дочернего процесса.
 
@@ -1551,7 +1551,7 @@ process.on('message', (m, socket) => {
 
 ### `subprocess.stdout`
 
--   Тип: [`<stream.Readable>`](stream.md#streamreadable) | null | undefined
+-   Тип: [`<stream.Readable>`](stream.md#class-streamreadable) | null | undefined
 
 Поток `Readable` для `stdout` дочернего процесса.
 

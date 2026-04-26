@@ -110,15 +110,15 @@ const myURL = new URL(
 console.log(myURL.href);
 ```
 
-## WHATWG URL API
+## WHATWG URL API {#the-whatwg-url-api}
 
-### Класс: `URL`
+### Класс: `URL` {#class-url}
 
 Совместимый с браузером класс `URL`, реализованный в соответствии со стандартом URL WHATWG. [Примеры разобранных URL](https://url.spec.whatwg.org/#example-url-parsing) можно найти в самом Стандарте. Класс `URL` также доступен в глобальном объекте.
 
 В соответствии с традициями браузеров, все свойства объектов `URL` реализованы как геттеры и сеттеры прототипа класса, а не как свойства данных самого объекта. Таким образом, в отличие от [legacy `urlObject`](#legacy-urlobject)s, использование ключевого слова `delete` для любых свойств объектов `URL` (например, `delete myURL.protocol`, `delete myURL.pathname` и т.д.) не имеет никакого эффекта, но все равно вернет `true`.
 
-#### `новый URL(input[, base])`
+#### `новый URL(input[, base])` {#new-urlinput-base}
 
 -   `input` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Абсолютный или относительный входной URL для разбора. Если `input` относительный, то требуется `base`. Если `input` абсолютный, то `base` игнорируется. Если `input` не является строкой, то сначала она [преобразуется в строку](https://tc39.es/ecma262/#sec-tostring).
 -   `base` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Базовый URL для разрешения, если `input` не является абсолютным. Если `base` не является строкой, то сначала [преобразуется в строку](https://tc39.es/ecma262/#sec-tostring).
@@ -603,7 +603,7 @@ console.log(otherBlob.size);
 
 Удаляет сохраненный [`<Blob>`](buffer.md#blob), идентифицированный заданным ID. Попытка отозвать ID, который не зарегистрирован, завершится молчаливым отказом.
 
-### Класс: `URLSearchParams`
+### Класс: `URLSearchParams` {#class-urlsearchparams}
 
 API `URLSearchParams` предоставляет доступ на чтение и запись к запросу `URL`. Класс `URLSearchParams` также может быть использован отдельно с помощью одного из четырех следующих конструкторов. Класс `URLSearchParams` также доступен в глобальном объекте.
 
@@ -1334,7 +1334,7 @@ resolve('http://example.com/', '/one'); // 'http://example.com/one'
 resolve('http://example.com/one', '/two'); // 'http://example.com/two'
 ```
 
-## Процентное кодирование в URL-адресах
+## Процентное кодирование в URL-адресах {#percent-encoding-in-urls}
 
 URL-адреса могут содержать только определенный диапазон символов. Любой символ, выходящий за пределы этого диапазона, должен быть закодирован. Как кодировать такие символы и какие символы кодировать, полностью зависит от того, где символ находится в структуре URL.
 

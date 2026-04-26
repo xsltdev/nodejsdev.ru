@@ -23,11 +23,11 @@ const net = require('node:net');
 
 <!-- 0002.part.md -->
 
-## Поддержка IPC
+## Поддержка IPC {#ipc-support}
 
 Модуль `node:net` поддерживает IPC с помощью именованных труб в Windows и доменных сокетов Unix в других операционных системах.
 
-### Определение путей для IPC-соединений
+### Определение путей для IPC-соединений {#identifying-paths-for-ipc-connections}
 
 [`net.connect()`](#netconnect), [`net.createConnection()`](#netcreateconnection), [`server.listen()`](#serverlisten) и [`socket.connect()`](#socketconnect) принимают параметр `path` для определения конечных точек IPC.
 
@@ -135,9 +135,9 @@ console.log(
 
 -   Тип [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-## Класс: `net.Server`
+## Класс: `net.Server` {#class-netserver}
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Этот класс используется для создания TCP или [IPC](#ipc-support) сервера.
 
@@ -149,13 +149,13 @@ console.log(
 
 `net.Server` является [`EventEmitter`](events.md#class-eventemitter) со следующими событиями:
 
-### Событие: `закрытие`.
+### Событие: `закрытие`. {#event-close}
 
 Выдается при закрытии сервера. Если существуют соединения, то это событие не испускается, пока все соединения не будут завершены.
 
-### Событие: `'connection'`
+### Событие: `'connection'` {#event-connection}
 
--   [`<net.Socket>`](net.md#netsocket) Объект соединения
+-   [`<net.Socket>`](net.md#class-netsocket) Объект соединения
 
 Выдается, когда создается новое соединение. `socket` является экземпляром `net.Socket`.
 
@@ -165,7 +165,7 @@ console.log(
 
 Выдается при возникновении ошибки. В отличие от [`net.Socket`](#class-netsocket), событие [`'close'`](#event-close) **не** будет испущено непосредственно после этого события, если только [`server.close()`](#serverclosecallback) не будет вызван вручную. См. пример обсуждения [`server.listen()`](#serverlisten).
 
-### Событие: `прослушивание`.
+### Событие: `прослушивание`. {#event-listening}
 
 Выдается, когда сервер был связан после вызова [`server.listen()`](#serverlisten).
 
@@ -380,7 +380,7 @@ controller.abort();
 
 Вызов `unref()` на сервере позволит программе выйти, если это единственный активный сервер в системе событий. Если сервер уже `unref`, то повторный вызов `unref()` не будет иметь никакого эффекта.
 
-## Класс: `net.Socket`.
+## Класс: `net.Socket` {#class-netsocket}
 
 -   Расширяет: {stream.Duplex}
 
@@ -400,7 +400,7 @@ controller.abort();
     -   `readable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Разрешить чтение на сокете, если передан `fd`, в противном случае игнорируется. **По умолчанию:** `false`.
     -   `writable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Разрешить запись на сокет при передаче `fd`, в противном случае игнорируется. **По умолчанию:** `false`.
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Сигнал прерывания, который может быть использован для уничтожения сокета.
--   Возвращает: [`<net.Socket>`](net.md#netsocket)
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Создает новый объект сокета.
 
@@ -412,11 +412,11 @@ controller.abort();
 
 Выдается после полного закрытия сокета. Аргумент `hadError` - это булево значение, которое говорит, был ли сокет закрыт из-за ошибки передачи.
 
-### Событие: `'connect``.
+### Событие: `'connect'` {#event-connect}
 
 Выдается при успешном установлении сокетного соединения. См. [`net.createConnection()`](#netcreateconnection).
 
-### Событие: `'data'`
+### Событие: `'data'` {#event-data}
 
 -   [`<Buffer>`](buffer.md#buffer) | [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -424,19 +424,19 @@ controller.abort();
 
 Данные будут потеряны, если нет слушателя, когда `Socket` испускает событие `'data'`.
 
-### Событие: `'drain'``.
+### Событие: `'drain'` {#event-drain}
 
 Испускается, когда буфер записи становится пустым. Может использоваться для дросселирования загрузки.
 
 См. также: возвращаемые значения `socket.write()`.
 
-### Событие: `конец`.
+### Событие: `конец`. {#event-end}
 
 Вызывается, когда другой конец сокета сигнализирует об окончании передачи данных, тем самым завершая доступную для чтения сторону сокета.
 
 По умолчанию (`allowHalfOpen` - `false`) сокет посылает обратно пакет об окончании передачи и уничтожает свой файловый дескриптор после того, как выпишет очередь ожидающих записи. Однако, если `allowHalfOpen` установлен в `true`, сокет не будет автоматически [`end()`](#socketenddata-encoding-callback) свою записываемую сторону, позволяя пользователю записывать произвольные объемы данных. Пользователь должен явно вызвать [`end()`](#socketenddata-encoding-callback), чтобы закрыть соединение (т.е. отправить обратно FIN-пакет).
 
-### Событие: `ошибка`.
+### Событие: `ошибка`. {#event-error_1}
 
 -   [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
@@ -460,7 +460,7 @@ controller.abort();
 
 Срабатывает сразу после `'connect'`.
 
-### Событие: `'timeout'`.
+### Событие: `'timeout'`. {#event-timeout}
 
 Испускается, если сокет завершает работу от бездействия. Это только уведомление о том, что сокет простаивал. Пользователь должен вручную закрыть соединение.
 
@@ -515,7 +515,7 @@ controller.abort();
 -   [`socket.connect(options[, connectListener])`](#socketconnectoptions-connectlistener)
 -   [`socket.connect(path[, connectListener])`](#socketconnectpath-connectlistener) для [IPC](#ipc-support) соединений.
 -   [`socket.connect(port[, host][, connectListener])`](#socketconnectport-host-connectlistener) для TCP-соединений.
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Эта функция является асинхронной. Когда соединение установлено, будет выдано событие [`'connect'`](#event-connect). При возникновении проблем с подключением вместо события [`'connect'`](#event-connect) будет выдано событие [`'error'`](#event-error_1) с передачей ошибки слушателю [`'error'`](#event-error_1). Последний параметр `conn
 
@@ -527,7 +527,7 @@ controller.abort();
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр методов [`socket.connect()`](#socketconnect). Будет добавлен в качестве слушателя для события [`'connect'`](#event-connect) один раз.
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Инициирует соединение на заданном сокете. Обычно этот метод не нужен, сокет должен быть создан и открыт с помощью [`net.createConnection()`](#netcreateconnection). Используйте этот метод только при реализации пользовательского Socket.
 
@@ -583,7 +583,7 @@ net.connect({
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь, к которому должен подключиться клиент. См. [Определение путей для IPC-соединений](#identifying-paths-for-ipc-connections).
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр методов [`socket.connect()`](#socketconnect). Будет добавлен в качестве слушателя для события [`'connect'`](#event-connect) один раз.
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Инициирует [IPC](#ipc-support) соединение на данном сокете.
 
@@ -594,7 +594,7 @@ net.connect({
 -   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому должен подключиться клиент.
 -   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост, к которому должен подключиться клиент.
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр методов [`socket.connect()`](#socketconnect). Будет добавлен в качестве слушателя для события [`'connect'`](#event-connect) один раз.
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Инициирует TCP-соединение на указанном сокете.
 
@@ -609,7 +609,7 @@ net.connect({
 ### `socket.destroy([error])`.
 
 -   `error` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
--   Возвращает: [`<net.Socket>`](net.md#netsocket)
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Убеждается, что на этом сокете больше не происходит никаких операций ввода-вывода. Уничтожает поток и закрывает соединение.
 
@@ -630,7 +630,7 @@ net.connect({
 -   `data` {string|Buffer|Uint8Array}
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Используется только когда данные являются `string`. **По умолчанию:** `'utf8'`.
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Необязательный обратный вызов для завершения работы сокета.
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Наполовину закрывает сокет, т.е. посылает пакет FIN. Возможно, сервер все еще будет посылать некоторые данные.
 
@@ -658,7 +658,7 @@ net.connect({
 
 ### `socket.pause()`.
 
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Приостанавливает чтение данных. То есть, события [`'data'`](#event-data) не будут испускаться. Полезно для замедления загрузки.
 
@@ -670,7 +670,7 @@ net.connect({
 
 ### `socket.ref()`.
 
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 В отличие от `unref()`, вызов `ref()` на ранее `unref`ированном сокете _не_ позволит программе завершиться, если это единственный оставшийся сокет (поведение по умолчанию). Если сокет `ref`отрефлектирован, повторный вызов `ref` не будет иметь никакого эффекта.
 
@@ -694,28 +694,28 @@ net.connect({
 
 ### `socket.resetAndDestroy()`.
 
--   Возвращает: [`<net.Socket>`](net.md#netsocket)
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Закрывает TCP-соединение, посылая пакет RST, и уничтожает поток. Если этот TCP-сокет находится в состоянии соединения, то после соединения он пошлет RST-пакет и уничтожит этот TCP-сокет. В противном случае будет вызван `socket.destroy` с ошибкой `ERR_SOCKET_CLOSED`. Если это не TCP-сокет (например, труба), вызов этого метода немедленно приведет к ошибке `ERR_INVALID_HANDLE_TYPE`.
 
 ### `socket.resume()`.
 
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Возобновляет чтение после вызова [`socket.pause()`](#socketpause).
 
 ### `socket.setEncoding([encoding])`
 
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
-Устанавливает кодировку для сокета как [Readable Stream](stream.md#class-streamreadable). Смотрите [`readable.setEncoding()`](stream.md#readablesetencodingencoding) для получения дополнительной информации.
+Устанавливает кодировку для сокета как [Readable Stream](stream.md#streamreadable). Смотрите [`readable.setEncoding()`](stream.md#readablesetencodingencoding) для получения дополнительной информации.
 
 ### `socket.setKeepAlive([enable][, initialDelay])`.
 
 -   `enable` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `false`.
 -   `initialDelay` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) **По умолчанию:** `0`
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Включает/выключает функцию keep-alive, а также опционально устанавливает начальную задержку перед отправкой первого зонда keepalive на незанятом сокете.
 
@@ -733,7 +733,7 @@ net.connect({
 ### `socket.setNoDelay([noDelay])`
 
 -   `noDelay` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) **По умолчанию:** `true`.
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Включить/выключить использование алгоритма Нагла.
 
@@ -747,7 +747,7 @@ net.connect({
 
 -   `timeout` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `callback` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Устанавливает таймаут сокета после `timeout` миллисекунд бездействия сокета. По умолчанию `net.Socket` не имеет тайм-аута.
 
@@ -777,7 +777,7 @@ socket.on('timeout', () => {
 
 ### `socket.unref()`.
 
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Сам сокет.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Сам сокет.
 
 Вызов `unref()` на сокете позволит программе завершить работу, если это единственный активный сокет в системе событий. Если сокет уже `unref`, то повторный вызов `unref()` не будет иметь никакого эффекта.
 
@@ -821,7 +821,7 @@ socket.on('timeout', () => {
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<net.Socket>`](net.md#netsocket)
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Псевдоним для [`net.createConnection(options[, connectListener])`](#netcreateconnectionoptions-connectlistener).
 
@@ -829,7 +829,7 @@ socket.on('timeout', () => {
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<net.Socket>`](net.md#netsocket)
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Псевдоним для [`net.createConnection(path[, connectListener])`](#netcreateconnectionpath-connectlistener).
 
@@ -838,7 +838,7 @@ socket.on('timeout', () => {
 -   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 -   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<net.Socket>`](net.md#netsocket)
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket)
 
 Псевдоним для [`net.createConnection(port[, host][, connectListener])`](#netcreateconnectionport-host-connectlistener).
 
@@ -862,7 +862,7 @@ socket.on('timeout', () => {
 
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) Требуется. Передается как в вызов [`new net.Socket([options])`](#new-netsocketoptions), так и в метод [`socket.connect(options[, connectListener])`](#socketconnectoptions-connectlistener).
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр функций [`net.createConnection()`](#netcreateconnection). Если задан, то будет добавлен в качестве слушателя для события [`'connect'`](#event-connect) на возвращаемом сокете один раз.
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Вновь созданный сокет, используемый для начала соединения.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Вновь созданный сокет, используемый для начала соединения.
 
 Доступные опции см. в [`new net.Socket([options])`](#new-netsocketoptions) и [`socket.connect(options[, connectListener])`](#socketconnectoptions-connectlistener).
 
@@ -908,7 +908,7 @@ const client = net.createConnection({
 
 -   `path` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь, к которому должен подключиться сокет. Будет передан в [`socket.connect(path[, connectListener])`](#socketconnectpath-connectlistener). См. раздел [Определение путей для IPC-соединений](#identifying-paths-for-ipc-connections).
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр функций [`net.createConnection()`](#netcreateconnection), "одноразовый" слушатель события `'connect'` на инициирующем сокете. Будет передан в [`socket.connect(path[, connectListener])`](#socketconnectpath-connectlistener).
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Вновь созданный сокет, используемый для запуска соединения.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Вновь созданный сокет, используемый для запуска соединения.
 
 Инициирует [IPC](#ipc-support) соединение.
 
@@ -919,7 +919,7 @@ const client = net.createConnection({
 -   `port` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Порт, к которому должен подключиться сокет. Будет передан в [`socket.connect(port[, host][, connectListener])`](#socketconnectport-host-connectlistener).
 -   `host` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Хост, к которому должен подключиться сокет. Будет передаваться в [`socket.connect(port[, host][, connectListener])`](#socketconnectport-host-connectlistener). **По умолчанию:** `'localhost'`.
 -   `connectListener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Общий параметр функций [`net.createConnection()`](#netcreateconnection), "одноразовый" слушатель события `'connect'` на инициирующем сокете. Будет передан в [`socket.connect(port[, host][, connectListener])`](#socketconnectport-host-connectlistener).
--   Возвращает: [`<net.Socket>`](net.md#netsocket) Вновь созданный сокет, используемый для запуска соединения.
+-   Возвращает: [`<net.Socket>`](net.md#class-netsocket) Вновь созданный сокет, используемый для запуска соединения.
 
 Инициирует TCP-соединение.
 

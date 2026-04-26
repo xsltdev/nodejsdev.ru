@@ -29,7 +29,7 @@ description: Глобальные объекты и API, доступные во
 
 Эта переменная может казаться глобальной, но таковой не является. См. [`__filename`](modules.md#__filename).
 
-## Класс: `AbortController`
+## Класс: `AbortController` {#class-abortcontroller}
 
 Вспомогательный класс для сигнализации об отмене в выбранных API на основе `Promise`. API основан на веб-API [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController).
 

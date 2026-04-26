@@ -88,8 +88,8 @@ assert.deepEqual(
 Наследный режим утверждения использует оператор [`==`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/Equality) в:
 
 -   [`assert.deepEqual()`](#assertdeepequalactual-expected-message)
--   [`assert.equal()`](#asserttequalactual-expected-message)
--   [`assert.notDeepEqual()`](#assertnotdeepepequalactual-expected-message)
+-   [`assert.equal()`](#assertequalactual-expected-message)
+-   [`assert.notDeepEqual()`](#assertnotdeepequalactual-expected-message)
 -   [`assert.notEqual()`](#assertnotequalactual-expected-message)
 
 Чтобы использовать унаследованный режим утверждения:
@@ -110,9 +110,9 @@ const assert = require('node:assert');
 assert.deepEqual(/a/gi, new Date());
 ```
 
-## Класс: assert.AssertionError
+## Класс: assert.AssertionError {#class-assertassertionerror}
 
--   Расширяется: [`<errors.Error>`](errors.md#error)
+-   Расширяется: [`<errors.Error>`](errors.md#class-error)
 
 Указывает на неудачу утверждения. Все ошибки, выбрасываемые модулем `node:assert`, будут экземплярами класса `AssertionError`.
 
@@ -187,7 +187,7 @@ try {
 
 <!-- 0004.part.md -->
 
-## Класс: `assert.CallTracker`
+## Класс: `assert.CallTracker` {#class-assertcalltracker}
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -477,7 +477,7 @@ tracker.verify();
 
     Вместо этого используйте [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message).
 
-Проверяет глубокое равенство между параметрами `actual` и `expected`. Вместо этого используйте [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message). [`assert.deepEqual()`](#assertdeepepequalactual-expected-message) может привести к неожиданным результатам.
+Проверяет глубокое равенство между параметрами `actual` и `expected`. Вместо этого используйте [`assert.deepStrictEqual()`](#assertdeepstrictequalactual-expected-message). [`assert.deepEqual()`](#assertdeepequalactual-expected-message) может привести к неожиданным результатам.
 
 _Глубокое равенство_ означает, что перечислимые "собственные" свойства дочерних объектов также рекурсивно оцениваются по следующим правилам.
 
@@ -1247,7 +1247,7 @@ assert.match('I will pass', /pass/);
 
     Вместо этого используйте [`assert.notDeepStrictEqual()`](#assertnotdeepstrictequalactual-expected-message).
 
-Проверяет любое глубокое неравенство. Противоположность [`assert.deepEqual()`](#assertdeepepequalactual-expected-message).
+Проверяет любое глубокое неравенство. Противоположность [`assert.deepEqual()`](#assertdeepequalactual-expected-message).
 
 ```mjs
 import assert from 'node:assert';

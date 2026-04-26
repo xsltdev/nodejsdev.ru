@@ -97,7 +97,7 @@ description: Модуль timer предоставляет глобальный 
 
 Таймер в Node.js - это внутренняя конструкция, которая вызывает заданную функцию через определенный период времени. Время вызова функции таймера зависит от того, какой метод был использован для создания таймера и какую другую работу выполняет цикл событий Node.js.
 
-### `setImmediate()`
+### `setImmediate()` {#setimmediatecallback-args}
 
 ```js
 setImmediate(callback[, ...args])
@@ -115,7 +115,7 @@ setImmediate(callback[, ...args])
 
 У этого метода есть собственный вариант для обещаний, который доступен с помощью [`timersPromises.setImmediate()`](#timerspromisessetimmediatevalue-options).
 
-### `setInterval()`
+### `setInterval()` {#setintervalcallback-delay-args}
 
 ```js
 setInterval(callback[, delay[, ...args]])
@@ -134,7 +134,7 @@ setInterval(callback[, delay[, ...args]])
 
 У этого метода есть собственный вариант для обещаний, который доступен с помощью [`timersPromises.setInterval()`](#timerspromisessetintervaldelay-value-options).
 
-### `setTimeout()`
+### `setTimeout()` {#settimeoutcallback-delay-args}
 
 ```js
 setTimeout(callback[, delay[, ...args]])
@@ -203,7 +203,7 @@ setTimeoutPromise(1000, 'foobar', { signal })
 ac.abort();
 ```
 
-### `clearImmediate()`
+### `clearImmediate()` {#clearimmediateimmediate}
 
 ```js
 clearImmediate(immediate);
@@ -213,7 +213,7 @@ clearImmediate(immediate);
 
 Отменяет объект `Immediate`, созданный [`setImmediate()`](#setimmediatecallback-args).
 
-### `clearInterval()`
+### `clearInterval()` {#clearintervaltimeout}
 
 ```js
 clearInterval(timeout);
@@ -223,7 +223,7 @@ clearInterval(timeout);
 
 Отменяет объект `Timeout`, созданный [`setInterval()`](#setintervalcallback-delay-args).
 
-### `clearTimeout()`
+### `clearTimeout()` {#cleartimeouttimeout}
 
 ```js
 clearTimeout(timeout);
@@ -257,7 +257,7 @@ API `timers/promises` предоставляет альтернативный н
     } = require('node:timers/promises');
     ```
 
-### `timersPromises.setTimeout()`
+### `timersPromises.setTimeout()` {#timerspromisessettimeoutdelay-value-options}
 
 ```js
 timersPromises.setTimeout([delay[, value[, options]]])
@@ -289,7 +289,7 @@ timersPromises.setTimeout([delay[, value[, options]]])
     });
     ```
 
-### `timersPromises.setImmediate()`
+### `timersPromises.setImmediate()` {#timerspromisessetimmediatevalue-options}
 
 ```js
 timersPromises.setImmediate([value[, options]])
@@ -320,7 +320,7 @@ timersPromises.setImmediate([value[, options]])
     });
     ```
 
-### `timersPromises.setInterval()`
+### `timersPromises.setInterval()` {#timerspromisessetintervaldelay-value-options}
 
 ```js
 timersPromises.setInterval([delay[, value[, options]]])

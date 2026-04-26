@@ -3,7 +3,7 @@ title: Модули CommonJS
 description: Система модулей CommonJS — require, module.exports, кэш, разрешение путей и взаимодействие с ES-модулями
 ---
 
-# Модули: CommonJS{#modules-commonjs-modules}
+# Модули: CommonJS {#modules-commonjs-modules}
 
 !!!success "Стабильность: 2 – Стабильная"
 
@@ -61,7 +61,7 @@ module.exports = class Square {
 
 Система модулей CommonJS реализована во [встроенном модуле `module`](module.md).
 
-## Включение{#enabling}
+## Включение {#enabling}
 
 У Node.js две системы модулей: CommonJS и [модули ECMAScript](esm.md).
 
@@ -79,7 +79,7 @@ module.exports = class Square {
 
 Вызов `require()` всегда использует загрузчик модулей CommonJS. Вызов `import()` всегда использует загрузчик модулей ECMAScript.
 
-## Доступ к главному модулю{#accessing-the-main-module}
+## Доступ к главному модулю {#accessing-the-main-module}
 
 Когда файл запускается напрямую из Node.js, `require.main` указывает на его `module`. Значит, можно определить, запущен ли файл напрямую, проверкой `require.main === module`.
 
@@ -87,7 +87,7 @@ module.exports = class Square {
 
 Если точка входа не является модулем CommonJS, `require.main` равен `undefined`, и главный модуль недоступен.
 
-## Советы по менеджерам пакетов{#package-manager-tips}
+## Советы по менеджерам пакетов {#package-manager-tips}
 
 Семантика функции Node.js `require()` рассчитана на достаточно общую поддержку разумных структур каталогов. Программы менеджеров пакетов вроде `dpkg`, `rpm` и `npm` могут собирать нативные пакеты из модулей Node.js без изменений.
 
@@ -112,7 +112,7 @@ module.exports = class Square {
 
 Чтобы модули были доступны в REPL Node.js, полезно добавить каталог `/usr/lib/node_modules` в переменную окружения `$NODE_PATH`. Поиск через каталоги `node_modules` относительный и опирается на реальный путь файлов, вызывающих `require()`, поэтому сами пакеты могут находиться где угодно.
 
-## Загрузка ECMAScript-модулей через `require()`{#loading-ecmascript-modules-using-require}
+## Загрузка ECMAScript-модулей через `require()` {#loading-ecmascript-modules-using-require}
 
 Расширение `.mjs` зарезервировано для [ECMAScript Modules](esm.md). См. раздел [Определение системы модулей](packages.md#determining-module-system), какие файлы разбираются как ECMAScript-модули.
 
@@ -225,7 +225,7 @@ module.exports = class Square {
 
 Наличие возможности проверяется по [`process.features.require_module`](process.md#processfeaturesrequire_module) === `true`.
 
-## Всё вместе{#all-together}
+## Всё вместе {#all-together}
 
 Чтобы узнать точное имя файла, которое загрузит `require()`, используйте `require.resolve()`.
 
@@ -350,7 +350,7 @@ RESOLVE_ESM_MATCH(MATCH)
 3. THROW "not found"
 ```
 
-## Кэширование{#caching}
+## Кэширование {#caching}
 
 Модули кэшируются после первой загрузки. В частности, каждый вызов `require('foo')` возвращает один и тот же объект, если он разрешается в тот же файл.
 
@@ -364,7 +364,7 @@ RESOLVE_ESM_MATCH(MATCH)
 
 Кроме того, на файловых системах без учёта регистра разные разрешённые имена могут указывать на один файл, но кэш считает их разными модулями и перезагружает файл. Например, `require('./foo')` и `require('./FOO')` дают два разных объекта, независимо от того, один это файл или нет.
 
-## Встроенные модули{#built-in-modules}
+## Встроенные модули {#built-in-modules}
 
 В Node.js несколько модулей встроено в бинарник; они подробнее описаны в других разделах документации.
 
@@ -376,7 +376,7 @@ RESOLVE_ESM_MATCH(MATCH)
 
 Список всех встроенных модулей — в [`module.builtinModules`](module.md#modulebuiltinmodules). Имена перечислены без префикса `node:`, кроме модулей, для которых префикс обязателен (см. ниже).
 
-### Встроенные модули с обязательным префиксом `node:`{#built-in-modules-with-mandatory-node-prefix}
+### Встроенные модули с обязательным префиксом `node:` {#built-in-modules-with-mandatory-node-prefix}
 
 При загрузке через `require()` некоторые встроенные модули нужно запрашивать с префиксом `node:`. Это снижает риск конфликта с пакетами пользователя с тем же именем. Сейчас префикс `node:` обязателен для:
 
@@ -387,7 +387,7 @@ RESOLVE_ESM_MATCH(MATCH)
 
 Список этих модулей есть в [`module.builtinModules`](module.md#modulebuiltinmodules), с префиксом.
 
-## Циклы{#cycles}
+## Циклы {#cycles}
 
 При циклических вызовах `require()` модуль может быть возвращён до завершения выполнения.
 
@@ -460,7 +460,7 @@ in main, a.done = true, b.done = true
 
 Если путь не существует, `require()` выбрасывает [`MODULE_NOT_FOUND`](errors.md#module_not_found).
 
-## Каталоги как модули{#folders-as-modules}
+## Каталоги как модули {#folders-as-modules}
 
 !!!note "Стабильность: 3 – Закрыто"
 
@@ -489,7 +489,7 @@ Error: Cannot find module 'some-library'
 
 Во всех трёх случаях вызов `import('./some-library')` даст ошибку [`ERR_UNSUPPORTED_DIR_IMPORT`](errors.md#err_unsupported_dir_import). [экспорты подпутей](packages.md#subpath-exports) или [импорты подпутей](packages.md#subpath-imports) дают схожую инкапсуляцию, как у каталогов-модулей, и работают и с `require`, и с `import`.
 
-## Загрузка из каталогов `node_modules`{#loading-from-node_modules-folders}
+## Загрузка из каталогов `node_modules` {#loading-from-node_modules-folders}
 
 Если идентификатор для `require()` — не [встроенный](#built-in-modules) модуль и не начинается с `'/'`, `'../'` или `'./'`, Node.js начинает с каталога текущего модуля, добавляет `/node_modules` и пытается загрузить модуль оттуда. К пути, уже оканчивающемуся на `node_modules`, ещё один `node_modules` не добавляется.
 
@@ -506,7 +506,7 @@ Error: Cannot find module 'some-library'
 
 Можно подключать конкретные файлы или подмодули пакета, указав суффикс пути после имени. Например, `require('example-module/path/to/file')` разрешит `path/to/file` относительно расположения `example-module`. Для суффикса действуют те же правила разрешения.
 
-## Загрузка из глобальных каталогов{#loading-from-the-global-folders}
+## Загрузка из глобальных каталогов {#loading-from-the-global-folders}
 
 Если задана переменная окружения `NODE_PATH` со списком абсолютных путей через двоеточие, Node.js ищет модули и там, если не нашла раньше.
 
@@ -528,7 +528,7 @@ Error: Cannot find module 'some-library'
 
 Настоятельно рекомендуется держать зависимости в локальном `node_modules` — так быстрее и надёжнее.
 
-## Обёртка модуля{#the-module-wrapper}
+## Обёртка модуля {#the-module-wrapper}
 
 Перед выполнением кода модуля Node.js оборачивает его в функцию вида:
 
@@ -551,11 +551,11 @@ Error: Cannot find module 'some-library'
     -   объекты `module` и `exports` для экспорта значений;
     -   `__filename` и `__dirname` — абсолютный путь к файлу и к каталогу модуля.
 
-## Область видимости модуля
+## Область видимости модуля {#the-module-scope}
 
 <!-- markdownlint-disable MD051 -->
 
-### Переменная `__dirname` {#\_\_dirname}
+### Переменная `__dirname` {#__dirname}
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -570,7 +570,7 @@ console.log(path.dirname(__filename));
 // Prints: /Users/mjr
 ```
 
-### Переменная `__filename` {#\_\_filename}
+### Переменная `__filename` {#__filename}
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -598,19 +598,19 @@ console.log(__dirname);
 
 В `b.js` ссылки на `__filename` дают `/Users/mjr/app/node_modules/b/b.js`, в `a.js` — `/Users/mjr/app/a.js`.
 
-### `exports`{#exports}
+### `exports` {#exports}
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 Сокращение для `module.exports`. См. [сокращение exports](#exports-shortcut), когда использовать `exports`, а когда `module.exports`.
 
-### `module`{#module}
+### `module` {#module}
 
 -   Тип: [`<module>`](modules.md#module)
 
 Ссылка на текущий модуль, см. объект [`module` object](#the-module-object). `module.exports` задаёт, что модуль экспортирует и отдаёт через `require()`.
 
-### `require(id)`{#requireid}
+### `require(id)` {#requireid}
 
 -   `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Имя модуля или путь
 -   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Экспортированное содержимое модуля
@@ -629,7 +629,7 @@ const jsonData = require('./path/filename.json');
 const crypto = require('node:crypto');
 ```
 
-#### `require.cache`{#requirecache}
+#### `require.cache` {#requirecache}
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -648,7 +648,7 @@ assert.strictEqual(require('fs'), fakeFs);
 assert.strictEqual(require('node:fs'), realFs);
 ```
 
-#### `require.extensions`{#requireextensions}
+#### `require.extensions` {#requireextensions}
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -666,7 +666,7 @@ require.extensions['.sjs'] = require.extensions['.js'];
 
 Избегайте `require.extensions` — возможны тонкие ошибки, а каждое новое расширение замедляет разрешение.
 
-#### `require.main`{#requiremain}
+#### `require.main` {#requiremain}
 
 -   Тип: [`<module>`](modules.md#module) | undefined
 
@@ -714,26 +714,26 @@ Module {
 
 Если модуль не найден, выбрасывается `MODULE_NOT_FOUND`.
 
-##### `require.resolve.paths(request)`{#requireresolvepathsrequest}
+##### `require.resolve.paths(request)` {#requireresolvepathsrequest}
 
 -   `request` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Путь модуля, для которого нужно получить пути поиска.
 -   Возвращает: [`<string[]>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) | null
 
 Массив путей, просмотренных при разрешении `request`, или `null`, если `request` — встроенный модуль, например `http` или `fs`.
 
-## Объект `module`{#the-module-object}
+## Объект `module` {#the-module-object}
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 В каждом модуле свободная переменная `module` — ссылка на объект текущего модуля. Для удобства к `module.exports` есть доступ через глобальную для модуля переменную `exports`. Сама `module` не глобальна, а локальна для модуля.
 
-### `module.children`{#modulechildren}
+### `module.children` {#modulechildren}
 
 -   Тип: [`<module[]>`](modules.md#module)
 
 Объекты модулей, которые этот модуль впервые подключил через `require`.
 
-### `module.exports`{#moduleexports}
+### `module.exports` {#moduleexports}
 
 -   Тип: [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -779,7 +779,7 @@ const x = require('./x');
 console.log(x.a);
 ```
 
-#### Сокращение `exports`{#exports-shortcut}
+#### Сокращение `exports` {#exports-shortcut}
 
 Переменная `exports` есть в области файла модуля и до выполнения равна `module.exports`.
 
@@ -823,23 +823,23 @@ function require(/* ... */) {
 
 Полностью разрешённое имя файла модуля.
 
-### `module.id`{#moduleid}
+### `module.id` {#moduleid}
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
 Идентификатор модуля. Обычно это полностью разрешённое имя файла.
 
-### `module.isPreloading`{#moduleispreloading}
+### `module.isPreloading` {#moduleispreloading}
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) `true`, если модуль выполняется на фазе предзагрузки Node.js.
 
-### `module.loaded`{#moduleloaded}
+### `module.loaded` {#moduleloaded}
 
 -   Тип: [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 Загрузка модуля завершена или ещё идёт.
 
-### `module.parent`{#moduleparent}
+### `module.parent` {#moduleparent}
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -850,7 +850,7 @@ function require(/* ... */) {
 
 Модуль, который первым подключил этот, или `null`, если текущий модуль — точка входа процесса, или `undefined`, если загрузчик не CommonJS (например REPL или `import`).
 
-### `module.path`{#modulepath}
+### `module.path` {#modulepath}
 
 -   Тип: [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 
@@ -862,7 +862,7 @@ function require(/* ... */) {
 
 Пути поиска для модуля.
 
-### `module.require(id)`{#modulerequireid}
+### `module.require(id)` {#modulerequireid}
 
 -   `id` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   Возвращает: [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Экспортированное содержимое модуля
@@ -871,7 +871,7 @@ function require(/* ... */) {
 
 Нужна ссылка на объект `module`: `require()` возвращает `module.exports`, а сам `module` обычно доступен только внутри кода модуля, поэтому его иногда явно экспортируют.
 
-## Объект `Module`{#class-module}
+## Объект `Module` {#class-module}
 
 Раздел перенесён в [Модули: встроенный модуль `module`](module.md#the-module-object).
 

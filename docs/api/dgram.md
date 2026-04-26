@@ -68,7 +68,7 @@ description: Модуль node:dgram предоставляет реализац
     // Выводит: server listening 0.0.0.0:41234
     ```
 
-## Класс: `dgram.Socket`
+## Класс: `dgram.Socket` {#class-dgramsocket}
 
 -   Наследует: [`<EventEmitter>`](events.md#class-eventemitter)
 

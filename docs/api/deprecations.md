@@ -1517,7 +1517,7 @@ npx codemod@latest @nodejs/repl-classes-with-new
 
 Свойства `process.features.tls_alpn`, `process.features.tls_ocsp` и `process.features.tls_sni` объявлены устаревшими: их значения гарантированно совпадают с `process.features.tls`.
 
-### DEP0190: Passing `args` to `node:child_process` `execFile`/`spawn` with `shell` option
+### DEP0190: Passing `args` to `node:child_process` `execFile`/`spawn` with `shell` option {#DEP0190}
 
 Тип: время выполнения (весь код)
 

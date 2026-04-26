@@ -275,6 +275,18 @@ console.log(cert.verifySpkac(Buffer.from(spkac)));
 
 <!-- 0010.part.md -->
 
+## CCM mode {#ccm-mode}
+
+В режиме CCM (`aes-*-ccm` и аналоги) для `cipher` и `decipher` нужно задавать `plaintextLength` и при необходимости `authTagLength`; подробности см. у [`cipher.setAAD()`](#ciphersetaadbuffer-options) и [`decipher.setAAD()`](#deciphersetaadbuffer-options).
+
+## Using strings as inputs to cryptographic APIs {#using-strings-as-inputs-to-cryptographic-apis}
+
+Строки в JavaScript не предназначены для произвольных двоичных данных; для ключей, IV, тегов и полезной нагрузки используйте [`Buffer`](buffer.md), `TypedArray` или `DataView`.
+
+## Support for weak or compromised algorithms {#support-for-weak-or-compromised-algorithms}
+
+Состав доступных и рекомендуемых алгоритмов зависит от версии OpenSSL и Node.js; избегайте устаревших или ослабленных вариантов.
+
 ## Класс: `Cipher`
 
 -   Расширяет: {stream.Transform}
@@ -509,10 +521,10 @@ scrypt(password, 'salt', 24, (err, key) => {
 
 <!-- 0013.part.md -->
 
-### `cipher.setAAD(buffer[, options])`
+### `cipher.setAAD(buffer[, options])` {#ciphersetaadbuffer-options}
 
 -   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
     -   `plaintextLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки, которую следует использовать, когда `buffer` является строкой.
 -   Возвращает: {Cipher} для цепочки методов.
@@ -754,10 +766,10 @@ console.log(decrypted);
 
 <!-- 0018.part.md -->
 
-### `decipher.setAAD(buffer[, options])`
+### `decipher.setAAD(buffer[, options])` {#deciphersetaadbuffer-options}
 
 -   `buffer` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
     -   `plaintextLength` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки, которую следует использовать, когда `buffer` является строкой.
 -   Возвращает: {Decipher} для цепочки методов.
@@ -965,7 +977,7 @@ assert.strictEqual(
 
 <!-- 0032.part.md -->
 
-## Класс: `DiffieHellmanGroup`
+## Класс: `DiffieHellmanGroup` {#class-diffiehellmangroup}
 
 Класс `DiffieHellmanGroup` принимает в качестве аргумента известную modp-группу. Он работает так же, как и `DiffieHellman`, за исключением того, что он не позволяет изменять свои ключи после создания. Другими словами, он не реализует методы `setPublicKey()` и `setPrivateKey()`.
 
@@ -1371,7 +1383,7 @@ console.log(hash.digest('hex'));
 
 ### `hash.copy([options])`
 
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
 -   Возвращает: {Hash}
 
 Создает новый объект `Hash`, который содержит глубокую копию внутреннего состояния текущего объекта `Hash`.
@@ -1565,9 +1577,9 @@ console.log(hmac.digest('hex'));
 
 <!-- 0048.part.md -->
 
-## Класс: `KeyObject`
+## Класс: `KeyObject` {#class-keyobject}
 
-Node.js использует класс `KeyObject` для представления симметричного или асимметричного ключа, и каждый вид ключа открывает различные функции. Методы [`crypto.createSecretKey()`](#cryptocreatesecretkey-encoding), [`crypto.createPublicKey()`](#cryptocreatepublickeykey) и [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey) используются для создания экземпляров `KeyObject`. Объекты `KeyObject` не должны создаваться непосредственно с помощью ключевого слова `new`.
+Node.js использует класс `KeyObject` для представления симметричного или асимметричного ключа, и каждый вид ключа открывает различные функции. Методы [`crypto.createSecretKey()`](#cryptocreatesecretkey-encoding), [`crypto.createPublicKey()`](#cryptocreatepublickeykey) и [`crypto.createPrivateKey()`](#cryptocreateprivatekeykeykey) используются для создания экземпляров `KeyObject`. Объекты `KeyObject` не должны создаваться непосредственно с помощью ключевого слова `new`.
 
 Большинство приложений должны рассмотреть возможность использования нового API `KeyObject` вместо передачи ключей в виде строк или `буфера` из-за улучшенных функций безопасности.
 
@@ -1717,7 +1729,7 @@ const { subtle } = globalThis.crypto;
 
 <!-- 0056.part.md -->
 
-## Класс: `Sign`
+## Класс: `Sign` {#class-sign}
 
 -   Расширяет: [`<stream.Writable>`](stream.md#streamwritable)
 
@@ -1882,7 +1894,7 @@ console.log(verify.verify(publicKey, signature));
 
 <!-- 0059.part.md -->
 
-## Класс: `Verify`
+## Класс: `Verify` {#class-verify}
 
 -   Расширяет: [`<stream.Writable>`](stream.md#streamwritable)
 
@@ -2216,7 +2228,7 @@ console.log(x509.subject);
 
 <!-- 0089.part.md -->
 
-### `crypto.constants`
+### `crypto.constants` {#crypto-constants}
 
 -   [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -2286,7 +2298,7 @@ Checks the primality of the `candidate`.
 
 -   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `пароль` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
 -   Возвращает: {Cipher}
 
 Создает и возвращает объект `Cipher`, использующий заданные `алгоритм` и `пароль`.
@@ -2310,7 +2322,7 @@ Checks the primality of the `candidate`.
 -   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
 -   `iv` {string|ArrayBuffer|Buffer|TypedArray|DataView|null}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
 -   Возвращает: {Cipher}
 
 Создает и возвращает объект `Cipher` с заданным `алгоритмом`, `ключом` и вектором инициализации (`iv`).
@@ -2337,7 +2349,7 @@ Checks the primality of the `candidate`.
 
 -   `algorithm` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `password` {string|ArrayBuffer|Buffer|TypedArray|DataView}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
 -   Returns: {Decipher}
 
 Создает и возвращает объект `Decipher`, использующий заданный `алгоритм` и `пароль` (ключ).
@@ -2357,7 +2369,7 @@ Checks the primality of the `candidate`.
 -   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
 -   `iv` {string|ArrayBuffer|Buffer|TypedArray|DataView|null}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
 -   Возвращает: {Decipher}
 
 Создает и возвращает объект `Decipher`, который использует заданный `алгоритм`, `ключ` и вектор инициализации (`iv`).
@@ -2423,7 +2435,7 @@ Checks the primality of the `candidate`.
 ### `crypto.createHash(algorithm[, options])`
 
 -   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
 -   Возвращает: {Hash}
 
 Создает и возвращает объект `Hash`, который может быть использован для генерации хэш-дайджестов с помощью заданного `алгоритма`. Необязательный аргумент `options` управляет поведением потока. Для хэш-функций XOF, таких как `'shake256'`, опция `outputLength` может быть использована для указания желаемой длины выходного потока в байтах.
@@ -2480,7 +2492,7 @@ input.on('readable', () => {
 
 -   `алгоритм` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView|KeyObject|CryptoKey}
--   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#new-streamtransformoptions)
+-   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) [`stream.transform` options](stream.md#streamtransform)
     -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Строковая кодировка, которую следует использовать, когда `ключ` является строкой.
 -   Возвращает: {Hmac}
 
@@ -2536,7 +2548,7 @@ input.on('readable', () => {
 
 <!-- 0104.part.md -->
 
-### `crypto.createPrivateKey(key)`
+### `crypto.createPrivateKey(key)` {#cryptocreateprivatekeykeykey}
 
 -   `key` {Object|string|ArrayBuffer|Buffer|TypedArray|DataView}
     -   `key`: {string|ArrayBuffer|Buffer|TypedArray|DataView|Object} Материал ключа, либо в формате PEM, DER, либо JWK.
@@ -2565,11 +2577,11 @@ input.on('readable', () => {
 
 Если формат `pem`, то `ключ` может также быть сертификатом X.509.
 
-Поскольку открытые ключи могут быть получены из закрытых ключей, вместо открытого ключа может быть передан закрытый ключ. В этом случае эта функция ведет себя так же, как если бы была вызвана [`crypto.createPrivateKey()`](#cryptocreateprivatekeykey), за исключением того, что тип возвращаемого `KeyObject` будет `'public'` и что закрытый ключ не может быть извлечен из возвращаемого `KeyObject`. Аналогично, если передан `KeyObject` с типом `'private'`, будет возвращен новый `KeyObject` с типом `'public'` и невозможно будет извлечь закрытый ключ из возвращенного объекта.
+Поскольку открытые ключи могут быть получены из закрытых ключей, вместо открытого ключа может быть передан закрытый ключ. В этом случае эта функция ведет себя так же, как если бы была вызвана [`crypto.createPrivateKey()`](#cryptocreateprivatekeykeykey), за исключением того, что тип возвращаемого `KeyObject` будет `'public'` и что закрытый ключ не может быть извлечен из возвращаемого `KeyObject`. Аналогично, если передан `KeyObject` с типом `'private'`, будет возвращен новый `KeyObject` с типом `'public'` и невозможно будет извлечь закрытый ключ из возвращенного объекта.
 
 <!-- 0106.part.md -->
 
-### `crypto.createSecretKey(key[, encoding])`
+### `crypto.createSecretKey(key[, encoding])` {#cryptocreatesecretkey-encoding}
 
 -   `key` {string|ArrayBuffer|Buffer|TypedArray|DataView}
 -   `encoding` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) Кодировка строки, когда `ключ` является строкой.

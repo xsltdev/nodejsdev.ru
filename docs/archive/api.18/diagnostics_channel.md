@@ -358,7 +358,7 @@ channel.unsubscribe(onMessage);
 
 -   `запрос` {http.IncomingMessage}
 -   `response` {http.ServerResponse}
--   `сокет` [`<net.Socket>`](net.md#netsocket)
+-   `сокет` [`<net.Socket>`](net.md#class-netsocket)
 -   `server` {http.Server}
 
 Выдается, когда сервер получает запрос.
@@ -367,7 +367,7 @@ channel.unsubscribe(onMessage);
 
 -   `запрос` {http.IncomingMessage}
 -   `ответ` {http.ServerResponse}
--   `socket` [`<net.Socket>`](net.md#netsocket)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket)
 -   `server` {http.Server}
 
 Выдается, когда сервер посылает ответ.
@@ -376,13 +376,13 @@ channel.unsubscribe(onMessage);
 
 `net.client.socket`
 
--   `socket` [`<net.Socket>`](net.md#netsocket)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket)
 
 Выдается при создании нового клиентского сокета TCP или pipe.
 
 `net.server.socket`
 
--   `socket` [`<net.Socket>`](net.md#netsocket)
+-   `socket` [`<net.Socket>`](net.md#class-netsocket)
 
 Выдается при получении нового TCP- или pipe-соединения.
 

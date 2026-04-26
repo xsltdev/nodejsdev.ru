@@ -108,7 +108,7 @@ console.log(myURL.href);
 
 ## WHATWG API для URL {#the-whatwg-url-api}
 
-### Класс: `URL`
+### Класс: `URL` {#class-url}
 
 Совместимый с браузерами класс `URL`, реализованный по [WHATWG URL Standard](https://url.spec.whatwg.org/). [Примеры разобранных URL](https://url.spec.whatwg.org/#example-url-parsing) приведены в самом стандарте. Класс `URL` также доступен в глобальном объекте.
 
@@ -210,7 +210,7 @@ console.log(myURL.href);
 // Prints https://example.org/foo#baz
 ```
 
-Недопустимые символы URL в значении, присвоенном свойству `hash`, подвергаются [процентному кодированию](#whatwg-percent-encoding). Набор кодируемых символов может слегка отличаться от того, что дают [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
+Недопустимые символы URL в значении, присвоенном свойству `hash`, подвергаются [процентному кодированию](#percent-encoding-in-urls). Набор кодируемых символов может слегка отличаться от того, что дают [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.host`
 
@@ -313,7 +313,7 @@ console.log(myURL.href);
 // Prints https://abc:123@example.com/
 ```
 
-Недопустимые символы URL в значении свойства `password` кодируются [процентным кодированием](#whatwg-percent-encoding). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
+Недопустимые символы URL в значении свойства `password` кодируются [процентным кодированием](#percent-encoding-in-urls). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.pathname`
 
@@ -331,7 +331,7 @@ console.log(myURL.href);
 // Prints https://example.org/abcdef?123
 ```
 
-Недопустимые символы URL в значении свойства `pathname` кодируются [процентным кодированием](#whatwg-percent-encoding). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
+Недопустимые символы URL в значении свойства `pathname` кодируются [процентным кодированием](#percent-encoding-in-urls). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.port`
 
@@ -472,7 +472,7 @@ console.log(myURL.href);
 // Prints https://example.org/abc?abc=xyz
 ```
 
-Недопустимые символы URL в значении свойства `search` кодируются [процентным кодированием](#whatwg-percent-encoding). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
+Недопустимые символы URL в значении свойства `search` кодируются [процентным кодированием](#percent-encoding-in-urls). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.searchParams`
 
@@ -509,7 +509,7 @@ console.log(myURL.href);
 // Prints https://123:xyz@example.com/
 ```
 
-Недопустимые символы URL в значении свойства `username` кодируются [процентным кодированием](#whatwg-percent-encoding). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
+Недопустимые символы URL в значении свойства `username` кодируются [процентным кодированием](#percent-encoding-in-urls). Набор кодируемых символов может слегка отличаться от [`url.parse()`](#urlparseurlstring-parsequerystring-slashesdenotehost) и [`url.format()`](#urlformaturlobject).
 
 #### `url.toString()`
 
@@ -588,7 +588,7 @@ const isNotValid = URL.canParse('/foo'); // false
 
 Разбирает строку как URL. Если задан `base`, он используется для разрешения неабсолютных `input`. Возвращает `null`, если параметры нельзя привести к допустимому URL.
 
-### Класс: `URLPattern`
+### Класс: `URLPattern` {#class-urlpattern}
 
 !!!warning "Стабильность: 1 - Экспериментальная"
 
@@ -1276,7 +1276,7 @@ for (const [name, value] of params) {
     */
     ```
 
-## Унаследованный API URL
+## Унаследованный API URL {#legacy-url-api}
 
 !!!warning "Стабильность: 3 - Устаревшее"
 
@@ -1544,7 +1544,7 @@ resolve('http://example.com/', '/one'); // 'http://example.com/one'
 resolve('http://example.com/one', '/two'); // 'http://example.com/two'
 ```
 
-## Процентное кодирование в URL {#whatwg-percent-encoding}
+## Процентное кодирование в URL {#percent-encoding-in-urls}
 
 В URL допустим только определённый набор символов. Всё, что вне него, нужно кодировать. Способ и набор символов зависят от позиции символа в структуре URL.
 

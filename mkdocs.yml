@@ -4,6 +4,9 @@ site_description: Справочник Node.js с примерами кода
 site_author: nodejsdev.ru
 copyright: (☭) Народное достояние с 2021 года
 
+hooks:
+    - hooks_ads.py
+
 repo_name: 'Справочник на Github'
 repo_url: 'https://github.com/xsltdev/nodejsdev.ru'
 
@@ -58,8 +61,13 @@ extra:
         - icon: fontawesome/brands/linkedin
           link: https://www.linkedin.com/in/bndby/
           name: LinkedIn
+    analytics:
+        provider: google
+        property: G-D244Q9HKNK
 
 markdown_extensions:
+    - attr_list
+    - md_in_html
     - admonition
     - toc:
           permalink: true

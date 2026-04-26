@@ -205,7 +205,7 @@ myEmitter.emit('event');
 
 <!-- 0003.part.md -->
 
-## События ошибки
+## События ошибки {#error-events}
 
 Когда в экземпляре `EventEmitter` возникает ошибка, типичным действием является выдача события `'error'`. В Node.js это рассматривается как особый случай.
 
@@ -282,7 +282,7 @@ myEmitter.emit('error', new Error('whoops!'));
 
 <!-- 0004.part.md -->
 
-## Перехват отказов обещаний
+## Перехват отказов обещаний {#capture-rejections-of-promises}
 
 Использование функций `async` с обработчиками событий проблематично, поскольку может привести к необработанному отказу в случае брошенного исключения:
 
@@ -367,7 +367,7 @@ ee1.on('error', console.log);
 
 <!-- 0005.part.md -->
 
-## Класс: `EventEmitter`
+## Класс: `EventEmitter` {#class-eventemitter}
 
 Класс `EventEmitter` определяется и раскрывается модулем `node:events`:
 
@@ -624,7 +624,7 @@ console.log(util.inspect(server.listeners('connection')));
 
 -   `eventName` {string|symbol}
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Псевдоним для [`emitter.removeListener()`](#emitterremovelistenereventname-listener).
 
@@ -634,7 +634,7 @@ console.log(util.inspect(server.listeners('connection')));
 
 -   `eventName` {string|symbol} Имя события.
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет функцию `listener` в конец массива слушателей для события с именем `eventName`. Не проверяется, не был ли `listener` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
 
@@ -676,7 +676,7 @@ myEE.emit('foo');
 
 -   `eventName` {string|symbol} Имя события.
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName`. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
 
@@ -718,7 +718,7 @@ myEE.emit('foo');
 
 -   `eventName` {string|symbol} Имя события.
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет функцию `listener` в _начало_ массива слушателей для события с именем `eventName`. Не проверяется, не был ли `слушатель` уже добавлен. Многократные вызовы, передающие одну и ту же комбинацию `eventName` и `listener`, приведут к тому, что `listener` будет добавлен и вызван несколько раз.
 
@@ -736,7 +736,7 @@ server.prependListener('connection', (stream) => {
 
 -   `eventName` {string|symbol} Имя события.
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function) Функция обратного вызова.
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Добавляет **одноразовую** функцию `слушателя` для события с именем `eventName` в _начало_ массива слушателей. При следующем срабатывании `eventName` этот слушатель удаляется, а затем вызывается.
 
@@ -753,7 +753,7 @@ server.prependOnceListener('connection', (stream) => {
 ### `emitter.removeAllListeners([eventName])`
 
 -   `eventName` {string|symbol}
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Удаляет всех слушателей или слушателей указанного `eventName`.
 
@@ -767,7 +767,7 @@ server.prependOnceListener('connection', (stream) => {
 
 -   `eventName` {string|symbol}
 -   `listener` [`<Function>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function)
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Удаляет указанный `listener` из массива слушателей для события с именем `eventName`.
 
@@ -889,7 +889,7 @@ ee.emit('ping');
 ### `emitter.setMaxListeners(n)`
 
 -   `n` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
--   Возвращает: [`<EventEmitter>`](events.md#eventemitter)
+-   Возвращает: [`<EventEmitter>`](events.md#class-eventemitter)
 
 По умолчанию `EventEmitter` выводит предупреждение, если для определенного события добавлено более `10` слушателей. Это полезное значение по умолчанию, которое помогает найти утечки памяти. Метод `emitter.setMaxListeners()` позволяет изменить это ограничение для данного экземпляра `EventEmitter`. Значение может быть установлено в `бесконечность` (или `0`), чтобы указать неограниченное количество слушателей.
 
@@ -1128,7 +1128,7 @@ const {
 
 ## `events.once(emitter, name[, options])`
 
--   `emitter` [`<EventEmitter>`](events.md#eventemitter)
+-   `emitter` [`<EventEmitter>`](events.md#class-eventemitter)
 -   `name` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type)
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для отмены ожидания события.
@@ -1403,7 +1403,7 @@ foo().then(() => console.log('done'));
 
     Вместо этого используйте [`emitter.listenerCount()`](#emitterlistenercounteventname).
 
--   `emitter` [`<EventEmitter>`](events.md#eventemitter) Эмиттер для запроса
+-   `emitter` [`<EventEmitter>`](events.md#class-eventemitter) Эмиттер для запроса
 -   `eventName` {string|symbol} Имя события
 
 Метод класса, который возвращает количество слушателей для данного `eventName`, зарегистрированных на данном `emitter`.
@@ -1435,7 +1435,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 ## `events.on(emitter, eventName[, options])`
 
--   `emitter` [`<EventEmitter>`](events.md#eventemitter)
+-   `emitter` [`<EventEmitter>`](events.md#class-eventemitter)
 -   `eventName` {string|symbol} Имя события, которое прослушивается
 -   `options` [`<Object>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
     -   `signal` [`<AbortSignal>`](globals.md#abortsignal) Может использоваться для отмены ожидающих событий.
@@ -1552,7 +1552,7 @@ process.nextTick(() => ac.abort());
 ## `events.setMaxListeners(n[, ...eventTargets])`
 
 -   `n` [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type) Неотрицательное число. Максимальное количество слушателей для каждого события `EventTarget`.
--   `...eventsTargets` {EventTarget\[\]|EventEmitter\[\]} Ноль или более экземпляров {EventTarget} или [`<EventEmitter>`](events.md#eventemitter). Если ни один из них не указан, `n` устанавливается как максимальное значение по умолчанию для всех вновь создаваемых объектов {EventTarget} и [`<EventEmitter>`](events.md#eventemitter).
+-   `...eventsTargets` {EventTarget\[\]|EventEmitter\[\]} Ноль или более экземпляров {EventTarget} или [`<EventEmitter>`](events.md#class-eventemitter). Если ни один из них не указан, `n` устанавливается как максимальное значение по умолчанию для всех вновь создаваемых объектов {EventTarget} и [`<EventEmitter>`](events.md#class-eventemitter).
 
 <!-- конец списка -->
 
@@ -1581,7 +1581,7 @@ setMaxListeners(5, target, emitter);
 
 ## Класс: `events.EventEmitterAsyncResource extends EventEmitter`
 
-Интегрирует `EventEmitter` с [`<AsyncResource>`](async_hooks.md#asyncresource) для `EventEmitter`, которые требуют ручного асинхронного отслеживания. В частности, все события, испускаемые экземплярами `events.EventEmitterAsyncResource`, будут выполняться внутри его [async контекста](async_context.md).
+Интегрирует `EventEmitter` с [`<AsyncResource>`](async_hooks.md#class-asyncresource) для `EventEmitter`, которые требуют ручного асинхронного отслеживания. В частности, все события, испускаемые экземплярами `events.EventEmitterAsyncResource`, будут выполняться внутри его [async контекста](async_context.md).
 
 ```mjs
 import {
@@ -1678,7 +1678,7 @@ Promise.resolve().then(() => {
 
 ### `eventemitterasyncresource.asyncResource`
 
--   Тип: Базовый [`<AsyncResource>`](async_hooks.md#asyncresource).
+-   Тип: Базовый [`<AsyncResource>`](async_hooks.md#class-asyncresource).
 
 Возвращаемый объект `AsyncResource` имеет дополнительное свойство `eventEmitter`, которое предоставляет ссылку на этот `EventEmitterAsyncResource`.
 
@@ -1696,7 +1696,7 @@ Promise.resolve().then(() => {
 
 <!-- 0040.part.md -->
 
-## `EventTarget` и `Event` API
+## `EventTarget` и `Event` API {#eventtarget-and-event-api}
 
 Объекты `EventTarget` и `Event` являются специфической для Node.js реализацией [`EventTarget` Web API](https://dom.spec.whatwg.org/#eventtarget), которые открываются некоторыми API ядра Node.js.
 
@@ -1779,7 +1779,7 @@ target.addEventListener('foo', handler4, { once: true });
 
 <!-- 0044.part.md -->
 
-### `EventTarget` обработка ошибок
+### `EventTarget` обработка ошибок {#eventtarget-error-handling}
 
 Когда зарегистрированный слушатель событий бросает (или возвращает Promise, который отклоняет), по умолчанию ошибка рассматривается как не пойманное исключение на `process.nextTick()`. Это означает, что не пойманные исключения в `EventTarget` будут завершать процесс Node.js по умолчанию.
 

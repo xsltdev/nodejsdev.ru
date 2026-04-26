@@ -89,16 +89,16 @@ description: Реализация стандарта WHATWG Streams — Readable
 
 Подробнее в соответствующих разделах:
 
--   [`stream.Readable.toWeb`](stream.md#streamreadabletowebstreamreadable-options)
--   [`stream.Readable.fromWeb`](stream.md#streamreadablefromwebreadablestream-options)
--   [`stream.Writable.toWeb`](stream.md#streamwritabletowebstreamwritable)
--   [`stream.Writable.fromWeb`](stream.md#streamwritablefromwebwritablestream-options)
+-   [`stream.Readable.toWeb`](stream.md#class-streamreadabletowebstreamreadable-options)
+-   [`stream.Readable.fromWeb`](stream.md#class-streamreadablefromwebreadablestream-options)
+-   [`stream.Writable.toWeb`](stream.md#class-streamwritabletowebstreamwritable)
+-   [`stream.Writable.fromWeb`](stream.md#class-streamwritablefromwebwritablestream-options)
 -   [`stream.Duplex.toWeb`](stream.md#streamduplextowebstreamduplex-options)
 -   [`stream.Duplex.fromWeb`](stream.md#streamduplexfromwebpair-options)
 
 ## API
 
-### Класс: `ReadableStream`
+### Класс: `ReadableStream` {#class-readablestream}
 
 #### `new ReadableStream([underlyingSource [, strategy]])`
 
@@ -398,7 +398,7 @@ port2.postMessage(stream, [stream]);
     })();
     ```
 
-### Класс: `ReadableStreamDefaultReader`
+### Класс: `ReadableStreamDefaultReader` {#class-readablestreamdefaultreader}
 
 По умолчанию вызов `readableStream.getReader()` без аргументов возвращает экземпляр `ReadableStreamDefaultReader`. Обычный читатель обрабатывает фрагменты данных как непрозрачные значения, поэтому [ReadableStream](webstreams.md#readablestream) может работать с любыми значениями JavaScript.
 
@@ -431,7 +431,7 @@ port2.postMessage(stream, [stream]);
 
 Снимает блокировку этого читателя с нижележащего [ReadableStream](webstreams.md#readablestream).
 
-### Класс: `ReadableStreamBYOBReader`
+### Класс: `ReadableStreamBYOBReader` {#class-readablestreambyobreader}
 
 `ReadableStreamBYOBReader` — альтернативный потребитель для байто-ориентированных [ReadableStream](webstreams.md#readablestream) (создаются с `underlyingSource.type`, равным `'bytes'` при создании `ReadableStream`).
 
@@ -531,7 +531,7 @@ port2.postMessage(stream, [stream]);
 
 Снимает блокировку этого читателя с нижележащего [ReadableStream](webstreams.md#readablestream).
 
-### Класс: `ReadableStreamDefaultController`
+### Класс: `ReadableStreamDefaultController` {#class-readablestreamdefaultcontroller}
 
 У каждого [ReadableStream](webstreams.md#readablestream) есть контроллер, отвечающий за внутреннее состояние и очередь потока. `ReadableStreamDefaultController` — контроллер по умолчанию для не байто-ориентированных `ReadableStream`.
 
@@ -557,7 +557,7 @@ port2.postMessage(stream, [stream]);
 
 Сообщает об ошибке: [ReadableStream](webstreams.md#readablestream) переходит в ошибку и закрывается.
 
-### Класс: `ReadableByteStreamController`
+### Класс: `ReadableByteStreamController` {#class-readablebytestreamcontroller}
 
 У каждого [ReadableStream](webstreams.md#readablestream) есть контроллер, отвечающий за внутреннее состояние и очередь потока. `ReadableByteStreamController` — для байто-ориентированных `ReadableStream`.
 
@@ -587,7 +587,7 @@ port2.postMessage(stream, [stream]);
 
 Сообщает об ошибке: [ReadableStream](webstreams.md#readablestream) переходит в ошибку и закрывается.
 
-### Класс: `ReadableStreamBYOBRequest`
+### Класс: `ReadableStreamBYOBRequest` {#class-readablestreambyobrequest}
 
 При использовании `ReadableByteStreamController` в байто-ориентированных потоках и при использовании `ReadableStreamBYOBReader` свойство `readableByteStreamController.byobRequest` даёт доступ к экземпляру `ReadableStreamBYOBRequest`, соответствующему текущему запросу чтения. Объект нужен для доступа к `ArrayBuffer`/`TypedArray`, выделенным под заполнение при чтении, и содержит методы сигнализации о том, что данные уже записаны.
 
@@ -607,7 +607,7 @@ port2.postMessage(stream, [stream]);
 
 -   Тип: [`<Buffer>`](buffer.md#buffer) | [`<TypedArray>`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) | [`<DataView>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DataView)
 
-### Класс: `WritableStream`
+### Класс: `WritableStream` {#class-writablestream}
 
 `WritableStream` — приёмник, в который отправляются данные потока.
 
@@ -690,7 +690,7 @@ port1.onmessage = ({ data }) => {
 port2.postMessage(stream, [stream]);
 ```
 
-### Класс: `WritableStreamDefaultWriter`
+### Класс: `WritableStreamDefaultWriter` {#class-writablestreamdefaultwriter}
 
 #### `new WritableStreamDefaultWriter(stream)`
 
@@ -736,7 +736,7 @@ port2.postMessage(stream, [stream]);
 
 Ставит в очередь новый фрагмент данных для записи в [WritableStream](webstreams.md#class-writablestream).
 
-### Класс: `WritableStreamDefaultController`
+### Класс: `WritableStreamDefaultController` {#class-writablestreamdefaultcontroller}
 
 `WritableStreamDefaultController` управляет внутренним состоянием [WritableStream](webstreams.md#class-writablestream).
 
@@ -750,7 +750,7 @@ port2.postMessage(stream, [stream]);
 
 -   Тип: [`<AbortSignal>`](globals.md#abortsignal) `AbortSignal` для отмены ожидающих операций записи или закрытия при прерывании [WritableStream](webstreams.md#class-writablestream).
 
-### Класс: `TransformStream`
+### Класс: `TransformStream` {#class-transformstream}
 
 `TransformStream` объединяет [ReadableStream](webstreams.md#readablestream) и [WritableStream](webstreams.md#class-writablestream), соединённые так, что данные, записанные в `WritableStream`, поступают и при необходимости преобразуются перед помещением в очередь `ReadableStream`.
 
@@ -827,7 +827,7 @@ port1.onmessage = ({ data }) => {
 port2.postMessage(stream, [stream]);
 ```
 
-### Класс: `TransformStreamDefaultController`
+### Класс: `TransformStreamDefaultController` {#class-transformstreamdefaultcontroller}
 
 `TransformStreamDefaultController` управляет внутренним состоянием `TransformStream`.
 
@@ -853,7 +853,7 @@ port2.postMessage(stream, [stream]);
 
 Закрывает читающую сторону и приводит к немедленному закрытию записывающей стороны с ошибкой.
 
-### Класс: `ByteLengthQueuingStrategy`
+### Класс: `ByteLengthQueuingStrategy` {#class-bytelengthqueuingstrategy}
 
 #### `new ByteLengthQueuingStrategy(init)`
 
@@ -870,7 +870,7 @@ port2.postMessage(stream, [stream]);
     -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-### Класс: `CountQueuingStrategy`
+### Класс: `CountQueuingStrategy` {#class-countqueuingstrategy}
 
 #### `new CountQueuingStrategy(init)`
 
@@ -887,7 +887,7 @@ port2.postMessage(stream, [stream]);
     -   `chunk` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types)
     -   Возвращает: [`<number>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
-### Класс: `TextEncoderStream`
+### Класс: `TextEncoderStream` {#class-textencoderstream}
 
 #### `new TextEncoderStream()`
 
@@ -907,7 +907,7 @@ port2.postMessage(stream, [stream]);
 
 -   Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
-### Класс: `TextDecoderStream`
+### Класс: `TextDecoderStream` {#class-textdecoderstream}
 
 #### `new TextDecoderStream([encoding[, options]])`
 
@@ -944,7 +944,7 @@ port2.postMessage(stream, [stream]);
 
 -   Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
-### Класс: `CompressionStream`
+### Класс: `CompressionStream` {#class-compressionstream}
 
 #### `new CompressionStream(format)`
 
@@ -958,7 +958,7 @@ port2.postMessage(stream, [stream]);
 
 -   Тип: [`<WritableStream>`](webstreams.md#class-writablestream)
 
-### Класс: `DecompressionStream`
+### Класс: `DecompressionStream` {#class-decompressionstream}
 
 #### `new DecompressionStream(format)`
 
@@ -1004,7 +1004,7 @@ port2.postMessage(stream, [stream]);
 
 #### `streamConsumers.arrayBuffer(stream)`
 
--   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#class-streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с `ArrayBuffer`, содержащим полное содержимое потока.
 
 === "MJS"
@@ -1041,7 +1041,7 @@ port2.postMessage(stream, [stream]);
 
 #### `streamConsumers.blob(stream)`
 
--   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#class-streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), содержащим полное содержимое потока.
 
 === "MJS"
@@ -1073,7 +1073,7 @@ port2.postMessage(stream, [stream]);
 
 #### `streamConsumers.buffer(stream)`
 
--   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#class-streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Buffer](buffer.md#buffer), содержащим полное содержимое потока.
 
 === "MJS"
@@ -1109,7 +1109,7 @@ port2.postMessage(stream, [stream]);
 
 #### `streamConsumers.bytes(stream)`
 
--   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#class-streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) выполняется с [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), содержащим полное содержимое потока.
 
 === "MJS"
@@ -1145,7 +1145,7 @@ port2.postMessage(stream, [stream]);
 
 #### `streamConsumers.json(stream)`
 
--   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#class-streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка, затем результат `JSON.parse()`.
 
 === "MJS"
@@ -1193,7 +1193,7 @@ port2.postMessage(stream, [stream]);
 
 #### `streamConsumers.text(stream)`
 
--   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
+-   `stream` [`<ReadableStream>`](webstreams.md#readablestream) | [`<stream.Readable>`](stream.md#class-streamreadable) | [`<AsyncIterator>`](https://tc39.github.io/ecma262/#sec-asynciterator-interface)
 -   Возвращает: [`<Promise>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) содержимое потока как UTF-8 строка.
 
 === "MJS"

@@ -43,7 +43,7 @@ console.log(x); // 1; y не определено.
 
 Экземпляры класса `vm.Script` содержат предварительно скомпилированные сценарии, которые могут быть выполнены в определенных контекстах.
 
-### `новый vm.Script(code[, options])`
+### `новый vm.Script(code[, options])` {#new-vmscriptcode-options}
 
 -   `code` [`<string>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#String_type) JavaScript-код для компиляции.
 -   `options` {Object|string}
@@ -982,7 +982,7 @@ vm.runInThisContext(code)(require);
 
 В приведенном выше случае `require()` разделяет состояние с контекстом, из которого оно передается. Это может создать риск при выполнении недоверенного кода, например, изменить объекты в контексте нежелательным образом.
 
-## Что значит "контекстифицировать" объект?
+## Что значит "контекстифицировать" объект? {#what-does-it-mean-to-contextify-an-object}
 
 Весь JavaScript, выполняемый в Node.js, работает в рамках "контекста". Согласно [V8 Embedder's Guide](https://v8.dev/docs/embed#contexts):
 

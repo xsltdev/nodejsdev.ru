@@ -144,7 +144,7 @@ try {
 
 <!-- 0002.part.md -->
 
-## Класс: `Error`
+## Класс: `Error` {#class-error}
 
 Общий объект JavaScript [`<Error>`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error), который не обозначает никаких конкретных обстоятельств того, почему произошла ошибка. Объекты `Error` фиксируют "трассировку стека", детализирующую точку в коде, в которой `Error` был инстанцирован, и могут предоставлять текстовое описание ошибки.
 
@@ -329,7 +329,7 @@ makeFaster();
 
 ## Класс: `AssertionError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+-   Расширяет: [`<errors.Error>`](errors.md#class-error)
 
 Указывает на неудачу утверждения. Подробнее см. в [`Класс: assert.AssertionError`](assert.md#class-assertassertionerror).
 
@@ -337,7 +337,7 @@ makeFaster();
 
 ## Класс: `RangeError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+-   Расширяет: [`<errors.Error>`](errors.md#class-error)
 
 Указывает, что предоставленный аргумент не входит в набор или диапазон допустимых значений для функции; будь то числовой диапазон, или вне набора опций для данного параметра функции.
 
@@ -352,7 +352,7 @@ Node.js будет генерировать и бросать экземпляр
 
 ## Класс: `ReferenceError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+-   Расширяет: [`<errors.Error>`](errors.md#class-error)
 
 Указывает на попытку доступа к переменной, которая не определена. Такие ошибки обычно указывают на опечатки в коде или на другие сбои в программе.
 
@@ -369,7 +369,7 @@ doesNotExist;
 
 ## Класс: `SyntaxError`
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+-   Расширяет: [`<errors.Error>`](errors.md#class-error)
 
 Указывает, что программа не является валидным JavaScript. Эти ошибки могут генерироваться и распространяться только в результате оценки кода. Оценка кода может происходить в результате `eval`, `Function`, `require` или [vm](vm.md). Эти ошибки почти всегда свидетельствуют о неработающей программе.
 
@@ -385,9 +385,9 @@ try {
 
 <!-- 0014.part.md -->
 
-## Класс: `SystemError`
+## Класс: `SystemError` {#class-systemerror}
 
--   Расширяет: [`<errors.Error>`](errors.md#error)
+-   Расширяет: [`<errors.Error>`](errors.md#class-error)
 
 Node.js генерирует системные ошибки, когда в среде выполнения возникают исключения. Обычно они возникают, когда приложение нарушает ограничения операционной системы. Например, системная ошибка возникнет, если приложение попытается прочитать несуществующий файл.
 
@@ -479,7 +479,7 @@ Node.js генерирует системные ошибки, когда в ср
 
 <!-- 0024.part.md -->
 
-### Общие системные ошибки
+### Общие системные ошибки {#common-system-errors}
 
 Это список системных ошибок, часто встречающихся при написании программ на Node.js. Полный список см. на странице [`errno`(3) man page](https://man7.org/linux/man-pages/man3/errno.3.html).
 
@@ -513,9 +513,9 @@ Node.js генерирует системные ошибки, когда в ср
 
 <!-- 0025.part.md -->
 
-## Класс: `TypeError`
+## Класс: `TypeError` {#class-typeerror}
 
--   Расширяет [`<errors.Error>`](errors.md#error)
+-   Расширяет [`<errors.Error>`](errors.md#class-error)
 
 Указывает, что предоставленный аргумент не является допустимым типом. Например, передача функции в параметр, который ожидает строку, будет `TypeError`.
 
@@ -582,7 +582,7 @@ API, _не_ использующие `AbortSignal`, обычно не выдаю
 
 ### `ERR_ACCESS_DENIED`
 
-Специальный тип ошибки, возникающий всякий раз, когда Node.js пытается получить доступ к ресурсу, ограниченному [Permission Model](permissions.md#permission-model).
+Специальный тип ошибки, возникающий всякий раз, когда Node.js пытается получить доступ к ресурсу, ограниченному [Permission Model](permissions.md#process-based-permissions).
 
 <!-- 0035.part.md -->
 
@@ -2462,7 +2462,7 @@ A stream method was called that cannot complete because the stream was finished.
 
 ### `ERR_STREAM_CANNOT_PIPE`
 
-An attempt was made to call [`stream.pipe()`](stream.md#readablepipedestination-options) on a [`Writable`](stream.md#class-streamwritable) stream.
+An attempt was made to call [`stream.pipe()`](stream.md#readablepipedestination-options) on a [`Writable`](stream.md#streamwritable) stream.
 
 <a id="ERR_STREAM_DESTROYED"></a>
 

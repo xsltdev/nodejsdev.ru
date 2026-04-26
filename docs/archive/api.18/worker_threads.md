@@ -3,7 +3,7 @@ title: Worker threads
 description: Модуль worker_threads позволяет использовать потоки, параллельно выполняющие JavaScript
 ---
 
-# Рабочие потоки
+# Рабочие потоки {#worker-threads}
 
 [:octicons-tag-24: v18.x.x](https://nodejs.org/docs/latest-v18.x/api/worker_threads.html)
 
@@ -364,7 +364,7 @@ if (isMainThread) {
 
 <!-- 0019.part.md -->
 
-## Класс: `MessageChannel`
+## Класс: `MessageChannel` {#class-messagechannel}
 
 Экземпляры класса `worker.MessageChannel` представляют асинхронный, двусторонний канал связи. У `MessageChannel` нет собственных методов. `new MessageChannel()` выдает объект со свойствами `port1` и `port2`, которые ссылаются на связанные экземпляры [`MessagePort`](#class-messageport).
 
@@ -381,7 +381,7 @@ port2.postMessage({ foo: 'bar' });
 
 <!-- 0020.part.md -->
 
-## Класс: `MessagePort`
+## Класс: `MessagePort` {#class-messageport}
 
 -   Расширяет: {EventTarget}
 
@@ -391,7 +391,7 @@ port2.postMessage({ foo: 'bar' });
 
 <!-- 0021.part.md -->
 
-### Событие: `close`
+### Событие: `close` {#event-close}
 
 Событие `close` происходит, когда одна из сторон канала отключена.
 
@@ -411,7 +411,7 @@ port1.close();
 
 <!-- 0022.part.md -->
 
-### Событие: `message`
+### Событие: `message` {#event-message}
 
 -   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Передаваемое значение
 
@@ -454,7 +454,7 @@ port1.close();
 -   `значение` может содержать экземпляры [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module).
 -   `value` не может содержать нативные (поддерживаемые C++) объекты, кроме:
     -   {CryptoKey}s,
-    -   [`<FileHandle>`](fs.md#filehandle)s,
+    -   [`<FileHandle>`](fs.md#class-filehandle)s,
     -   {Histogram}s,
     -   {KeyObject}s,
     -   {MessagePort}s,
@@ -621,9 +621,9 @@ port2.postMessage(new URL('https://example.org'));
 
 <!-- 0032.part.md -->
 
-## Класс: `Worker`
+## Класс: `Worker` {#class-worker}
 
--   Расширяет: [`<EventEmitter>`](events.md#eventemitter)
+-   Расширяет: [`<EventEmitter>`](events.md#class-eventemitter)
 
 Класс `Worker` представляет собой независимый поток выполнения JavaScript. Большинство API Node.js доступны внутри него.
 
@@ -694,7 +694,7 @@ if (isMainThread) {
     -   `stdout` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то `worker.stdout` не будет автоматически передаваться в `process.stdout` родителя.
     -   `stderr` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то `worker.stderr` не будет автоматически передаваться в `process.stderr` родителя.
     -   `workerData` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Любое значение JavaScript, которое клонируется и становится доступным как [`require('node:worker_threads').workerData`](#workerworkerdata). Клонирование происходит, как описано в [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), и если объект не может быть клонирован (например, потому что он содержит `функции`), возникает ошибка.
-    -   `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то Worker отслеживает необработанные файловые дескрипторы, управляемые через [`fs.open()`](fs.md#fsopenpath-flags-mode-callback) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при выходе Worker, аналогично другим ресурсам, таким как
+    -   `trackUnmanagedFds` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если установлено значение `true`, то Worker отслеживает необработанные файловые дескрипторы, управляемые через [`fs.open()`](fs.md#fsopen) и [`fs.close()`](fs.md#fsclosefd-callback), и закрывает их при выходе Worker, аналогично другим ресурсам, таким как
 
 <!-- 0034.part.md -->
 
@@ -706,7 +706,7 @@ if (isMainThread) {
 
 <!-- 0035.part.md -->
 
-### Событие: `exit`
+### Событие: `exit` {#event-exit}
 
 -   `exitCode` [`<integer>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -716,7 +716,7 @@ if (isMainThread) {
 
 <!-- 0036.part.md -->
 
-### Событие: `message`
+### Событие: `message` {#event-message_1}
 
 -   `значение` [`<any>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Data_types) Переданное значение
 
@@ -734,7 +734,7 @@ if (isMainThread) {
 
 <!-- 0038.part.md -->
 
-### Событие: `'online'`
+### Событие: `'online'` {#event-online}
 
 Событие `'online'` генерируется, когда рабочий поток начинает выполнять код JavaScript.
 
@@ -749,7 +749,7 @@ if (isMainThread) {
 
 Возвращает читаемый поток для V8-снимка текущего состояния Worker. Подробнее см. в [`v8.getHeapSnapshot()`](v8.md#v8getheapsnapshotoptions).
 
-Если поток Worker больше не запущен, что может произойти до наступления события [`'exit'``](#event-exit), возвращенный `Promise` немедленно отклоняется с ошибкой [`ERR_WORKER_NOT_RUNNING`](errors.md#err_worker_not_running).
+Если поток Worker больше не запущен, что может произойти до наступления события [`'exit'`](#event-exit), возвращенный `Promise` немедленно отклоняется с ошибкой [`ERR_WORKER_NOT_RUNNING`](errors.md#err_worker_not_running).
 
 <!-- 0040.part.md -->
 
@@ -862,7 +862,7 @@ parentPort.on('message', () => console.log('msg')).unref();
 
 -   Возвращает: { Обещание}
 
-Остановить выполнение JavaScript в рабочем потоке как можно скорее. Возвращает обещание для кода выхода, который выполняется, когда происходит событие [`'exit'`'](#event-exit).
+Остановить выполнение JavaScript в рабочем потоке как можно скорее. Возвращает обещание для кода выхода, который выполняется, когда происходит событие [`'exit'`](#event-exit).
 
 <!-- 0049.part.md -->
 
