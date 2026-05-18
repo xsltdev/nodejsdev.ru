@@ -94,7 +94,7 @@ import('node:fs').then((esmFS) => {
 });
 ```
 
-## Source map v3 support
+## Поддержка Source Map v3
 
 !!!warning "Стабильность: 1 – Экспериментальная"
 
@@ -106,13 +106,13 @@ import('node:fs').then((esmFS) => {
 
 ```mjs
 // module.mjs
-// In an ECMAScript module
+// В ECMAScript-модуле
 import { findSourceMap, SourceMap } from 'node:module';
 ```
 
 ```cjs
 // module.cjs
-// In a CommonJS module
+// В CommonJS-модуле
 const { findSourceMap, SourceMap } = require('node:module');
 ```
 

@@ -4841,16 +4841,16 @@ open(
 );
 ```
 
-##### File access constants
+##### Константы доступа к файлам
 
 Следующие константы предназначены для использования в качестве параметра `mode`, передаваемого в [`fsPromises.access()`](#fspromisesaccess), [`fs.access()`](#fsaccesspath-mode-callback) и [`fs.accessSync()`](#fsaccesssync).
 
-| Constant | Description |
+| Константа | Описание |
 | --- | --- |
-| `F_OK` | Flag indicating that the file is visible to the calling process. This is useful for determining if a file exists, but says nothing about `rwx` permissions. Default if no mode is specified. |
-| `R_OK` | Flag indicating that the file can be read by the calling process. |
-| `W_OK` | Flag indicating that the file can be written by the calling process. |
-| `X_OK` | Flag indicating that the file can be executed by the calling process. This has no effect on Windows (will behave like `fs.constants.F_OK`). |
+| `F_OK` | Флаг, указывающий, что файл виден вызывающему процессу. Полезно для определения существования файла, но ничего не говорит о правах `rwx`. Значение по умолчанию, если режим не указан. |
+| `R_OK` | Флаг, указывающий, что файл может быть прочитан вызывающим процессом. |
+| `W_OK` | Флаг, указывающий, что файл может быть записан вызывающим процессом. |
+| `X_OK` | Флаг, указывающий, что файл может быть выполнен вызывающим процессом. Не имеет эффекта на Windows (будет вести себя как `fs.constants.F_OK`). |
 
 Определения также доступны в Windows.
 
@@ -4858,11 +4858,11 @@ open(
 
 Следующие константы предназначены для использования с [`fs.copyFile()`](#fscopyfilesrc-dest-mode-callback).
 
-| Constant | Description |
+| Константа | Описание |
 | --- | --- |
-| `COPYFILE_EXCL` | If present, the copy operation will fail with an error if the destination path already exists. |
-| `COPYFILE_FICLONE` | If present, the copy operation will attempt to create a copy-on-write reflink. If the underlying platform does not support copy-on-write, then a fallback copy mechanism is used. |
-| `COPYFILE_FICLONE_FORCE` | If present, the copy operation will attempt to create a copy-on-write reflink. Если базовая платформа не поддерживает копирование по записи, то операция завершится с ошибкой. |
+| `COPYFILE_EXCL` | Если указано, операция копирования завершится ошибкой, если путь назначения уже существует. |
+| `COPYFILE_FICLONE` | Если указано, операция копирования попытается создать reflink с копированием при записи. Если базовая платформа не поддерживает копирование при записи, используется резервный механизм копирования. |
+| `COPYFILE_FICLONE_FORCE` | Если указано, операция копирования попытается создать reflink с копированием при записи. Если базовая платформа не поддерживает копирование по записи, то операция завершится с ошибкой. |
 
 Определения также доступны для Windows.
 
@@ -4870,25 +4870,25 @@ open(
 
 Следующие константы предназначены для использования с `fs.open()`.
 
-| Constant | Description |
+| Константа | Описание |
 | --- | --- |
-| `O_RDONLY` | Flag indicating to open a file for read-only access. |
-| `O_WRONLY` | Flag indicating to open a file for write-only access. |
-| `O_RDWR` | Flag indicating to open a file for read-write access. |
-| `O_CREAT` | Flag indicating to create the file if it does not already exist. |
-| `O_EXCL` | Flag indicating that opening a file should fail if the `O_CREAT` flag is set and the file already exists. |
-| `O_NOCTTY` | Flag indicating that if path identifies a terminal device, opening the path shall not cause that terminal to become the controlling terminal for the process (if the process does not already have one). |
-| `O_TRUNC` | Flag indicating that if the file exists and is a regular file, and the file is opened successfully for write access, its length shall be truncated to zero. |
-| `O_APPEND` | Flag indicating that data will be appended to the end of the file. |
-| `O_DIRECTORY` | Flag indicating that the open should fail if the path is not a directory. |
-| `O_NOATIME` | Flag indicating reading accesses to the file system will no longer result in an update to the `atime` information associated with the file. This flag is available on Linux operating systems only. |
-| `O_NOFOLLOW` | Flag indicating that the open should fail if the path is a symbolic link. |
-| `O_SYNC` | Flag indicating that the file is opened for synchronized I/O with write operations waiting for file integrity. |
-| `O_DSYNC` | Flag indicating that the file is opened for synchronized I/O with write operations waiting for data integrity. |
-| `O_SYMLINK` | Flag indicating to open the symbolic link itself rather than the resource it is pointing to. |
-| `O_DIRECT` | When set, an attempt will be made to minimize caching effects of file I/O. |
-| `O_NONBLOCK` | Flag indicating to open the file in nonblocking mode when possible. |
-| `UV_FS_O_FILEMAP` | When set, a memory file mapping is used to access the file. This flag is available on Windows operating systems only. On other operating systems, this flag is ignored. |
+| `O_RDONLY` | Флаг, указывающий на открытие файла только для чтения. |
+| `O_WRONLY` | Флаг, указывающий на открытие файла только для записи. |
+| `O_RDWR` | Флаг, указывающий на открытие файла для чтения и записи. |
+| `O_CREAT` | Флаг, указывающий на создание файла, если он ещё не существует. |
+| `O_EXCL` | Флаг, указывающий, что открытие файла должно завершиться ошибкой, если установлен флаг `O_CREAT` и файл уже существует. |
+| `O_NOCTTY` | Флаг, указывающий, что если путь определяет терминальное устройство, открытие пути не должно делать этот терминал управляющим для процесса (если у процесса его ещё нет). |
+| `O_TRUNC` | Флаг, указывающий, что если файл существует, является обычным файлом и успешно открыт для записи, его длина должна быть усечена до нуля. |
+| `O_APPEND` | Флаг, указывающий, что данные будут добавлены в конец файла. |
+| `O_DIRECTORY` | Флаг, указывающий, что открытие должно завершиться ошибкой, если путь не является каталогом. |
+| `O_NOATIME` | Флаг, указывающий, что операции чтения файловой системы больше не будут обновлять информацию `atime`, связанную с файлом. Этот флаг доступен только в операционных системах Linux. |
+| `O_NOFOLLOW` | Флаг, указывающий, что открытие должно завершиться ошибкой, если путь является символической ссылкой. |
+| `O_SYNC` | Флаг, указывающий, что файл открыт для синхронизированного ввода-вывода с ожиданием целостности файла при операциях записи. |
+| `O_DSYNC` | Флаг, указывающий, что файл открыт для синхронизированного ввода-вывода с ожиданием целостности данных при операциях записи. |
+| `O_SYMLINK` | Флаг, указывающий на открытие самой символической ссылки, а не ресурса, на который она указывает. |
+| `O_DIRECT` | При установке будет предпринята попытка минимизировать эффекты кэширования файлового ввода-вывода. |
+| `O_NONBLOCK` | Флаг, указывающий на открытие файла в неблокирующем режиме, когда это возможно. |
+| `UV_FS_O_FILEMAP` | При установке для доступа к файлу используется отображение файла в память. Этот флаг доступен только в операционных системах Windows. В других операционных системах этот флаг игнорируется. |
 
 В Windows доступны только `O_APPEND`, `O_CREAT`, `O_EXCL`, `O_RDONLY`, `O_RDWR`, `O_TRUNC`, `O_WRONLY` и `UV_FS_O_FILEMAP`.
 
@@ -4896,16 +4896,16 @@ open(
 
 Следующие константы предназначены для использования со свойством `mode` объекта [`<fs.Stats>`](fs.md#fsstats) для определения типа файла.
 
-| Constant | Description |
+| Константа | Описание |
 | --- | --- |
-| `S_IFMT` | Bit mask used to extract the file type code. |
-| `S_IFREG` | File type constant for a regular file. |
-| `S_IFDIR` | File type constant for a directory. |
-| `S_IFCHR` | File type constant for a character-oriented device file. |
-| `S_IFBLK` | File type constant for a block-oriented device file. |
-| `S_IFIFO` | File type constant for a FIFO/pipe. |
-| `S_IFLNK` | File type constant for a symbolic link. |
-| `S_IFSOCK` | File type constant for a socket. |
+| `S_IFMT` | Битовой маской для извлечения кода типа файла. |
+| `S_IFREG` | Константа типа файла для обычного файла. |
+| `S_IFDIR` | Константа типа файла для каталога. |
+| `S_IFCHR` | Константа типа файла для символьного устройства. |
+| `S_IFBLK` | Константа типа файла для блочного устройства. |
+| `S_IFIFO` | Константа типа файла для FIFO/канала. |
+| `S_IFLNK` | Константа типа файла для символической ссылки. |
+| `S_IFSOCK` | Константа типа файла для сокета. |
 
 В Windows доступны только `S_IFCHR`, `S_IFDIR`, `S_IFLNK`, `S_IFMT` и `S_IFREG`.
 
@@ -4915,20 +4915,20 @@ open(
 
 Следующие константы предназначены для использования со свойством `mode` объекта [`<fs.Stats>`](fs.md#fsstats) для определения разрешений доступа к файлу.
 
-| Constant | Description |
+| Константа | Описание |
 | --- | --- |
-| `S_IRWXU` | File mode indicating readable, writable, and executable by owner. |
-| `S_IRUSR` | File mode indicating readable by owner. |
-| `S_IWUSR` | File mode indicating writable by owner. |
-| `S_IXUSR` | File mode indicating executable by owner. |
-| `S_IRWXG` | File mode indicating readable, writable, and executable by group. |
-| `S_IRGRP` | File mode indicating readable by group. |
-| `S_IWGRP` | File mode indicating writable by group. |
-| `S_IXGRP` | File mode indicating executable by group. |
-| `S_IRWXO` | File mode indicating readable, writable, and executable by others. |
-| `S_IROTH` | File mode indicating readable by others. |
-| `S_IWOTH` | File mode indicating writable by others. |
-| `S_IXOTH` | File mode indicating executable by others. |
+| `S_IRWXU` | Режим файла, указывающий на чтение, запись и выполнение владельцем. |
+| `S_IRUSR` | Режим файла, указывающий на чтение владельцем. |
+| `S_IWUSR` | Режим файла, указывающий на запись владельцем. |
+| `S_IXUSR` | Режим файла, указывающий на выполнение владельцем. |
+| `S_IRWXG` | Режим файла, указывающий на чтение, запись и выполнение группой. |
+| `S_IRGRP` | Режим файла, указывающий на чтение группой. |
+| `S_IWGRP` | Режим файла, указывающий на запись группой. |
+| `S_IXGRP` | Режим файла, указывающий на выполнение группой. |
+| `S_IRWXO` | Режим файла, указывающий на чтение, запись и выполнение остальными. |
+| `S_IROTH` | Режим файла, указывающий на чтение остальными. |
+| `S_IWOTH` | Режим файла, указывающий на запись остальными. |
+| `S_IXOTH` | Режим файла, указывающий на выполнение остальными. |
 
 В Windows доступны только `S_IRUSR` и `S_IWUSR`.
 

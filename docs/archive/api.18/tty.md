@@ -43,12 +43,12 @@ false
 
 ### `readStream.setRawMode(mode)`
 
--   `mode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) If `true`, configures the `tty.ReadStream` to operate as a raw device. If `false`, configures the `tty.ReadStream` to operate in its default mode. The `readStream.isRaw` property will be set to the resulting mode.
--   Returns: {this} The read stream instance.
+-   `mode` [`<boolean>`](https://developer.mozilla.org/docs/Web/JavaScript/Data_structures#Boolean_type) Если `true`, настраивает `tty.ReadStream` на работу в режиме сырого устройства. Если `false`, настраивает `tty.ReadStream` на работу в режиме по умолчанию. Свойство `readStream.isRaw` будет установлено в результирующий режим.
+-   Возвращает: {this} Экземпляр потока чтения.
 
-Allows configuration of `tty.ReadStream` so that it operates as a raw device.
+Позволяет настроить `tty.ReadStream` для работы в качестве сырого устройства.
 
-When in raw mode, input is always available character-by-character, not including modifiers. Additionally, all special processing of characters by the terminal is disabled, including echoing input characters. <kbd>Ctrl</kbd>+<kbd>C</kbd> will no longer cause a `SIGINT` when in this mode.
+В сыром режиме ввод всегда доступен посимвольно, без учёта модификаторов. Кроме того, отключается вся специальная обработка символов терминалом, включая эхо-вывод вводимых символов. <kbd>Ctrl</kbd>+<kbd>C</kbd> больше не будет вызывать `SIGINT` в этом режиме.
 
 ## Класс: `tty.WriteStream`
 

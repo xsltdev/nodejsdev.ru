@@ -547,7 +547,7 @@ dns.setServers([
 
 <!-- 0024.part.md -->
 
-## DNS promises API
+## DNS Promise API
 
 API `dns.promises` предоставляет альтернативный набор асинхронных методов DNS, которые возвращают объекты `Promise`, а не используют обратные вызовы. API доступен через `require('node:dns').promises` или `require('node:dns/promises')`.
 

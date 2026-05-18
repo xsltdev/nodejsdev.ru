@@ -807,7 +807,7 @@ console.log(VERSION);
 
 С предыдущим загрузчиком выполнение `node --experimental-loader ./https-loader.mjs ./main.mjs` выводит текущую версию CoffeeScript для модуля по URL в `main.mjs`.
 
-#### Transpiler loader
+#### Загрузчик транспилятора
 
 Исходные тексты в форматах, которые Node.js не понимает, могут быть преобразованы в JavaScript с помощью хука [`load`](#loadurl-context-nextload). Однако прежде чем этот хук будет вызван, хук [`resolve`](#resolvespecifier-context-nextresolve) должен сказать Node.js, чтобы он не выдавал ошибку при неизвестных типах файлов.
 

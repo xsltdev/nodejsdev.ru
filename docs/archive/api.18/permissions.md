@@ -355,7 +355,7 @@ Error: Access to this API has been restricted
 
 Разрешение доступа к порождению процесса и созданию рабочих потоков может быть сделано с помощью [`--allow-child-process`](cli.md#--allow-child-process) и [`--allow-worker`](cli.md#--allow-worker) соответственно.
 
-#### Runtime API
+#### API времени выполнения
 
 При включении модели разрешений с помощью флага [`--experimental-permission`](cli.md#--experimental-permission) к объекту `process` добавляется новое свойство `permission`. Это свойство содержит две функции:
 

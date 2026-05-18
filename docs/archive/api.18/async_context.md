@@ -479,7 +479,7 @@ class WorkerPoolTaskInfo extends AsyncResource {
             err,
             result
         );
-        this.emitDestroy(); // `TaskInfo`s are used only once.
+        this.emitDestroy(); // `TaskInfo` используются только один раз.
     }
 }
 
@@ -494,8 +494,8 @@ export default class WorkerPool extends EventEmitter {
         for (let i = 0; i < numThreads; i++)
             this.addNewWorker();
 
-        // Any time the kWorkerFreedEvent is emitted, dispatch
-        // the next task pending in the queue, if any.
+        // При срабатывании kWorkerFreedEvent отправляем
+        // следующую задачу из очереди, если есть.
         this.on(kWorkerFreedEvent, () => {
             if (this.tasks.length > 0) {
                 const {
@@ -512,22 +512,21 @@ export default class WorkerPool extends EventEmitter {
             new URL('task_processor.js', import.meta.url)
         );
         worker.on('message', (result) => {
-            // In case of success: Call the callback that was passed to `runTask`,
-            // remove the `TaskInfo` associated with the Worker, and mark it as free
-            // again.
+            // В случае успеха: вызываем callback, переданный в `runTask`,
+            // удаляем `TaskInfo`, связанный с Worker, и помечаем его как свободный.
             worker[kTaskInfo].done(null, result);
             worker[kTaskInfo] = null;
             this.freeWorkers.push(worker);
             this.emit(kWorkerFreedEvent);
         });
         worker.on('error', (err) => {
-            // In case of an uncaught exception: Call the callback that was passed to
-            // `runTask` with the error.
+            // В случае необработанного исключения: вызываем callback, переданный в
+            // `runTask`, с ошибкой.
             if (worker[kTaskInfo])
                 worker[kTaskInfo].done(err, null);
             else this.emit('error', err);
-            // Remove the worker from the list and start a new Worker to replace the
-            // current one.
+            // Удаляем worker из списка и запускаем новый Worker для замены
+            // текущего.
             this.workers.splice(
                 this.workers.indexOf(worker),
                 1
@@ -541,7 +540,7 @@ export default class WorkerPool extends EventEmitter {
 
     runTask(task, callback) {
         if (this.freeWorkers.length === 0) {
-            // No free threads, wait until a worker thread becomes free.
+            // Нет свободных потоков, ждём, пока освободится worker-поток.
             this.tasks.push({ task, callback });
             return;
         }
@@ -582,7 +581,7 @@ class WorkerPoolTaskInfo extends AsyncResource {
             err,
             result
         );
-        this.emitDestroy(); // `TaskInfo`s are used only once.
+        this.emitDestroy(); // `TaskInfo` используются только один раз.
     }
 }
 
@@ -597,8 +596,8 @@ class WorkerPool extends EventEmitter {
         for (let i = 0; i < numThreads; i++)
             this.addNewWorker();
 
-        // Any time the kWorkerFreedEvent is emitted, dispatch
-        // the next task pending in the queue, if any.
+        // При срабатывании kWorkerFreedEvent отправляем
+        // следующую задачу из очереди, если есть.
         this.on(kWorkerFreedEvent, () => {
             if (this.tasks.length > 0) {
                 const {
@@ -615,22 +614,21 @@ class WorkerPool extends EventEmitter {
             path.resolve(__dirname, 'task_processor.js')
         );
         worker.on('message', (result) => {
-            // In case of success: Call the callback that was passed to `runTask`,
-            // remove the `TaskInfo` associated with the Worker, and mark it as free
-            // again.
+            // В случае успеха: вызываем callback, переданный в `runTask`,
+            // удаляем `TaskInfo`, связанный с Worker, и помечаем его как свободный.
             worker[kTaskInfo].done(null, result);
             worker[kTaskInfo] = null;
             this.freeWorkers.push(worker);
             this.emit(kWorkerFreedEvent);
         });
         worker.on('error', (err) => {
-            // In case of an uncaught exception: Call the callback that was passed to
-            // `runTask` with the error.
+            // В случае необработанного исключения: вызываем callback, переданный в
+            // `runTask`, с ошибкой.
             if (worker[kTaskInfo])
                 worker[kTaskInfo].done(err, null);
             else this.emit('error', err);
-            // Remove the worker from the list and start a new Worker to replace the
-            // current one.
+            // Удаляем worker из списка и запускаем новый Worker для замены
+            // текущего.
             this.workers.splice(
                 this.workers.indexOf(worker),
                 1
@@ -644,7 +642,7 @@ class WorkerPool extends EventEmitter {
 
     runTask(task, callback) {
         if (this.freeWorkers.length === 0) {
-            // No free threads, wait until a worker thread becomes free.
+            // Нет свободных потоков, ждём, пока освободится worker-поток.
             this.tasks.push({ task, callback });
             return;
         }

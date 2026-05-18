@@ -159,7 +159,7 @@ console.log(Certificate.verifySpkac(Buffer.from(spkac)));
 
 <!-- 0005.part.md -->
 
-### Legacy API
+### Устаревший API
 
 !!!danger "Стабильность: 0 – устарело или набрало много негативных отзывов"
 
@@ -275,15 +275,15 @@ console.log(cert.verifySpkac(Buffer.from(spkac)));
 
 <!-- 0010.part.md -->
 
-## CCM mode {#ccm-mode}
+## Режим CCM {#ccm-mode}
 
 В режиме CCM (`aes-*-ccm` и аналоги) для `cipher` и `decipher` нужно задавать `plaintextLength` и при необходимости `authTagLength`; подробности см. у [`cipher.setAAD()`](#ciphersetaadbuffer-options) и [`decipher.setAAD()`](#deciphersetaadbuffer-options).
 
-## Using strings as inputs to cryptographic APIs {#using-strings-as-inputs-to-cryptographic-apis}
+## Использование строк в качестве входных данных криптографических API {#using-strings-as-inputs-to-cryptographic-apis}
 
 Строки в JavaScript не предназначены для произвольных двоичных данных; для ключей, IV, тегов и полезной нагрузки используйте [`Buffer`](buffer.md), `TypedArray` или `DataView`.
 
-## Support for weak or compromised algorithms {#support-for-weak-or-compromised-algorithms}
+## Поддержка слабых или скомпрометированных алгоритмов {#support-for-weak-or-compromised-algorithms}
 
 Состав доступных и рекомендуемых алгоритмов зависит от версии OpenSSL и Node.js; избегайте устаревших или ослабленных вариантов.
 
@@ -4240,9 +4240,9 @@ console.log(receivedPlaintext);
 
 <!-- 0152.part.md -->
 
-### OpenSSL options
+### Опции OpenSSL
 
-See the [list of SSL OP Flags](https://wiki.openssl.org/index.php/List_of_SSL_OP_Flags#Table_of_Options) for details.
+См. [список флагов SSL OP](https://wiki.openssl.org/index.php/List_of_SSL_OP_Flags#Table_of_Options) для подробностей.
 
 <table>
 
@@ -4250,13 +4250,13 @@ See the [list of SSL OP Flags](https://wiki.openssl.org/index.php/List_of_SSL_OP
 
 <th>
 
-Constant
+Константа
 
 </th>
 
 <th>
 
-Description
+Описание
 
 </th>
 
@@ -4272,7 +4272,7 @@ Description
 
 <td>
 
-Applies multiple bug workarounds within OpenSSL. See <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a> for detail.
+Применяет несколько обходных путей для ошибок в OpenSSL. См. <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.
 
 </td>
 
@@ -4288,7 +4288,7 @@ Applies multiple bug workarounds within OpenSSL. See <a href="https://www.openss
 
 <td>
 
-Instructs OpenSSL to allow a non-\[EC\]DHE-based key exchange mode for TLS v1.3
+Указывает OpenSSL разрешить режим обмена ключами на основе не-[EC]DHE для TLS v1.3
 
 </td>
 
@@ -4304,7 +4304,7 @@ Instructs OpenSSL to allow a non-\[EC\]DHE-based key exchange mode for TLS v1.3
 
 <td>
 
-Allows legacy insecure renegotiation between OpenSSL and unpatched clients or servers. See <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.
+Разрешает устаревшую небезопасную переуступку между OpenSSL и незаплаченными клиентами или серверами. См. <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.
 
 </td>
 
@@ -4320,7 +4320,7 @@ Allows legacy insecure renegotiation between OpenSSL and unpatched clients or se
 
 <td>
 
-Attempts to use the server’s preferences instead of the client’s when selecting a cipher. Behavior depends on protocol version. See <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.
+Пытается использовать предпочтения сервера вместо клиентских при выборе шифра. Поведение зависит от версии протокола. См. <a href="https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html">https://www.openssl.org/docs/man3.0/man3/SSL_CTX_set_options.html</a>.
 
 </td>
 
@@ -4336,7 +4336,7 @@ Attempts to use the server’s preferences instead of the client’s when select
 
 <td>
 
-Instructs OpenSSL to use Cisco’s “speshul” version of DTLS_BAD_VER.
+��������� OpenSSL ������������ ������������� ������ Cisco ��� DTLS_BAD_VER.
 
 </td>
 
@@ -4352,7 +4352,7 @@ Instructs OpenSSL to use Cisco’s “speshul” version of DTLS_BAD_VER.
 
 <td>
 
-Instructs OpenSSL to turn on cookie exchange.
+Указывает OpenSSL включить обмен куки.
 
 </td>
 
@@ -4368,7 +4368,7 @@ Instructs OpenSSL to turn on cookie exchange.
 
 <td>
 
-Instructs OpenSSL to add server-hello extension from an early version of the cryptopro draft.
+Указывает OpenSSL добавить расширение server-hello из ранней версии черновика cryptopro.
 
 </td>
 
@@ -4384,7 +4384,7 @@ Instructs OpenSSL to add server-hello extension from an early version of the cry
 
 <td>
 
-Instructs OpenSSL to disable a SSL 3.0/TLS 1.0 vulnerability workaround added in OpenSSL 0.9.6d.
+Указывает OpenSSL отключить обходной путь для уязвимости SSL 3.0/TLS 1.0, добавленный в OpenSSL 0.9.6d.
 
 </td>
 
@@ -4400,7 +4400,7 @@ Instructs OpenSSL to disable a SSL 3.0/TLS 1.0 vulnerability workaround added in
 
 <td>
 
-Allows initial connection to servers that do not support RI.
+Разрешает первоначальное подключение к серверам, не поддерживающим RI.
 
 </td>
 
@@ -4416,7 +4416,7 @@ Allows initial connection to servers that do not support RI.
 
 <td>
 
-Instructs OpenSSL to disable support for SSL/TLS compression.
+Указывает OpenSSL отключить поддержку сжатия SSL/TLS.
 
 </td>
 
@@ -4432,7 +4432,7 @@ Instructs OpenSSL to disable support for SSL/TLS compression.
 
 <td>
 
-Instructs OpenSSL to disable encrypt-then-MAC.
+Указывает OpenSSL отключить encrypt-then-MAC.
 
 </td>
 
@@ -4462,7 +4462,7 @@ Instructs OpenSSL to disable encrypt-then-MAC.
 
 <td>
 
-Instructs OpenSSL to disable renegotiation.
+Указывает OpenSSL отключить переуступку.
 
 </td>
 
@@ -4478,7 +4478,7 @@ Instructs OpenSSL to disable renegotiation.
 
 <td>
 
-Instructs OpenSSL to always start a new session when performing renegotiation.
+Указывает OpenSSL всегда начинать новый сеанс при выполнении переуступки.
 
 </td>
 
@@ -4494,14 +4494,12 @@ Instructs OpenSSL to always start a new session when performing renegotiation.
 
 <td>
 
-Instructs OpenSSL to turn off SSL v2
+Указывает OpenSSL отключить SSL v2
 
 </td>
-
 </tr>
 
 <tr>
-
 <td>
 
 <code>SSL_OP_NO_SSLv3</code>
@@ -4510,7 +4508,7 @@ Instructs OpenSSL to turn off SSL v2
 
 <td>
 
-Instructs OpenSSL to turn off SSL v3
+Указывает OpenSSL отключить SSL v3
 
 </td>
 
@@ -4526,7 +4524,7 @@ Instructs OpenSSL to turn off SSL v3
 
 <td>
 
-Instructs OpenSSL to disable use of RFC4507bis tickets.
+Указывает OpenSSL отключить использование билетов RFC4507bis.
 
 </td>
 
@@ -4542,14 +4540,12 @@ Instructs OpenSSL to disable use of RFC4507bis tickets.
 
 <td>
 
-Instructs OpenSSL to turn off TLS v1
+Указывает OpenSSL отключить TLS v1
 
 </td>
-
 </tr>
 
 <tr>
-
 <td>
 
 <code>SSL_OP_NO_TLSv1_1</code>
@@ -4558,7 +4554,7 @@ Instructs OpenSSL to turn off TLS v1
 
 <td>
 
-Instructs OpenSSL to turn off TLS v1.1
+Указывает OpenSSL отключить TLS v1.1
 
 </td>
 
@@ -4574,14 +4570,12 @@ Instructs OpenSSL to turn off TLS v1.1
 
 <td>
 
-Instructs OpenSSL to turn off TLS v1.2
+Указывает OpenSSL отключить TLS v1.2
 
 </td>
-
 </tr>
 
 <tr>
-
 <td>
 
 <code>SSL_OP_NO_TLSv1_3</code>
@@ -4590,7 +4584,7 @@ Instructs OpenSSL to turn off TLS v1.2
 
 <td>
 
-Instructs OpenSSL to turn off TLS v1.3
+Указывает OpenSSL отключить TLS v1.3
 
 </td>
 
@@ -4606,7 +4600,7 @@ Instructs OpenSSL to turn off TLS v1.3
 
 <td>
 
-Instructs OpenSSL server to prioritize ChaCha20-Poly1305 when the client does. This option has no effect if <code>SSL_OP_CIPHER_SERVER_PREFERENCE</code> is not enabled.
+Указывает серверу OpenSSL отдавать приоритет ChaCha20-Poly1305, когда это делает клиент. Эта опция не действует, если не включён <code>SSL_OP_CIPHER_SERVER_PREFERENCE</code>.
 
 </td>
 
@@ -4622,7 +4616,7 @@ Instructs OpenSSL server to prioritize ChaCha20-Poly1305 when the client does. T
 
 <td>
 
-Instructs OpenSSL to disable version rollback attack detection.
+Указывает OpenSSL отключить обнаружение атаки отката версии.
 
 </td>
 
@@ -4632,7 +4626,7 @@ Instructs OpenSSL to disable version rollback attack detection.
 
 <!-- 0153.part.md -->
 
-### OpenSSL engine constants
+### Константы движка OpenSSL
 
 <table>
 
@@ -4640,13 +4634,13 @@ Instructs OpenSSL to disable version rollback attack detection.
 
 <th>
 
-Constant
+Константа
 
 </th>
 
 <th>
 
-Description
+Описание
 
 </th>
 
@@ -4662,7 +4656,127 @@ Description
 
 <td>
 
-Limit engine usage to RSA
+Ограничивает использование движка только RSA
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_DSA</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только DSA
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_DH</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только DH
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_RAND</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только RAND
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_EC</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только EC
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_CIPHERS</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только CIPHERS
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_DIGESTS</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только DIGESTS
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_PKEY_METHS</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только PKEY_METHDS
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>ENGINE_METHOD_PKEY_ASN1_METHS</code>
+
+</td>
+
+<td>
+
+Ограничивает использование движка только PKEY_ASN1_METHS
 
 </td>
 
@@ -4828,7 +4942,7 @@ Limit engine usage to PKEY_ASN1_METHS
 
 <!-- 0154.part.md -->
 
-### Other OpenSSL constants
+### Другие константы OpenSSL
 
 <table>
 
@@ -4836,13 +4950,13 @@ Limit engine usage to PKEY_ASN1_METHS
 
 <th>
 
-Constant
+Константа
 
 </th>
 
 <th>
 
-Description
+Описание
 
 </th>
 
@@ -4998,7 +5112,7 @@ Description
 
 <td>
 
-Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the digest size when signing or verifying.
+Устанавливает длину соли для <code>RSA_PKCS1_PSS_PADDING</code> равной размеру дайджеста при подписании или проверке.
 
 </td>
 
@@ -5014,7 +5128,7 @@ Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the digest size w
 
 <td>
 
-Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the maximum permissible value when signing data.
+Устанавливает длину соли для <code>RSA_PKCS1_PSS_PADDING</code> в максимально допустимое значение при подписании данных.
 
 </td>
 
@@ -5030,7 +5144,7 @@ Sets the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to the maximum permi
 
 <td>
 
-Causes the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to be determined automatically when verifying a signature.
+Приводит к автоматическому определению длины соли для <code>RSA_PKCS1_PSS_PADDING</code> при проверке подписи.
 
 </td>
 
@@ -5082,7 +5196,7 @@ Causes the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to be determined a
 
 <!-- 0155.part.md -->
 
-### Node.js crypto constants
+### Константы криптографии Node.js
 
 <table>
 
@@ -5090,13 +5204,13 @@ Causes the salt length for <code>RSA_PKCS1_PSS_PADDING</code> to be determined a
 
 <th>
 
-Constant
+Константа
 
 </th>
 
 <th>
 
-Description
+Описание
 
 </th>
 
@@ -5112,7 +5226,22 @@ Description
 
 <td>
 
-Specifies the built-in default cipher list used by Node.js.
+Определяет встроенный список шифров по умолчанию, используемый Node.js.
+
+</td>
+
+</tr>
+
+<tr>
+<td>
+
+<code>defaultCipherList</code>
+
+</td>
+
+<td>
+
+Определяет активный список шифров по умолчанию, используемый текущим процессом Node.js.
 
 </td>
 

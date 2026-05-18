@@ -4422,10 +4422,10 @@ const queryHandle = myAddon.query(
     'Gimme ALL the things!'
 );
 
-// There is an accidental error in the line below. The first parameter to
-// `myAddon.queryHasRecords()` should be the database handle (`dbHandle`), not
-// the query handle (`query`), so the correct condition for the while-loop
-// should be
+// В следующей строке допущена случайная ошибка. Первым параметром
+// `myAddon.queryHasRecords()` должен быть дескриптор базы данных (`dbHandle`), а не
+// дескриптор запроса (`query`), поэтому правильным условием для цикла while
+// должно быть
 //
 // myAddon.queryHasRecords(dbHandle, queryHandle)
 //
@@ -4451,11 +4451,11 @@ while (myAddon.queryHasRecords(queryHandle, dbHandle)) {
 <!-- 0350.part.md -->
 
 ```c
-// This value is the type tag for a database handle. The command
+// Это значение является тегом типа для дескриптора базы данных. Команда
 //
 //   uuidgen | sed -r -e 's/-//g' -e 's/(.{16})(.*)/0x\1, 0x\2/'
 //
-// can be used to obtain the two values with which to initialize the structure.
+// может быть использована для получения двух значений для инициализации структуры.
 static const napi_type_tag DatabaseHandleTypeTag = {
   0x1edf75a38336451d, 0xa5ed9ce2e4c00c38
 };
