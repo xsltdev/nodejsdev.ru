@@ -1,0 +1,9 @@
+title: Потоки
+nav:
+    - index.md
+    - foundation-of-streams.md
+    - readable-streams.md
+    - writable-streams.md
+    - transform-streams.md
+    - modern-pipelines-error-handling.md
+    - zero-copy-scatter-gather.md

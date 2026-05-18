@@ -1,0 +1,9 @@
+title: Асинхронность
+nav:
+    - index.md
+    - callback-patterns.md
+    - promises-microtasks.md
+    - async-await.md
+    - eventemitter-internals.md
+    - async-iterators.md
+    - promise-combinators.md

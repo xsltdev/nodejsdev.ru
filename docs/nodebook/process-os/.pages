@@ -1,0 +1,7 @@
+title: Процесс и ОС
+nav:
+    - index.md
+    - process-object.md
+    - signals-exit-codes.md
+    - os-module.md
+    - standard-io.md

@@ -1,0 +1,7 @@
+title: Buffer
+nav:
+    - index.md
+    - what-is-buffer.md
+    - allocation-patterns.md
+    - working-with-buffers.md
+    - fragmentation-and-challenges.md

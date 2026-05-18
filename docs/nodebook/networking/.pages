@@ -1,0 +1,10 @@
+title: Сеть
+nav:
+    - index.md
+    - tcpip-os-networking.md
+    - dns-resolution.md
+    - tcp-flow-failure.md
+    - sockets-net-module.md
+    - udp-dgram.md
+    - socket-options-backlog.md
+    - request-path-client-process.md
