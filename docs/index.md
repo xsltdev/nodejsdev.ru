@@ -20,10 +20,6 @@ hide:
 
     **[:octicons-arrow-right-24: Node.js API v25](./api/index.md)** <small>25.x.x</small>
 
-    [:octicons-arrow-right-24: Node.js API v18](./archive/api.18/index.md) <small>18.x.x</small>
-
-    [:octicons-arrow-right-24: Карта обучения :octicons-link-external-16:](https://devmaps.ru/nodejs-2020)
-
 -   :fontawesome-regular-file-code:{ .lg .middle } **Гайды**
 
     ***
@@ -49,24 +45,6 @@ hide:
     [:octicons-arrow-right-24: RabbitMQ](./frameworks/rabbitmq.4/index.md) <small>4.x</small>
 
 </div>
-
-## Статьи
-
-**[Создание MCP‑сервера](./guides/build-mcp-server.md)**<br />Начните создавать собственный сервер для использования в Claude for Desktop и других клиентах.
-
-**[Современные паттерны Node.js для 2025 года](./guides/modern-patterns-nodejs-2025.md)**<br />Современный Node.js поддерживает веб-стандарты, уменьшает внешние зависимости и обеспечивает более интуитивный интерфейс для разработчиков. Давайте рассмотрим эти изменения и поймем, почему они важны для ваших приложений в 2025 году
-
-**[Публикация пакетов npm на основе ESM с помощью TypeScript](./guides/typescript-esm-packages.md)**<br />За последние два года поддержка ESM в TypeScript, Node.js и браузерах сильно продвинулась. В этом посте я рассказываю о своей современной настройке, которая относительно проста - по сравнению с тем, что нам приходилось делать в прошлом
-
-**[Распространенные причины утечек памяти в JavaScript](./guides/common-causes-of-memory-leaks-in-javascript.md)**<br /> Выявление и устранение распространенных утечек памяти JavaScript (Node.js и Deno.js)
-
-**[Node.js включает встроенную поддержку файлов .env](./guides/env.md)**<br /> С недавним выпуском версии 20.6.0 в Node.js появилась встроенная поддержка файлов `.env`
-
-**[Как построить REST API с помощью JS, Node.js и Express.js](guides/rest-api-design/index.md)**<br /> REST API Руководство по лучшим практикам проектирования
-
-**[Сервер Node.js без фреймворка](guides/server_without_framework.md)**<br /> В этой статье представлен простой статический файловый сервер, построенный на чистом Node.js без использования фреймворка
-
-**[Все статьи :octicons-arrow-right-24:](./guides/index.md)**
 
 ---
 

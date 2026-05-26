@@ -4,13 +4,4 @@ nav:
     - webdraftt
     - metanit
     - freecodecamp.md
-    - Статьи:
-        - build-mcp-server.md
-        - typescript-esm-packages.md
-        - common-causes-of-memory-leaks-in-javascript.md
-        - nodejs-test-runner.md
-        - env.md
-        - rest-api-design
-        - server_without_framework.md
-        - testing-dark-scenarios.md
-        - chatbot.md
+
