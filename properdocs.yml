@@ -7,8 +7,9 @@ repo_name: 'Справочник на Github'
 repo_url: 'https://github.com/xsltdev/nodejsdev.ru'
 
 theme:
-    name: material
+    name: materialx
     custom_dir: overrides
+    topbar_style: primary
     palette:
         - media: '(prefers-color-scheme)'
           primary: green

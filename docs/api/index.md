@@ -71,7 +71,7 @@ hide:
 -   :material-cube-outline:{ .lg .middle } **[VM](vm.md)**
 -   :simple-webassembly:{ .lg .middle } **[WASI](wasi.md)**
 -   :material-lock-check-outline:{ .lg .middle } **[Web Crypto API](webcrypto.md)**
--   :material-wave-arrow-right:{ .lg .middle } **[Web Streams API](webstreams.md)**
+-   :simple-streamlabs:{ .lg .middle } **[Web Streams API](webstreams.md)**
 -   :material-account-group-outline:{ .lg .middle } **[Потоки worker](worker_threads.md)**
 -   :material-waves-arrow-right:{ .lg .middle } **[Zlib](zlib.md)**
 -   :material-archive-sync-outline:{ .lg .middle } **[Итерируемое сжатие Zlib](zlib_iter.md)**

@@ -7,8 +7,8 @@
 		"prettier": "^2.1.2"
 	},
 	"scripts": {
-		"build": "mkdocs build",
-		"serve": "mkdocs serve --dirtyreload",
+		"build": "properdocs build",
+		"serve": "properdocs serve --dirtyreload",
 		"upgrade": "pip3 install --upgrade -r ./requirements.txt",
 		"prettier": "prettier --write ./docs"
 	},

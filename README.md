@@ -1,6 +1,6 @@
 # Справочник
 
-Для разметки контента используется markdown, собирается сайт движком MKDocs.
+Для разметки контента используется markdown, собирается сайт движком [ProperDocs](https://properdocs.org/).
 
 ## Участие
 
@@ -8,24 +8,24 @@
 
 ## Сборка справочника
 
-Для сборки справочника нужно [установить MKDocs](https://www.mkdocs.org/#installation), [расширения PyMdown](https://facelessuser.github.io/pymdown-extensions/installation/) и тему [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/):
+Для сборки справочника нужно [установить ProperDocs](https://properdocs.org/user-guide/installation/), [расширения PyMdown](https://facelessuser.github.io/pymdown-extensions/installation/) и тему [MaterialX for ProperDocs](https://jaywhj.github.io/mkdocs-materialx/):
 
 ```
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip3 install -r ./requirements.txt
 ```
 
 Сборка проекта:
 
 ```
-mkdocs build
+properdocs build
 ```
 
 Режим разработчика:
 
 ```
-mkdocs serve --dirtyreload
+properdocs serve --dirtyreload
 ```
 
 ## Публикация

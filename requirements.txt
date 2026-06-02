@@ -3,9 +3,11 @@ Jinja2
 livereload
 Markdown
 MarkupSafe
-mkdocs
+# mkdocs
+properdocs
 pymdown-extensions
-mkdocs-material
+# mkdocs-material
+mkdocs-materialx
 mkdocs-awesome-pages-plugin
 mkdocs-minify-plugin
 mkdocs-glightbox
