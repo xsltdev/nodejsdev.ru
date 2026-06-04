@@ -2,5 +2,6 @@ title: Фреймворки
 nav:
     - index.md
     - fastify.3.book
+    - express.5
     - express.4
     - rabbitmq.4

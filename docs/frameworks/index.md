@@ -22,7 +22,7 @@ hide:
 
     Фреймворк для создания приложений
 
-    [:octicons-arrow-right-24: Express.js](./express.4/index.md) <small>4.x</small>
+    **[:octicons-arrow-right-24: Express.js](./express.5/index.md) <small>5.x</small>**<br />[:octicons-arrow-right-24: Express.js](./express.4/index.md) <small>4.x</small>
 
 -   :simple-rabbitmq:{ .lg .middle } **RabbitMQ**
 

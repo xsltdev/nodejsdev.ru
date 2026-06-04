@@ -20,6 +20,10 @@ hide:
 
     **[:octicons-arrow-right-24: Node.js API v25](./api/index.md)** <small>25.x.x</small>
 
+    [:octicons-arrow-right-24: Nodebook](./nodebook/index.md)
+
+	
+
 -   :fontawesome-regular-file-code:{ .lg .middle } **Гайды**
 
     ***
@@ -39,6 +43,8 @@ hide:
     Документация по серверным фреймворкам
 
     **[:octicons-arrow-right-24: Fastify](./frameworks/fastify.3.book/index.md)** <small>3.x</small>
+
+    **[:octicons-arrow-right-24: Express.js](./frameworks/express.5/index.md)** <small>5.x</small>
 
     [:octicons-arrow-right-24: Express.js](./frameworks/express.4/index.md) <small>4.x</small>
 
