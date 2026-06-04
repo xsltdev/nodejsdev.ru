@@ -1,3 +1,7 @@
+---
+description: 'Материал WebDraftt по теме «SQL».'
+---
+
 # SQL
 
 Для работы Node.js с базами данных SQL используется модуль [sequelize](http://docs.sequelizejs.com/).

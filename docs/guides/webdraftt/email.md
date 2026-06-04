@@ -1,3 +1,7 @@
+---
+description: 'Материал WebDraftt по теме «Отправка E-mail».'
+---
+
 # Отправка E-mail
 
 Для отправки E-mail в Node.js приложениях используется npm модуль `nodemailer`.

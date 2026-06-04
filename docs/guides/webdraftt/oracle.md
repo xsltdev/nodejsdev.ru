@@ -1,3 +1,7 @@
+---
+description: 'Материал WebDraftt по теме «Oracle».'
+---
+
 # Oracle
 
 Работа Node.js с Oracle осуществляется с использованием модуля `node-oracledb`.

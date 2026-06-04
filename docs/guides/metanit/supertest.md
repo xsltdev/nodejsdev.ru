@@ -1,3 +1,7 @@
+---
+description: 'Материал Metanit по теме «Тестирование Express».'
+---
+
 # Тестирование Express
 
 Для тестирования функциональности, которая использует Express, мы можем воспользоваться специальным инструментом - [supertest](https://www.npmjs.com/package/supertest).

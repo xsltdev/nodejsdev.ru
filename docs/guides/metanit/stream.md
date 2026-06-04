@@ -1,3 +1,7 @@
+---
+description: 'Материал Metanit по теме «Поток».'
+---
+
 # Поток
 
 **Stream** представляет поток данных. Потоки бывают различных типов, среди которых можно выделить [потоки для чтения](https://nodejs.org/api/stream.html#stream_readable_streams) и [потоки для записи](https://nodejs.org/api/stream.html#stream_writable_streams).

@@ -1,3 +1,7 @@
+---
+description: 'Материал Metanit по теме «Работа с модулями».'
+---
+
 # Работа с модулями
 
 Рассмотрим некоторые аспекты работы с модулями в Node.js. Прежде всего надо отметить, что подключаемые модули кэшируются. В частности, в файле [https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js](https://github.com/nodejs/node/blob/master/lib/internal/modules/cjs/loader.js) есть такие строки:
